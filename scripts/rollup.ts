@@ -1,3 +1,4 @@
+import alias, { type Alias } from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { type RollupOptions, type RollupWarning } from "rollup";
@@ -23,6 +24,7 @@ export interface BundleOptions {
   output?: Record<string, unknown>;
   inlineDynamicImports?: boolean;
   preserveShebang?: boolean;
+  alias?: Alias[] | { [find: string]: string };
 }
 
 export const bundle = (
@@ -40,6 +42,7 @@ export const bundle = (
     preserveShebang = typeof filePath === "object"
       ? filePath.base.startsWith("cli")
       : filePath.startsWith("cli/"),
+    alias: entries,
   }: BundleOptions = {}
 ): RollupOptions[] => [
   {
@@ -67,6 +70,14 @@ export const bundle = (
     ],
 
     plugins: [
+      ...(entries
+        ? // FIXME: This is an issue of ts NodeNext
+          [
+            (alias as unknown as typeof alias.default)({
+              entries,
+            }),
+          ]
+        : []),
       ...(preserveShebang ? [shebangPlugin()] : []),
       ...(resolve
         ? [
@@ -169,6 +180,14 @@ export const bundle = (
             },
           ],
           plugins: [
+            ...(entries
+              ? // FIXME: This is an issue of ts NodeNext
+                [
+                  (alias as unknown as typeof alias.default)({
+                    entries,
+                  }),
+                ]
+              : []),
             dts({
               compilerOptions: {
                 preserveSymlinks: false,

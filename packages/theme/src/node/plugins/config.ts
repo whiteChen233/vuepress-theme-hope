@@ -36,7 +36,7 @@ export const getPluginConfig = (
     | "iconPrefix"
     | "favicon"
   >,
-  legacy = true
+  legacy = false
 ): PluginConfig => {
   const pluginConfig = [
     getComponentsPlugin(options, plugins.components, legacy),
