@@ -13,6 +13,7 @@ const isProduction = process.env["NODE_ENV"] === "production";
 export interface FileInfo {
   base: string;
   files: string[];
+  target?: string;
 }
 
 export interface BundleOptions {
@@ -59,7 +60,10 @@ export const bundle = (
     output: [
       {
         ...(typeof filePath === "object"
-          ? { dir: `./lib/${filePath.base}`, entryFileNames: "[name].js" }
+          ? {
+              dir: `./lib/${filePath.target || filePath.base}`,
+              entryFileNames: "[name].js",
+            }
           : { file: `./lib/${filePath}.js` }),
         format: "esm",
         sourcemap: true,
@@ -171,7 +175,7 @@ export const bundle = (
             {
               ...(typeof filePath === "object"
                 ? {
-                    dir: `./lib/${filePath.base}`,
+                    dir: `./lib/${filePath.target || filePath.base}`,
                     entryFileNames: "[name].d.ts",
                   }
                 : { file: `./lib/${filePath}.d.ts` }),

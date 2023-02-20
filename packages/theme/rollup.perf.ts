@@ -1,8 +1,4 @@
-// import { getDirname, path } from "@vuepress/utils";
-
 import { bundle } from "../../scripts/rollup.js";
-
-// const __dirname = getDirname(import.meta.url);
 
 export default [
   ...bundle("node/perf", {

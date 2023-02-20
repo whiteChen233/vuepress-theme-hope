@@ -30,8 +30,8 @@
   "exports": {
     ".": "./lib/node/index.js",
     "./perf": {
-      "types": "./lib/node/perf.d.ts",
-      "default": "./lib/node/perf.js"
+      "types": "./lib/perf/index.d.ts",
+      "default": "./lib/perf/index.js"
     },
     "./client": "./lib/client/index.js",
     "./client/*": "./lib/client/*",
@@ -58,7 +58,8 @@
     "templates"
   ],
   "scripts": {
-    "build": "pnpm build:normal && pnpm build:perf",
+    "build": "pnpm build:normal",
+    "build:old": "pnpm build:normal && pnpm build:perf",
     "build:normal": "pnpm build:normal-node && pnpm build:normal-client && pnpm copy",
     "build:perf": "rollup -c rollup.perf.ts --configPlugin esbuild",
     "build:normal-node": "rollup -c rollup.config.ts --configPlugin esbuild",

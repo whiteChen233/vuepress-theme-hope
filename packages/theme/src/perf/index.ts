@@ -1,21 +1,25 @@
 import { type ThemeFunction } from "@vuepress/core";
 import { watch } from "chokidar";
 
-import { extendsBundlerOptions } from "./bundler.js";
+import { prepareConfigFile } from "./clientConfig.js";
+import { extendsBundlerOptions } from "../node/bundler.js";
 import {
   checkSocialMediaIcons,
   getStatus,
   getThemeData,
-} from "./config/index.js";
-import { checkPlugins, getPluginConfig, usePlugin } from "./plugins/index.js";
+} from "../node/config/index.js";
 import {
-  prepareConfigFile,
+  checkPlugins,
+  getPluginConfig,
+  usePlugin,
+} from "../node/plugins/index.js";
+import {
   prepareHighLighterScss,
   prepareSidebarData,
   prepareSocialMediaIcons,
   prepareThemeColorScss,
-} from "./prepare/index.js";
-import { TEMPLATE_FOLDER } from "./utils.js";
+} from "../node/prepare/index.js";
+import { TEMPLATE_FOLDER } from "../node/utils.js";
 import { type ThemeOptions } from "../shared/index.js";
 
 export const hopeTheme =
@@ -129,7 +133,6 @@ export const hopeTheme =
     };
   };
 
-export * from "./config/index.js";
-export * from "./helpers.js";
-export * from "./locales/index.js";
+export * from "../node/helpers.js";
+export * from "../node/locales/index.js";
 export * from "../shared/index.js";
