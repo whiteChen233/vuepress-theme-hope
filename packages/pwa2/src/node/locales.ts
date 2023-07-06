@@ -1,4 +1,4 @@
-import { type PWALocaleConfig } from "../shared/index.js";
+import type { PWALocaleConfig } from "../shared/index.js";
 
 /** Multi language config for pwa popup */
 export const pwaLocales: PWALocaleConfig = {
@@ -294,5 +294,20 @@ export const pwaLocales: PWALocaleConfig = {
       "Aplikasi ini dapat diinstal di PC atau perangkat seluler Anda.  Ini akan memungkinkan aplikasi web ini terlihat seperti aplikasi terpasang lainnya.  Anda bisa menemukannya di daftar aplikasi dan dapat menyematkannya ke layar beranda, menu start, atau menu ke taskbar.  Aplikasi web yang terinstal ini juga dapat berinteraksi dengan aplikasi lain dan dengan sistem operasi yang Anda gunakan. ",
     hint: "Konten baru ditemukan.",
     update: "Konten baru telah tersedia.",
+  },
+
+  "/nl/": {
+    install: "Installeren",
+    iOSInstall: "Druk op de share button en dan op 'Add to Home Screen'",
+    cancel: "Annuleren",
+    close: "Sluiten",
+    prevImage: "Vorige Foto",
+    nextImage: "Volgende Foto",
+    desc: "Beschrijving",
+    feature: "Belangrijkste mogelijkheden",
+    explain:
+      "Deze app kan op uw PC of mobiel toestel geïnstalleerd worden. Dit laat toe om deze webapp er uit te laten alsof het een normale app is. Je kan het terugvinden in jouw applijsten en kan het op je homescreen, start menu of taakbalk vastzetten. Deze geïnstalleerde webapp zal ook veilig samenwerken met andere apps en uw besturingssysteem. ",
+    hint: "Nieuwe inhoud gevonden.",
+    update: "Nieuwe inhoud is beschikbaar.",
   },
 };

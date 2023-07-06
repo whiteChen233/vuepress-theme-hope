@@ -1,9 +1,10 @@
-import { type VNode, defineComponent, h, resolveComponent } from "vue";
+import type { VNode } from "vue";
+import { defineComponent, h, resolveComponent } from "vue";
 import {
   BitbucketIcon,
   GitHubIcon,
+  GitLabIcon,
   GiteeIcon,
-  GitlabIcon,
   SourceIcon,
 } from "vuepress-shared/client";
 
@@ -14,7 +15,7 @@ import "../styles/repo-link.scss";
 export default defineComponent({
   name: "RepoLink",
 
-  components: { BitbucketIcon, GiteeIcon, GitHubIcon, GitlabIcon, SourceIcon },
+  components: { BitbucketIcon, GiteeIcon, GitHubIcon, GitLabIcon, SourceIcon },
 
   setup() {
     const repo = useNavbarRepo();
@@ -23,11 +24,11 @@ export default defineComponent({
       repo.value
         ? h(
             "div",
-            { class: "nav-item" },
+            { class: "nav-item vp-repo" },
             h(
               "a",
               {
-                class: "repo-link",
+                class: "vp-repo-link",
                 href: repo.value.link,
                 target: "_blank",
                 rel: "noopener noreferrer",

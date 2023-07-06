@@ -1,5 +1,6 @@
-import { type ThemeFunction } from "@vuepress/core";
-import { type ThemeOptions, hopeTheme } from "vuepress-theme-hope";
+import type { ThemeFunction } from "@vuepress/core";
+import type { ThemeOptions } from "vuepress-theme-hope";
+import { hopeTheme } from "vuepress-theme-hope";
 
 const IS_GITEE = "GITEE" in process.env;
 const IS_NETLIFY = "NETLIFY" in process.env;
@@ -28,7 +29,7 @@ export const theme = (
 
     author: {
       name: "Mr.Hope",
-      url: "https://mrhope.site",
+      url: "https://mister-hope.com",
     },
 
     favicon: "/favicon.ico",
@@ -40,6 +41,12 @@ export const theme = (
     docsDir: `docs/${name}/src`,
 
     logo: "/logo.svg",
+
+    navbarLayout: {
+      start: ["Brand"],
+      center: ["Links"],
+      end: ["Language", "Repo", "TelegramLink", "Outlook", "Search"],
+    },
 
     copyright: "MIT Licensed | Copyright © 2019-present Mr.Hope",
     displayFooter: true,
@@ -53,6 +60,7 @@ export const theme = (
         repoId: "R_kgDOG_Pt2A",
         category: "Announcements",
         categoryId: "DIC_kwDOG_Pt2M4COD69",
+        mapping: "url",
       },
 
       components: IS_NETLIFY
@@ -88,8 +96,6 @@ export const theme = (
             },
           },
 
-      prismjs: false,
-
       seo: hostname === canonical ? {} : { canonical },
 
       ...plugins,
@@ -98,5 +104,5 @@ export const theme = (
     ...options,
   };
 
-  return hopeTheme(themeOptions, false);
+  return hopeTheme(themeOptions, { custom: true });
 };

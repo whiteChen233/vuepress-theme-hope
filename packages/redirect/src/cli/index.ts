@@ -9,17 +9,18 @@ import {
   transformUserConfigToPlugin,
 } from "@vuepress/cli";
 import { createBuildApp } from "@vuepress/core";
-import { removeEndingSlash, removeLeadingSlash } from "@vuepress/shared";
 import { fs, logger, path } from "@vuepress/utils";
 import { cac } from "cac";
+import { removeEndingSlash, removeLeadingSlash } from "vuepress-shared/node";
 
-import { getRedirectHTML } from "../node/utils.js";
+import { getRedirectHTML } from "../node/utils/index.js";
 
 const require = createRequire(import.meta.url);
 
 const cli = cac("vp-redirect");
-// eslint-disable-next-line
-const version = <string>require("../../package.json").version;
+const version = <
+  string // eslint-disable-next-line
+>require("vuepress-plugin-redirect/package.json").version;
 
 cli
   .command(

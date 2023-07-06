@@ -2,7 +2,7 @@
 title: Badge
 ---
 
-A badge which allows you to customize it’s color.
+A badge which allows you to customize its color.
 
 You can use it in Markdown to add some status for titles or links.
 
@@ -47,7 +47,7 @@ Badge color, please fill in CSS color strings
 
 ### vertical
 
-- Type: `"top" | "middle"`
-- Default: `"top"`
+- Type: `"top" | "middle" | "baseline" | "bottom"`
+- Required: No
 
 Vertical position of the badge

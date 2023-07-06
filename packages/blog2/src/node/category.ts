@@ -1,11 +1,12 @@
-import { type App, type Page, createPage } from "@vuepress/core";
-import { isFunction, isString, removeLeadingSlash } from "@vuepress/shared";
+import type { App, Page } from "@vuepress/core";
+import { createPage } from "@vuepress/core";
 import { colors } from "@vuepress/utils";
+import { isFunction, isString, removeLeadingSlash } from "vuepress-shared/node";
 
-import { type BlogOptions } from "./options.js";
-import { type PageMap } from "./typings/index.js";
+import type { BlogOptions } from "./options.js";
+import type { PageMap } from "./typings/index.js";
 import { logger } from "./utils.js";
-import { type CategoryMap } from "../shared/index.js";
+import type { CategoryMap } from "../shared/index.js";
 
 const HMR_CODE = `
 if (import.meta.webpackHot) {
@@ -70,10 +71,12 @@ export const prepareCategory = (
         const pageKeys: string[] = [];
         const getItemPath = isFunction(itemPath)
           ? itemPath
-          : (name: string): string =>
-              (itemPath || "")
+          : isString(itemPath)
+          ? (name: string): string =>
+              itemPath
                 .replace(/:key/g, slugify(key))
-                .replace(/:name/g, slugify(name));
+                .replace(/:name/g, slugify(name))
+          : (): null => null;
 
         for (const localePath in pageMap) {
           if (path) {
@@ -82,7 +85,7 @@ export const prepareCategory = (
             )}`;
 
             const mainPage = await createPage(app, {
-              path: pagePath,
+              path: encodeURI(pagePath),
               frontmatter: {
                 ...frontmatter(localePath),
                 blog: {

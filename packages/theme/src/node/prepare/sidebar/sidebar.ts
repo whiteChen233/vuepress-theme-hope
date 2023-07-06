@@ -1,22 +1,23 @@
-import { type App } from "@vuepress/core";
+import type { App } from "@vuepress/core";
+import { sanitizeFileName } from "@vuepress/utils";
 import {
   ensureEndingSlash,
+  entries,
+  fromEntries,
   isArray,
   isPlainObject,
   removeLeadingSlash,
-} from "@vuepress/shared";
-import { sanitizeFileName } from "@vuepress/utils";
-import { entries, fromEntries } from "vuepress-shared/node";
+} from "vuepress-shared/node";
 
 import { getSidebarInfo } from "./info.js";
 import { getSidebarSorter } from "./sorter.js";
-import {
-  type SidebarArrayOptions,
-  type SidebarGroupItem,
-  type SidebarInfo,
-  type SidebarOptions,
-  type SidebarSorter,
-  type ThemeData,
+import type {
+  SidebarArrayOptions,
+  SidebarGroupItem,
+  SidebarInfo,
+  SidebarOptions,
+  SidebarSorter,
+  ThemeData,
 } from "../../../shared/index.js";
 import { logger } from "../../utils.js";
 

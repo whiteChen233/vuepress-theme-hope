@@ -1,11 +1,13 @@
-import { type PropType, type VNode, computed, defineComponent, h } from "vue";
-import { RouterLink, useRoute } from "vue-router";
+import type { PropType, VNode } from "vue";
+import { computed, defineComponent, h } from "vue";
+import { useRoute } from "vue-router";
 
+import AutoLink from "@theme-hope/components/AutoLink";
 import HopeIcon from "@theme-hope/components/HopeIcon";
 import SidebarLinks from "@theme-hope/modules/sidebar/components/SidebarLinks";
 import { isActiveSidebarItem } from "@theme-hope/modules/sidebar/utils/index";
 
-import { type ResolvedSidebarGroupItem } from "../utils/index.js";
+import type { ResolvedSidebarGroupItem } from "../utils/index.js";
 
 import "../styles/sidebar-group.scss";
 
@@ -54,12 +56,12 @@ export default defineComponent({
         text,
       } = props.config;
 
-      return h("section", { class: "sidebar-group" }, [
+      return h("section", { class: "vp-sidebar-group" }, [
         h(
           collapsible ? "button" : "p",
           {
             class: [
-              "sidebar-heading",
+              "vp-sidebar-heading",
               {
                 clickable: collapsible || link,
                 exact: exact.value,
@@ -68,6 +70,7 @@ export default defineComponent({
             ],
             ...(collapsible
               ? {
+                  type: "button",
                   onClick: () => emit("toggle"),
                   onKeydown: (event: KeyboardEvent): void => {
                     if (event.key === "Enter") emit("toggle");
@@ -80,11 +83,15 @@ export default defineComponent({
             h(HopeIcon, { icon }),
             // title
             link
-              ? h(RouterLink, { to: link, class: "title" }, () => text)
-              : h("span", { class: "title" }, text),
+              ? h(AutoLink, {
+                  class: "vp-sidebar-title",
+                  config: { text, link },
+                  noExternalLinkIcon: true,
+                })
+              : h("span", { class: "vp-sidebar-title" }, text),
             // arrow
             collapsible
-              ? h("span", { class: ["arrow", props.open ? "down" : "end"] })
+              ? h("span", { class: ["vp-arrow", props.open ? "down" : "end"] })
               : null,
           ]
         ),

@@ -1,4 +1,4 @@
-import { type WalineLocaleConfig } from "../shared/index.js";
+import type { WalineLocaleConfig } from "../shared/index.js";
 
 /**
  * Default locale config for Waline
@@ -94,5 +94,10 @@ export const walineLocales: WalineLocaleConfig = {
   "/id/": {
     placeholder:
       "Tulis komentar di sini (Isi alamat email untuk menerima notifikasi jika komentar kamu telah dibalas orang lain)",
+  },
+
+  "/nl/": {
+    placeholder:
+      "Schrijf een opmerking hier (Vul je emailadres in om een email-notificatie te ontvangen wanneer er gereageerd wordt.",
   },
 };

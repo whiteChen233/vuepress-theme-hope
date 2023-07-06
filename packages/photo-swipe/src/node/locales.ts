@@ -1,4 +1,4 @@
-import { type PhotoSwipeLocaleConfig } from "../shared/index.js";
+import type { PhotoSwipeLocaleConfig } from "../shared/index.js";
 
 export const photoSwipeLocales: PhotoSwipeLocaleConfig = {
   "/en/": {
@@ -170,5 +170,14 @@ export const photoSwipeLocales: PhotoSwipeLocaleConfig = {
     zoom: "Perbesar/Perkecil",
     arrowPrev: "Sebelumnya (Panah kiri)",
     arrowNext: "Selanjutnya (Panah kanan)",
+  },
+
+  "/nl/": {
+    close: "Sluiten",
+    download: "Download Image",
+    fullscreen: "Verander naar fullscreen",
+    zoom: "Zoom in/out",
+    arrowPrev: "Vorige (Pijl Links)",
+    arrowNext: "Volgende (Pijl Rechts)",
   },
 };

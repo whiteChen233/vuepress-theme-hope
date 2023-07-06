@@ -1,7 +1,7 @@
-import { isPlainObject } from "@vuepress/shared";
+import { isPlainObject } from "vuepress-shared/node";
 
 import { deprecatedLogger, droppedLogger } from "./utils.js";
-import { type FeedOptions } from "../typings/index.js";
+import type { FeedOptions } from "../typings/index.js";
 
 /** @deprecated */
 export const convertOptions = (
@@ -28,7 +28,13 @@ export const convertOptions = (
   deprecatedLogger({
     options,
     deprecatedOption: "customElements",
-    newOption: "removedElements",
+    newOption: "preservedElements",
+  });
+
+  deprecatedLogger({
+    options,
+    deprecatedOption: "removedElements",
+    newOption: "preservedElements",
   });
 
   droppedLogger(options, "output");

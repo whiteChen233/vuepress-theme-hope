@@ -1,5 +1,6 @@
 import { useFullscreen } from "@vueuse/core";
-import { type VNode, computed, defineComponent, h } from "vue";
+import type { VNode } from "vue";
+import { computed, defineComponent, h } from "vue";
 
 import { useThemeLocaleData } from "@theme-hope/composables/index";
 import {
@@ -31,8 +32,9 @@ export default defineComponent({
             h(
               "button",
               {
-                class: "full-screen",
+                type: "button",
                 id: "full-screen-switch",
+                class: "full-screen",
                 ariaPressed: isFullscreen.value,
                 onClick: () => toggle(),
               },

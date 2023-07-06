@@ -1,14 +1,18 @@
 import { usePageData, useSiteData } from "@vuepress/client";
-import { type PropType, type VNode, computed, defineComponent, h } from "vue";
-import { type RouteMeta, RouterLink, useRouter } from "vue-router";
+import type { VNode } from "vue";
+import { computed, defineComponent, h } from "vue";
+import type { RouteMeta } from "vue-router";
+import { useRouter } from "vue-router";
 import {
+  VPLink,
   endsWith,
   keys,
   startsWith,
   useLocaleConfig,
 } from "vuepress-shared/client";
 
-import { type AutoCatalogLocaleConfig } from "../../shared/index.js";
+import type { AutoCatalogLocaleConfig } from "../../shared/index.js";
+import { useAutoCatalogIconComponent } from "../helpers/index.js";
 
 import "../styles/auto-catalog.scss";
 
@@ -21,10 +25,6 @@ declare const AUTO_CATALOG_INDEX_META_KEY: string;
 export interface AutoCatalogProps {
   base?: string;
   level?: 1 | 2 | 3;
-  titleGetter?: (meta: RouteMeta) => string;
-  iconGetter?: (meta: RouteMeta) => string | null | undefined;
-  orderGetter?: (meta: RouteMeta) => number | null | undefined;
-  shouldIndex?: (meta: RouteMeta) => boolean;
 }
 
 interface CatalogInfo {
@@ -75,64 +75,20 @@ export default defineComponent({
      * 目录是否显示索引
      */
     index: Boolean,
-
-    /**
-     * Page title getter
-     *
-     * 页面标题获取器
-     */
-    titleGetter: {
-      type: Function as PropType<(meta: RouteMeta) => string>,
-
-      default: (meta: RouteMeta) => meta[AUTO_CATALOG_TITLE_META_KEY] || "",
-    },
-
-    /**
-     * Page icon getter
-     *
-     * 页面图标获取器
-     */
-    iconGetter: {
-      type: Function as PropType<
-        (meta: RouteMeta) => string | null | undefined
-      >,
-
-      default: (meta: RouteMeta) => meta[AUTO_CATALOG_ICON_META_KEY],
-    },
-
-    /**
-     * Page order getter
-     *
-     * 页面排序获取器
-     */
-    orderGetter: {
-      type: Function as PropType<
-        (meta: RouteMeta) => number | null | undefined
-      >,
-
-      default: (meta: RouteMeta) => meta[AUTO_CATALOG_ORDER_META_KEY] || 0,
-    },
-
-    /**
-     * Whether page should be indexed
-     *
-     * 页面是否应该被索引
-     */
-    shouldIndex: {
-      type: Function as PropType<(meta: RouteMeta) => boolean>,
-      default: (meta: RouteMeta) => {
-        const index = meta[AUTO_CATALOG_INDEX_META_KEY];
-
-        return index === undefined || index;
-      },
-    },
   },
 
-  setup(props, { slots }) {
+  setup(props) {
+    const iconComponent = useAutoCatalogIconComponent();
     const locale = useLocaleConfig(AUTO_CATALOG_LOCALES);
     const page = usePageData();
     const router = useRouter();
     const siteData = useSiteData();
+
+    const shouldIndex = (meta: RouteMeta): boolean => {
+      const index = <boolean | undefined>meta[AUTO_CATALOG_INDEX_META_KEY];
+
+      return typeof index === "undefined" || index;
+    };
 
     const getCatalogInfo = (): CatalogInfo[] => {
       const base = props.base || page.value.path.replace(/\/[^/]+$/, "/");
@@ -162,25 +118,24 @@ export default defineComponent({
             ((endsWith(path, ".html") && !endsWith(path, "/index.html")) ||
               endsWith(path, "/")) &&
             // page should be indexed
-            props.shouldIndex(meta)
+            shouldIndex(meta)
           );
         })
         .map(({ path, meta }) => {
           const level = path.substring(base.length).split("/").length;
 
           return {
-            title: props.titleGetter(meta),
-            icon: props.iconGetter(meta),
+            title: <string>meta[AUTO_CATALOG_TITLE_META_KEY] || "",
+            icon: <string | null | undefined>meta[AUTO_CATALOG_ICON_META_KEY],
             base: path.replace(/\/[^/]+\/?$/, "/"),
-            order: props.orderGetter(meta) || null,
+            order:
+              <number | null | undefined>meta[AUTO_CATALOG_ORDER_META_KEY] ||
+              null,
             level: endsWith(path, "/") ? level - 1 : level,
             path,
           };
         })
-        .filter(
-          ({ title, level }) =>
-            typeof title === "string" && title && level <= props.level
-        )
+        .filter(({ title, level }) => title && level <= props.level)
         .sort(
           (
             { title: titleA, level: levelA, path: pathA, order: orderA },
@@ -260,91 +215,108 @@ export default defineComponent({
     const info = computed(() => getCatalogInfo());
 
     return (): VNode =>
-      h("div", { class: "auto-catalog-wrapper" }, [
-        h("h2", { class: "main-title" }, locale.value.title),
+      h("div", { class: "vp-catalog" }, [
+        h("h2", { class: "vp-catalog-main-title" }, locale.value.title),
 
-        ...info.value.map(({ children = [], icon, path, title }, mainIndex) => [
-          h(
-            "h3",
-            {
-              id: title,
-              class: ["child-title", { "has-children": children.length }],
-            },
-            [
-              h("a", { href: `#${title}`, class: "header-anchor" }, "#"),
-              h(RouterLink, { class: "catalog-title", to: path }, () => [
-                props.index ? `${mainIndex + 1}.` : null,
-                icon && slots["icon"] ? slots["icon"]({ icon }) : null,
-                title || "Unknown",
-              ]),
-            ]
-          ),
-          children.length
-            ? h(
-                "ul",
-                { class: "child-catalog-wrapper" },
-                children.map(({ children = [], icon, path, title }, index) =>
-                  h("li", { class: "child-catalog-item" }, [
+        info.value.length
+          ? info.value.map(
+              ({ children = [], icon, path, title }, mainIndex) => [
+                h(
+                  "h3",
+                  {
+                    id: title,
+                    class: [
+                      "vp-catalog-child-title",
+                      { "has-children": children.length },
+                    ],
+                  },
+                  [
                     h(
-                      "div",
+                      "a",
                       {
-                        class: [
-                          "sub-title",
-                          { "has-children": children.length },
-                        ],
+                        href: `#${title}`,
+                        class: "header-anchor",
+                        "aria-hidden": true,
                       },
-                      [
-                        h(
-                          "a",
-                          { href: `#${title}`, class: "header-anchor" },
-                          "#"
-                        ),
-                        h(
-                          RouterLink,
-                          { class: "catalog-title", to: path },
-                          () => [
-                            props.index
-                              ? `${mainIndex + 1}.${index + 1}`
-                              : null,
-                            icon && slots["icon"]
-                              ? slots["icon"]({ icon })
-                              : null,
-                            title || "Unknown",
-                          ]
-                        ),
-                      ]
+                      "#"
                     ),
-                    children.length
-                      ? h(
-                          "div",
-                          { class: "sub-catalog-wrapper" },
-                          children.map(({ icon, path, title }, subIndex) =>
+                    h(VPLink, { class: "vp-catalog-title", to: path }, () => [
+                      props.index ? `${mainIndex + 1}.` : null,
+                      icon && iconComponent ? h(iconComponent, { icon }) : null,
+                      title || path,
+                    ]),
+                  ]
+                ),
+                children.length
+                  ? h(
+                      "ul",
+                      { class: "vp-catalog-child-catalogs" },
+                      children.map(
+                        ({ children = [], icon, path, title }, index) =>
+                          h("li", { class: "vp-child-catalog" }, [
                             h(
-                              RouterLink,
+                              "div",
                               {
-                                class: "sub-catalog-item",
-                                to: path,
+                                class: [
+                                  "vp-catalog-sub-title",
+                                  { "has-children": children.length },
+                                ],
                               },
-                              () => [
-                                props.index
-                                  ? `${mainIndex + 1}.${index + 1}.${
-                                      subIndex + 1
-                                    }`
-                                  : null,
-                                icon && slots["icon"]
-                                  ? slots["icon"]({ icon })
-                                  : null,
-                                title || "Unknown",
+                              [
+                                h(
+                                  "a",
+                                  { href: `#${title}`, class: "header-anchor" },
+                                  "#"
+                                ),
+                                h(
+                                  VPLink,
+                                  { class: "vp-catalog-title", to: path },
+                                  () => [
+                                    props.index
+                                      ? `${mainIndex + 1}.${index + 1}`
+                                      : null,
+                                    icon && iconComponent
+                                      ? h(iconComponent, { icon })
+                                      : null,
+                                    title || path,
+                                  ]
+                                ),
                               ]
-                            )
-                          )
-                        )
-                      : null,
-                  ])
-                )
-              )
-            : null,
-        ]),
+                            ),
+                            children.length
+                              ? h(
+                                  "div",
+                                  { class: "v-sub-catalogs" },
+                                  children.map(
+                                    ({ icon, path, title }, subIndex) =>
+                                      h(
+                                        VPLink,
+                                        {
+                                          class: "vp-sub-catalog",
+                                          to: path,
+                                        },
+                                        () => [
+                                          props.index
+                                            ? `${mainIndex + 1}.${index + 1}.${
+                                                subIndex + 1
+                                              }`
+                                            : null,
+                                          icon && iconComponent
+                                            ? h(iconComponent, { icon })
+                                            : null,
+                                          title || path,
+                                        ]
+                                      )
+                                  )
+                                )
+                              : null,
+                          ])
+                      )
+                    )
+                  : null,
+              ]
+            )
+          : h("p", { class: "vp-empty-catalog" }, locale.value.empty),
       ]);
   },
 });

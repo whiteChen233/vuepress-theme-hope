@@ -1,12 +1,17 @@
-import { isArray, isPlainObject, isString } from "@vuepress/shared";
 import { colors } from "@vuepress/utils";
-import { entries, fromEntries } from "vuepress-shared/node";
+import {
+  entries,
+  fromEntries,
+  isArray,
+  isPlainObject,
+  isString,
+} from "vuepress-shared/node";
 
 import { deprecatedLogger, droppedLogger } from "./utils.js";
-import {
-  type SidebarArrayOptions,
-  type SidebarItem,
-  type SidebarOptions,
+import type {
+  SidebarArrayOptions,
+  SidebarItem,
+  SidebarOptions,
 } from "../../shared/index.js";
 import { logger } from "../utils.js";
 
@@ -53,7 +58,8 @@ const handleArraySidebarOptions = (
 export const convertSidebarOptions = (
   config: SidebarOptions | unknown
 ): SidebarOptions | false => {
-  if (config === false || config === "structure") return config;
+  if (config === false || config === "structure" || config === "heading")
+    return config;
 
   if (isArray(config))
     return handleArraySidebarOptions(config as SidebarArrayOptions);

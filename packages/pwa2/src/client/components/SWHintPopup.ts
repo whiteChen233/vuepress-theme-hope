@@ -1,11 +1,5 @@
-import {
-  Transition,
-  type VNode,
-  defineComponent,
-  h,
-  onMounted,
-  ref,
-} from "vue";
+import type { SlotsType, VNode } from "vue";
+import { Transition, defineComponent, h, onMounted, ref } from "vue";
 import { useLocaleConfig } from "vuepress-shared/client";
 
 import { UpdateIcon } from "./icons.js";
@@ -17,6 +11,13 @@ import "../styles/popup.scss";
 export default defineComponent({
   name: "SWHintPopup",
 
+  slots: Object as SlotsType<{
+    default?: (props: {
+      enabled: boolean;
+      uninstall: () => void;
+    }) => VNode[] | VNode;
+  }>,
+
   setup(_props, { slots }) {
     const locale = useLocaleConfig(locales);
     const enabled = ref(false);
@@ -24,7 +25,6 @@ export default defineComponent({
     const uninstall = (): void => {
       if (enabled.value) {
         // force refresh
-
         // @ts-ignore
         window.location.reload(true);
         enabled.value = false;
@@ -51,7 +51,7 @@ export default defineComponent({
         Transition,
         { name: "popup" },
         () =>
-          slots["default"]?.({
+          slots.default?.({
             enabled: enabled.value,
             uninstall,
           }) ||
@@ -59,6 +59,7 @@ export default defineComponent({
             ? h(
                 "button",
                 {
+                  type: "button",
                   class: "sw-hint-popup",
                   tabindex: 0,
                   onClick: () => uninstall(),

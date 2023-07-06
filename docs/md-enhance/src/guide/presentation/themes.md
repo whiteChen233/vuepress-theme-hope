@@ -3,9 +3,9 @@ title: Themes
 icon: palette
 ---
 
-<!--lint disable no-duplicate-headings-->
+<!--markdownlint-disable no-duplicate-header -->
 
-Theme available:
+Available themes:
 
 - `auto` (Default)
 - `black`
@@ -20,8 +20,6 @@ Theme available:
 - `blood`
 - `moon`
 
-<!-- markdownlint-disable -->
-
 ## `auto`
 
 > Based on theme mode.
@@ -30,7 +28,7 @@ Theme available:
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -52,7 +50,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -74,7 +72,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -96,7 +94,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -118,7 +116,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -140,7 +138,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -162,7 +160,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -184,7 +182,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -206,7 +204,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -228,7 +226,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -250,7 +248,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 
@@ -272,7 +270,7 @@ const add = (a, b) => {
 
 ## Slide Title
 
-A paragraph with some text and a [link](https://mrhope.site)
+A paragraph with some text and a [link](https://mister-hope.com)
 
 ---
 

@@ -1,4 +1,5 @@
-import { type FunctionalComponent, type VNode, h } from "vue";
+import type { FunctionalComponent, VNode } from "vue";
+import { h } from "vue";
 
 import "../styles/toggle-navbar-button.scss";
 
@@ -13,16 +14,17 @@ const ToggleNavbarButton: FunctionalComponent<
   h(
     "button",
     {
-      class: ["toggle-navbar-button", { "is-active": active }],
+      type: "button",
+      class: ["vp-toggle-navbar-button", { "is-active": active }],
       "aria-label": "Toggle Navbar",
       "aria-expanded": active,
       "aria-controls": "nav-screen",
       onClick: () => emit("toggle"),
     },
-    h("span", { class: "button-container" }, [
-      h("span", { class: "button-top" }),
-      h("span", { class: "button-middle" }),
-      h("span", { class: "button-bottom" }),
+    h("span", [
+      h("span", { class: "vp-top" }),
+      h("span", { class: "vp-middle" }),
+      h("span", { class: "vp-bottom" }),
     ])
   );
 

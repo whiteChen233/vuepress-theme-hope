@@ -1,15 +1,16 @@
-import { type Page } from "@vuepress/core";
+import type { Page } from "@vuepress/core";
 import { sanitizeFileName } from "@vuepress/utils";
 import { getTitleFromFilename, startsWith } from "vuepress-shared/node";
 
-import { type StructureInfo, getStructureInfo } from "./structure.js";
-import {
-  type SidebarDirInfo,
-  type SidebarFileInfo,
-  type SidebarInfo,
-  type SidebarSorterFunction,
-  type ThemeNormalPageFrontmatter,
-  type ThemePageData,
+import type { StructureInfo } from "./structure.js";
+import { getStructureInfo } from "./structure.js";
+import type {
+  SidebarDirInfo,
+  SidebarFileInfo,
+  SidebarInfo,
+  SidebarSorterFunction,
+  ThemeNormalPageFrontmatter,
+  ThemePageData,
 } from "../../../shared/index.js";
 
 export interface FileInfo {
@@ -75,7 +76,7 @@ const getSidebarInfoFromStructure = (
 
       title: page.frontmatter.shortTitle || page.title,
       order: "order" in page.frontmatter ? page.frontmatter.order : null,
-      path: page.pathInferred === page.path ? null : page.path,
+      path: decodeURI(page.path) === page.pathInferred ? null : page.path,
 
       frontmatter: page.frontmatter,
       pageData: page.data,
@@ -138,7 +139,7 @@ const getSidebarInfoFromStructure = (
         ...(dirOptions?.link
           ? {
               link:
-                readmePage.pathInferred === readmePage.path
+                readmePage.pathInferred === decodeURI(readmePage.path)
                   ? `${sanitizeFileName(info.dirname)}/`
                   : readmePage.path,
             }

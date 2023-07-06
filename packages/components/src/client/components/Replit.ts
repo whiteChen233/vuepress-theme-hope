@@ -1,5 +1,7 @@
 /* eslint-disable vue/no-unused-properties */
-import { type VNode, computed, defineComponent, h } from "vue";
+import type { VNode } from "vue";
+import { computed, defineComponent, h, ref } from "vue";
+import { LoadingIcon } from "vuepress-shared/client";
 
 import { useSize } from "../composables/index.js";
 
@@ -111,6 +113,8 @@ export default defineComponent({
   setup(props) {
     const { el, width, height } = useSize<HTMLDivElement>(props);
 
+    const loaded = ref(false);
+
     const replLink = computed(() => {
       if (props.link) {
         const url = new URL(props.link);
@@ -137,6 +141,7 @@ export default defineComponent({
               ? h(
                   "button",
                   {
+                    type: "button",
                     class: "replit-button",
                     onClick: () => {
                       window.open(replLink.value!, "_blank");
@@ -144,15 +149,21 @@ export default defineComponent({
                   },
                   props.text
                 )
-              : h("iframe", {
-                  ref: el,
-                  class: "replit-iframe",
-                  src: replLink.value,
-                  style: {
-                    width: width.value,
-                    height: height.value,
-                  },
-                })
+              : [
+                  h("iframe", {
+                    ref: el,
+                    class: "replit-iframe",
+                    src: replLink.value,
+                    style: {
+                      width: width.value,
+                      height: loaded.value ? height.value : 0,
+                    },
+                    onLoad: () => {
+                      loaded.value = true;
+                    },
+                  }),
+                  loaded.value ? null : h(LoadingIcon),
+                ]
           )
         : null;
   },

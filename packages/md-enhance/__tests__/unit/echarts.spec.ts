@@ -1,7 +1,7 @@
 import MarkdownIt from "markdown-it";
 import { describe, expect, it } from "vitest";
 
-import { echarts } from "../../src/node/markdown-it/index.js";
+import { echarts } from "../../src/node/markdown-it/echarts.js";
 
 describe("echarts", () => {
   const markdownIt = MarkdownIt({ linkify: true }).use(echarts);
@@ -46,7 +46,7 @@ describe("echarts", () => {
 ::: echarts A line chart
 
 \`\`\`js
-module.exports = {
+const option = {
   xAxis: {
     type: "category",
     data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -80,7 +80,7 @@ module.exports = {
 ::: echarts A line chart
 
 \`\`\`javascript
-module.exports = {
+const option = {
   xAxis: {
     type: "category",
     data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -166,6 +166,20 @@ module.exports = {
     expect(result).toMatch(/<ECharts.*><\/ECharts>/);
     expect(result).not.toContain('title="');
     expect(result).not.toContain('type=""');
+    expect(result).toMatchSnapshot();
+  });
+
+  it("Should not break markdown fence", () => {
+    const result = markdownIt.render(
+      `
+\`\`\`js
+const a = 1;
+\`\`\`
+`,
+      {}
+    );
+
+    expect(result).toMatch(/<pre.*>[\s\S]*<\/pre>/);
     expect(result).toMatchSnapshot();
   });
 });

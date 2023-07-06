@@ -4,6 +4,7 @@ export default [
   ...bundle("node/index", {
     external: [
       /^@mdit\/plugin-/,
+      "js-yaml",
       "markdown-it/lib/token.js",
       "markdown-it/lib/helpers/parse_link_label.js",
     ],
@@ -13,6 +14,7 @@ export default [
     {
       base: "client",
       files: [
+        "index",
         "compact/index",
         "components/ChartJS",
         "components/CodeDemo",
@@ -23,20 +25,24 @@ export default [
         "components/Playground",
         "components/Presentation",
         "components/Tabs",
+        "components/VPCard",
         "components/VuePlayground",
+        "composables/katex",
         "SlidePage",
-        "reveal/index",
       ],
     },
 
     {
       external: [
+        "@mermaid",
         "@vue/repl",
+        "@vue/repl/codemirror-editor",
         "balloon-css/balloon.css",
         "chart.js/auto",
         "echarts",
         "flowchart.ts",
-        "mermaid/dist/mermaid.esm.min.mjs",
+        "katex/dist/contrib/copy-tex.min.js",
+        "mermaid",
         /^reveal\.js/,
       ],
       copy: [

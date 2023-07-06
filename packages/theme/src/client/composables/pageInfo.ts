@@ -1,28 +1,34 @@
 import { usePageData, usePageFrontmatter } from "@vuepress/client";
-import { type GitData } from "@vuepress/plugin-git";
-import { type ComputedRef, computed, inject } from "vue";
-import { type ReadingTime } from "vuepress-plugin-reading-time2";
+import type { GitData } from "@vuepress/plugin-git";
+import type { ComputedRef } from "vue";
+import { computed, inject } from "vue";
+import type { ReadingTime } from "vuepress-plugin-reading-time2/client";
 import {
-  type AuthorInfo,
-  type BasePageFrontMatter,
-  type DateInfo,
+  useReadingTimeData,
+  useReadingTimeLocale,
+} from "vuepress-plugin-reading-time2/client";
+import type { AuthorInfo, BasePageFrontMatter } from "vuepress-shared/client";
+import {
   getAuthor,
   getCategory,
   getDate,
   getTag,
 } from "vuepress-shared/client";
 
-import { type CategoryMapRef } from "@theme-hope/modules/blog/composables/index";
-import { type PageInfoProps } from "@theme-hope/modules/info/components/PageInfo";
-import {
-  type PageCategory,
-  type PageTag,
+import type {
+  CategoryMapRef,
+  TagMapRef,
+} from "@theme-hope/modules/blog/composables/index";
+import type { PageInfoProps } from "@theme-hope/modules/info/components/PageInfo";
+import type {
+  PageCategory,
+  PageTag,
 } from "@theme-hope/modules/info/utils/index";
 
 import { useThemeLocaleData } from "./themeData.js";
-import {
-  type PageInfo,
-  type ThemeNormalPageFrontmatter,
+import type {
+  PageInfo,
+  ThemeNormalPageFrontmatter,
 } from "../../shared/index.js";
 
 declare const ENABLE_BLOG: boolean;
@@ -64,25 +70,24 @@ export const usePageTag = (): ComputedRef<PageTag[]> => {
       name,
       // this is a hack
       path: ENABLE_BLOG
-        ? inject<CategoryMapRef>(Symbol.for("tagMap"))?.value.map[name]?.path ||
-          ""
+        ? inject<TagMapRef>(Symbol.for("tagMap"))?.value.map[name]?.path || ""
         : "",
     }))
   );
 };
 
-export const usePageDate = (): ComputedRef<DateInfo | null> => {
+export const usePageDate = (): ComputedRef<Date | null> => {
   const frontmatter = usePageFrontmatter<BasePageFrontMatter>();
   const page = usePageData<{ git?: GitData }>();
 
   return computed(() => {
-    const { date } = frontmatter.value;
+    const date = getDate(frontmatter.value.date);
 
-    if (date) return getDate(date);
+    if (date) return date;
 
     const { createdTime } = page.value.git || {};
 
-    if (createdTime) return getDate(new Date(createdTime));
+    if (createdTime) return new Date(createdTime);
 
     return null;
   });
@@ -103,18 +108,24 @@ export const usePageInfo = (): {
   const category = usePageCategory();
   const tag = usePageTag();
   const date = usePageDate();
+  const readingTimeData = useReadingTimeData();
+  const readingTimeLocale = useReadingTimeLocale();
 
-  const info = computed<PageInfoProps>(() => ({
-    author: author.value,
-    category: category.value,
-    date: date.value,
-    localizedDate: page.value.localizedDate,
-    tag: tag.value,
-    isOriginal: frontmatter.value.isOriginal || false,
-    readingTime: page.value.readingTime || null,
-    pageview:
-      "pageview" in frontmatter.value ? frontmatter.value.pageview : true,
-  }));
+  const info = computed(
+    () =>
+      <PageInfoProps>{
+        author: author.value,
+        category: category.value,
+        date: date.value,
+        localizedDate: page.value.localizedDate,
+        tag: tag.value,
+        isOriginal: frontmatter.value.isOriginal || false,
+        readingTime: readingTimeData.value,
+        readingTimeLocale: readingTimeLocale.value,
+        pageview:
+          "pageview" in frontmatter.value ? frontmatter.value.pageview : true,
+      }
+  );
 
   const items = computed(() =>
     "pageInfo" in frontmatter.value

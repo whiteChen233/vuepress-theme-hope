@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 
-import { type App } from "@vuepress/core";
+import type { App } from "@vuepress/core";
 import { colors, fs, path } from "@vuepress/utils";
 import { keys } from "vuepress-shared/node";
 
@@ -10,12 +10,12 @@ interface PackageJSON extends Record<string, unknown> {
   devDependencies?: Record<string, string>;
 }
 
-export const vuePressVersionCheck = (app: App): boolean => {
+export const checkVuePressVersion = (app: App): boolean => {
   const sourceFolderPath = app.dir.source();
   const mainPackages: string[] = [];
   const subPackages: string[] = [];
 
-  const require = createRequire(sourceFolderPath);
+  const require = createRequire(`${sourceFolderPath}/`);
 
   let dir = sourceFolderPath;
 

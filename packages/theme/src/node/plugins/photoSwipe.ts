@@ -1,8 +1,6 @@
-import { type Plugin } from "@vuepress/core";
-import {
-  type PhotoSwipeOptions,
-  photoSwipePlugin,
-} from "vuepress-plugin-photo-swipe";
+import type { Plugin } from "@vuepress/core";
+import type { PhotoSwipeOptions } from "vuepress-plugin-photo-swipe";
+import { photoSwipePlugin } from "vuepress-plugin-photo-swipe";
 
 /**
  * @private
@@ -15,7 +13,7 @@ export const getPhotoSwipePlugin = (
   if (options === false) return null;
 
   return photoSwipePlugin({
-    selector: ".theme-hope-content :not(a) > img:not(no-view)",
+    selector: ".theme-hope-content :not(a) > img:not([no-view])",
     ...(options === true ? {} : options),
   });
 };

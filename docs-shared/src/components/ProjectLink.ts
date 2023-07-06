@@ -1,5 +1,6 @@
-import { ensureLeadingSlash } from "@vuepress/shared";
-import { type FunctionalComponent, type PropType, h } from "vue";
+import type { FunctionalComponent, PropType } from "vue";
+import { h } from "vue";
+import { ensureLeadingSlash } from "vuepress-shared/client";
 
 declare const IS_NETLIFY: boolean;
 declare const IS_GITEE: boolean;
@@ -10,10 +11,11 @@ export interface ProjectLinkProps {
   path?: string;
 }
 
-const ProjectLink: FunctionalComponent<ProjectLinkProps> = (
-  props,
-  { slots }
-) => {
+const ProjectLink: FunctionalComponent<
+  ProjectLinkProps,
+  Record<never, never>,
+  { default: () => string }
+> = (props, { slots }) => {
   const path = ensureLeadingSlash(props.path || "/");
   const base =
     props.name === "hope" ? "" : `/${props.name.replace(/\d+$/, "")}`;
@@ -30,7 +32,7 @@ const ProjectLink: FunctionalComponent<ProjectLinkProps> = (
       }`,
       target: "_blank",
     },
-    slots["default"]?.()
+    slots.default()
   );
 };
 

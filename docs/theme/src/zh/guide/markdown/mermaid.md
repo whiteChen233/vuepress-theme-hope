@@ -63,9 +63,36 @@ export default {
 ```
 ````
 
+除了使用 mermaid 代码块，你也可以直接使用以下代码块：
+
+- class: `classDiagram`
+- c4c: `C4Context`
+- er: `erDiagram`
+- gantt: `gantt`
+- "git-graph": `gitGraph`
+- journey: `journey`
+- mindmap: `mindmap`
+- pie: `pie`
+- sequence: `sequenceDiagram`
+- state: `stateDiagram-v2`
+- timeline: `timeline`
+
+你不需要再声明图表类型，也不需要缩进图表代码。
+
+当图表支持设置标题时，你可以直接在代码块信息后添加标题:
+
+```sequence 代码标题
+顺序图代码内容
+...
+```
+
 ## 使用
 
 详见 [mermaid 官方文档](https://mermaid.js.org/)。
+
+## 高级
+
+除了设置 `true` 以开启 Mermaid 之外，你可以传入一个对象来自定义 Mermaid 选项。
 
 ## 例子
 
@@ -119,7 +146,7 @@ flowchart TB
 
 ### 循序图
 
-```sequence
+```sequence Greetings
 Alice ->> Bob: Hello Bob, how are you?
 Bob-->>John: How about you John?
 Bob--x Alice: I am good thanks!
@@ -133,7 +160,7 @@ Alice->John: Yes... John, how are you?
 ::: details Code
 
 ````md
-```sequence
+```sequence Greetings
 Alice ->> Bob: Hello Bob, how are you?
 Bob-->>John: How about you John?
 Bob--x Alice: I am good thanks!
@@ -149,33 +176,57 @@ Alice->John: Yes... John, how are you?
 
 ### 类图
 
-```class
-class Square~Shape~{
-    int id
-    List~int~ position
-    setPoints(List~int~ points)
-    getPoints() List~int~
+```class Animal Example
+note "From Duck till Zebra"
+Animal <|-- Duck
+note for Duck "can fly\ncan swim\ncan dive\ncan help in debugging"
+Animal <|-- Fish
+Animal <|-- Zebra
+Animal : +int age
+Animal : +String gender
+Animal: +isMammal()
+Animal: +mate()
+class Duck{
+  +String beakColor
+  +swim()
+  +quack()
 }
-
-Square : -List~string~ messages
-Square : +setMessages(List~string~ messages)
-Square : +getMessages() List~string~
+class Fish{
+  -int sizeInFeet
+  -canEat()
+}
+class Zebra{
+  +bool is_wild
+  +run()
+}
 ```
 
 ::: details Code
 
 ````md
-```class
-class Square~Shape~{
-    int id
-    List~int~ position
-    setPoints(List~int~ points)
-    getPoints() List~int~
+```class Animal Example
+note "From Duck till Zebra"
+Animal <|-- Duck
+note for Duck "can fly\ncan swim\ncan dive\ncan help in debugging"
+Animal <|-- Fish
+Animal <|-- Zebra
+Animal : +int age
+Animal : +String gender
+Animal: +isMammal()
+Animal: +mate()
+class Duck{
+  +String beakColor
+  +swim()
+  +quack()
 }
-
-Square : -List~string~ messages
-Square : +setMessages(List~string~ messages)
-Square : +getMessages() List~string~
+class Fish{
+  -int sizeInFeet
+  -canEat()
+}
+class Zebra{
+  +bool is_wild
+  +run()
+}
 ```
 ````
 
@@ -183,43 +234,25 @@ Square : +getMessages() List~string~
 
 ### 状态图
 
-```state
-[*] --> Active
+```state Check if n is negative
 
-state Active {
-    [*] --> NumLockOff
-    NumLockOff --> NumLockOn : EvNumLockPressed
-    NumLockOn --> NumLockOff : EvNumLockPressed
-    --
-    [*] --> CapsLockOff
-    CapsLockOff --> CapsLockOn : EvCapsLockPressed
-    CapsLockOn --> CapsLockOff : EvCapsLockPressed
-    --
-    [*] --> ScrollLockOff
-    ScrollLockOff --> ScrollLockOn : EvScrollLockPressed
-    ScrollLockOn --> ScrollLockOff : EvScrollLockPressed
-}
+state if_state <<choice>>
+[*] --> IsPositive
+IsPositive --> if_state
+if_state --> False: if n < 0
+if_state --> True : if n >= 0
 ```
 
 ::: details Code
 
 ````md
-```state
-[*] --> Active
+```state Check if n is negative
 
-state Active {
-    [*] --> NumLockOff
-    NumLockOff --> NumLockOn : EvNumLockPressed
-    NumLockOn --> NumLockOff : EvNumLockPressed
-    --
-    [*] --> CapsLockOff
-    CapsLockOff --> CapsLockOn : EvCapsLockPressed
-    CapsLockOn --> CapsLockOff : EvCapsLockPressed
-    --
-    [*] --> ScrollLockOff
-    ScrollLockOff --> ScrollLockOn : EvScrollLockPressed
-    ScrollLockOn --> ScrollLockOff : EvScrollLockPressed
-}
+state if_state <<choice>>
+[*] --> IsPositive
+IsPositive --> if_state
+if_state --> False: if n < 0
+if_state --> True : if n >= 0
 ```
 ````
 
@@ -227,7 +260,7 @@ state Active {
 
 ### 关系图
 
-```er
+```er Er Example
 CAR ||--o{ NAMED-DRIVER : allows
 CAR {
     string registrationNumber
@@ -245,7 +278,7 @@ PERSON {
 ::: details Code
 
 ````md
-```er
+```er Er Example
 CAR ||--o{ NAMED-DRIVER : allows
 CAR {
     string registrationNumber
@@ -366,7 +399,7 @@ Add another diagram to demo page    :48h
 ### 饼图
 
 ```pie
-title What Voldemort doesn’t have?
+title What Voldemort doesn't have?
   "FRIENDS" : 2
   "FAMILY" : 3
   "NOSE" : 45
@@ -376,7 +409,7 @@ title What Voldemort doesn’t have?
 
 ````md
 ```pie
-title What Voldemort doesn’t have?
+title What Voldemort doesn't have?
   "FRIENDS" : 2
   "FAMILY" : 3
   "NOSE" : 45

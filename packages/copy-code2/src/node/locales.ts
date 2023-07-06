@@ -1,4 +1,4 @@
-import { type CopyCodeLocaleConfig } from "../shared/index.js";
+import type { CopyCodeLocaleConfig } from "../shared/index.js";
 
 /** Multi language config for copy code */
 export const copyCodeLocales: CopyCodeLocaleConfig = {
@@ -81,9 +81,9 @@ export const copyCodeLocales: CopyCodeLocaleConfig = {
   },
 
   "/ja/": {
-    copy: "コピーコード",
-    copied: "コピー機",
-    hint: "コピーに成功",
+    copy: "コードをコピー",
+    copied: "コピーしました",
+    hint: "コピーに成功しました",
   },
 
   "/tr/": {
@@ -114,5 +114,11 @@ export const copyCodeLocales: CopyCodeLocaleConfig = {
     copy: "Salin kode",
     copied: "Disalin",
     hint: "Kode berhasil disalin",
+  },
+
+  "/nl/": {
+    copy: "Kopieer code",
+    copied: "Gekopieerd",
+    hint: "Succesvol gekopieerd",
   },
 };

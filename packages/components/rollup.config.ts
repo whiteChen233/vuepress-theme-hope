@@ -20,23 +20,23 @@ export default [
         "components/Share",
         "components/SiteInfo",
         "components/StackBlitz",
+        "components/VidStack",
         "components/VideoPlayer",
         "components/XiGua",
         "components/YouTube",
-        "shared",
-        "vueuse",
       ],
     },
-
     {
       external: [
         "@stackblitz/sdk",
         "artplayer",
+        "create-codepen",
         "dashjs/dist/dash.all.min.js",
         "hls.js/dist/hls.min.js",
         "mpegts.js/dist/mpegts.js",
         "plyr",
         "qrcode",
+        "vidstack/elements",
       ],
       copy: [
         ["client/styles", "client"],

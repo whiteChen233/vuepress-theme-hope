@@ -1,13 +1,13 @@
 import { usePageData } from "@vuepress/client";
-import { clearAllBodyScrollLocks, disableBodyScroll } from "body-scroll-lock";
+import { useScrollLock } from "@vueuse/core";
+import type { SlotsType, VNode } from "vue";
 import {
   Transition,
-  type VNode,
   defineComponent,
   h,
   onMounted,
   onUnmounted,
-  ref,
+  shallowRef,
   watch,
 } from "vue";
 
@@ -31,31 +31,38 @@ export default defineComponent({
 
   emits: ["close"],
 
+  slots: Object as SlotsType<{
+    before?: () => VNode | VNode[];
+    after?: () => VNode | VNode[];
+  }>,
+
   setup(props, { emit, slots }) {
     const page = usePageData();
     const { isMobile } = useWindowSize();
 
-    const screen = ref<HTMLElement>();
+    const body = shallowRef<HTMLElement>();
+    const isLocked = useScrollLock(body);
 
     onMounted(() => {
+      body.value = document.body;
+
       watch(isMobile, (value) => {
         if (!value && props.show) {
-          clearAllBodyScrollLocks();
+          isLocked.value = false;
           emit("close");
         }
       });
-
       watch(
         () => page.value.path,
         () => {
-          clearAllBodyScrollLocks();
+          isLocked.value = false;
           emit("close");
         }
       );
     });
 
     onUnmounted(() => {
-      clearAllBodyScrollLocks();
+      isLocked.value = false;
     });
 
     return (): VNode =>
@@ -63,20 +70,23 @@ export default defineComponent({
         Transition,
         {
           name: "fade",
-          onEnter: () =>
-            disableBodyScroll(screen.value!, { reserveScrollBarGap: true }),
-          onAfterLeave: () => clearAllBodyScrollLocks(),
+          onEnter: () => {
+            isLocked.value = true;
+          },
+          onAfterLeave: () => {
+            isLocked.value = false;
+          },
         },
         () =>
           props.show
             ? h(
                 "div",
-                { id: "nav-screen", ref: screen },
-                h("div", { class: "container" }, [
-                  slots["before"]?.(),
+                { id: "nav-screen" },
+                h("div", { class: "vp-nav-screen-container" }, [
+                  slots.before?.(),
                   h(NavScreenLinks),
-                  h("div", { class: "outlook-wrapper" }, h(OutlookSettings)),
-                  slots["after"]?.(),
+                  h("div", { class: "vp-outlook-wrapper" }, h(OutlookSettings)),
+                  slots.after?.(),
                 ])
               )
             : null

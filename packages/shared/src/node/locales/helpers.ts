@@ -1,14 +1,10 @@
-import { type App, type LocaleConfig } from "@vuepress/core";
-import { type LocaleData } from "@vuepress/shared";
+import type { App, LocaleConfig } from "@vuepress/core";
+import type { LocaleData } from "@vuepress/shared";
 
 import { lang2PathConfig, path2langConfig } from "./config.js";
-import { type HopeLang } from "./types.js";
-import {
-  type RequiredLocaleConfig,
-  deepAssign,
-  fromEntries,
-  keys,
-} from "../../shared/index.js";
+import type { HopeLang } from "./types.js";
+import type { RequiredLocaleConfig } from "../../shared/index.js";
+import { deepAssign, fromEntries, keys } from "../../shared/index.js";
 import { Logger } from "../utils/index.js";
 
 /** Get language from path */
@@ -58,22 +54,29 @@ export const getRootLang = (app: App): string => {
 export const getRootLangPath = (app: App): string =>
   lang2Path(getRootLang(app), app.env.isDebug);
 
+/**
+ * Get locale paths
+ *
+ * @param app VuePress Node app
+ * @returns locale paths
+ */
 export const getLocalePaths = (app: App): string[] =>
   Array.from(new Set(keys(app.siteData.locales)));
 
 export interface GetLocalesOptions<T extends LocaleData> {
+  /** VuePress Node app */
   app: App;
+  /** Default locale config */
   default: RequiredLocaleConfig<T>;
+  /** user locale config */
   config?: LocaleConfig<T> | undefined;
+  /** plugin name */
   name?: string;
 }
 
 /**
- * Get final locale config to passed to client
+ * Get final locale config for client
  *
- * @param app  VuePress Node App
- * @param defaultLocalesConfig default locale config
- * @param userLocalesConfig user locale config
  * @returns final locale config
  */
 export const getLocales = <T extends LocaleData>({

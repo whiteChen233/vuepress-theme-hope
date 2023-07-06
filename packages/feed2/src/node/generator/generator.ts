@@ -1,17 +1,13 @@
-import { type App, type Page } from "@vuepress/core";
-import { type GitData } from "@vuepress/plugin-git";
+import type { App, Page } from "@vuepress/core";
+import type { GitData } from "@vuepress/plugin-git";
 import { colors, fs, path } from "@vuepress/utils";
 import { entries, fromEntries } from "vuepress-shared/node";
 
 import { Feed } from "./feed.js";
 import { FeedInfo } from "../extractor/index.js";
-import {
-  type ResolvedFeedOptionsMap,
-  getFeedChannelOption,
-  getFeedLinks,
-  getFilename,
-} from "../options.js";
-import { type FeedPluginFrontmatter } from "../typings/index.js";
+import type { ResolvedFeedOptionsMap } from "../options.js";
+import { getFeedChannelOption, getFeedLinks, getFilename } from "../options.js";
+import type { FeedPluginFrontmatter } from "../typings/index.js";
 import { compareDate, logger } from "../utils/index.js";
 
 export class FeedGenerator {
@@ -58,7 +54,6 @@ export class FeedGenerator {
     const pages = this.app.pages
       .filter((page) => page.pathLocale === localePath)
       .filter(filter)
-
       // @ts-ignore
       .sort(sorter)
       .slice(0, feedCount);

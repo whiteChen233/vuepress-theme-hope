@@ -1,4 +1,4 @@
-.sidebar {
+.vp-sidebar {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -6,6 +6,9 @@
   // NOTE: Compatible with Android Wechat
   // inset-inline-start: 0;
   left: 0;
+
+  // this prevents footer issue on tablet
+  z-index: 1;
 
   overflow-y: auto;
 
@@ -16,7 +19,7 @@
   background: var(--sidebar-bg-color);
   box-shadow: 2px 0 8px var(--card-shadow);
 
-  font-size: 15px;
+  font-size: 0.94rem;
 
   transition: background var(--color-transition),
     box-shadow var(--color-transition), padding var(--transform-transition),
@@ -27,7 +30,7 @@
   scrollbar-width: thin;
 
   @media (max-width: hope-config.$pad) {
-    font-size: 14px;
+    font-size: 0.86em;
   }
 
   // on mobile
@@ -49,6 +52,7 @@
     // this value should be greater than footer height, and users should manually override it
     padding-bottom: 3rem;
     box-shadow: none;
+    font-size: 1rem;
   }
 
   @media print {
@@ -73,26 +77,9 @@
   &.hide-icon .icon {
     display: none !important;
   }
-
-  .blogger-info.mobile {
-    display: none;
-
-    @media (max-width: hope-config.$tablet) {
-      display: block;
-    }
-
-    + hr {
-      display: none;
-
-      @media (max-width: hope-config.$tablet) {
-        display: block;
-        margin-top: 1rem;
-      }
-    }
-  }
 }
 
-.sidebar-mask {
+.vp-sidebar-mask {
   position: fixed;
   top: 0;
   left: 0;

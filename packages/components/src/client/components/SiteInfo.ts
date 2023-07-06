@@ -1,23 +1,17 @@
 import { withBase } from "@vuepress/client";
-import { isLinkHttp } from "@vuepress/shared";
-import {
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  resolveComponent,
-} from "vue";
+import type { VNode } from "vue";
+import { computed, defineComponent, h, resolveComponent } from "vue";
 import {
   BitbucketIcon,
   GitHubIcon,
+  GitLabIcon,
   GiteeIcon,
-  GitlabIcon,
   SourceIcon,
   resolveRepoType,
   useLocaleConfig,
 } from "vuepress-shared/client";
 
-import { type SiteInfoLocaleConfig } from "../../shared/index.js";
+import type { SiteInfoLocaleConfig } from "../../shared/index.js";
 
 import "balloon-css/balloon.css";
 import "../styles/site-info.scss";
@@ -25,13 +19,13 @@ import "../styles/site-info.scss";
 declare const SITE_INFO_LOCALES: SiteInfoLocaleConfig;
 
 export default defineComponent({
-  name: "DemoProject",
+  name: "SiteInfo",
 
   components: {
     BitbucketIcon,
     GiteeIcon,
     GitHubIcon,
-    GitlabIcon,
+    GitLabIcon,
     SourceIcon,
   },
 
@@ -99,61 +93,58 @@ export default defineComponent({
 
   setup(props) {
     const locale = useLocaleConfig(SITE_INFO_LOCALES);
-    const background = computed(() =>
-      isLinkHttp(props.preview) ? props.preview : withBase(props.preview)
-    );
     const repoType = computed(() =>
       props.repo ? resolveRepoType(props.repo) : null
     );
 
     return (): VNode =>
-      h(
-        "div",
-        {
-          class: "site-info",
-          onClick: () => {
-            window.open(props.url, "_blank");
+      h("div", { class: "vp-site-info" }, [
+        h("a", {
+          class: "vp-site-info-navigator",
+          title: props.name,
+          href: props.url,
+          target: "_blank",
+        }),
+        h("div", {
+          class: "vp-site-info-preview",
+          style: {
+            background: `url(${withBase(
+              props.preview
+            )}) center/cover no-repeat`,
           },
-        },
-        [
-          h("div", {
-            class: "site-info-preview",
-            style: {
-              background: `url(${background.value}) center/cover no-repeat`,
-            },
-          }),
-          h("div", { class: "site-info-detail" }, [
-            props.logo
-              ? h("img", {
-                  class: "site-info-logo",
-                  src: props.logo,
-                  loading: "lazy",
-                  "no-view": "",
-                })
-              : null,
-            h("div", { class: "site-info-name" }, props.name),
-            h("div", { class: "site-info-desc" }, props.desc),
-          ]),
-          props.repo
-            ? h(
-                "div",
-                { class: "site-info-source-wrapper" },
-                h(
-                  "a",
-                  {
-                    class: "site-info-source",
-                    href: props.repo,
-                    // hint text
-                    "aria-label": locale.value.source,
-                    "data-balloon-pos": "left",
-                    title: locale.value.source,
-                    target: "_blank",
-                  },
-                  h(resolveComponent(`${repoType.value!}Icon`))
-                )
-              )
+        }),
+        h("div", { class: "vp-site-info-detail" }, [
+          props.logo
+            ? h("img", {
+                class: "vp-site-info-logo",
+                src: props.logo,
+                alt: props.name,
+                loading: "lazy",
+                "no-view": "",
+              })
             : null,
-        ]
-      );
+          h("div", { class: "vp-site-info-name" }, props.name),
+          h("div", { class: "vp-site-info-desc" }, props.desc),
+        ]),
+        props.repo
+          ? h(
+              "div",
+              { class: "vp-site-info-source-wrapper" },
+              h(
+                "a",
+                {
+                  class: "vp-site-info-source",
+                  href: props.repo,
+                  // hint text
+                  "aria-label": locale.value.source,
+                  "data-balloon-pos": "left",
+                  title: locale.value.source,
+                  target: "_blank",
+                },
+                h(resolveComponent(`${repoType.value!}Icon`))
+              )
+            )
+          : null,
+      ]);
   },
 });

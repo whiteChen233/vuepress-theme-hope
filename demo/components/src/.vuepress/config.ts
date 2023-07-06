@@ -3,7 +3,7 @@ import { defaultTheme } from "@vuepress/theme-default";
 import { componentsPlugin } from "vuepress-plugin-components";
 import { addViteSsrNoExternal } from "vuepress-shared";
 
-const base = <"/" | `/${string}/`>process.env.BASE || "/";
+const base = <"/" | `/${string}/`>process.env["BASE"] || "/";
 
 export default defineUserConfig({
   base,
@@ -32,6 +32,7 @@ export default defineUserConfig({
       "/demo/siteinfo",
       "/demo/stackblitz",
       "/demo/videoplayer",
+      "/demo/vidstack",
       "/demo/xigua",
       "/demo/youtube",
     ],
@@ -59,6 +60,7 @@ export default defineUserConfig({
         "Share",
         "SiteInfo",
         "StackBlitz",
+        // "VidStack",
         "VideoPlayer",
         "XiGua",
         "YouTube",

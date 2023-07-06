@@ -1,19 +1,18 @@
-import { type Page, type PluginFunction } from "@vuepress/core";
-import { isFunction } from "@vuepress/shared";
+import type { Page, PluginFunction } from "@vuepress/core";
 import { getDirname, path } from "@vuepress/utils";
-import { checkVersion, getLocales } from "vuepress-shared/node";
+import { checkVersion, getLocales, isFunction } from "vuepress-shared/node";
 
 import { copyrightLocales } from "./locales.js";
-import { type CopyrightOptions } from "./options.js";
+import type { CopyrightOptions } from "./options.js";
 import { PLUGIN_NAME, logger } from "./utils.js";
-import { type CopyrightPluginPageData } from "../shared/index.js";
+import type { CopyrightPluginPageData } from "../shared/index.js";
 
 const __dirname = getDirname(import.meta.url);
 
 export const copyrightPlugin =
   (options: CopyrightOptions): PluginFunction =>
   (app) => {
-    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.61");
+    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.64");
 
     if (app.env.isDebug) logger.info("Options:", options);
 

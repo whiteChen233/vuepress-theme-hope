@@ -1,4 +1,5 @@
-import { type VNode, defineComponent, h } from "vue";
+import type { VNode } from "vue";
+import { defineComponent, h } from "vue";
 
 import {
   useThemeData,
@@ -21,6 +22,7 @@ export default defineComponent({
         : h(
             "button",
             {
+              type: "button",
               class: "print-button",
               title: themeLocale.value.metaLocales.print,
               onClick: () => {

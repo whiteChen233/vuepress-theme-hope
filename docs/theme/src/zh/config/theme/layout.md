@@ -33,9 +33,12 @@ tag:
 
 ### navbarLayout
 
-- 类型: `HopeNavbarLayoutOptions`
+- 类型: `NavbarLayoutOptions`
 
   ```ts
+  /**
+   * 内置导航栏组件
+   */
   type NavbarComponent =
     | "Brand"
     | "Links"
@@ -44,10 +47,13 @@ tag:
     | "Outlook"
     | "Repo";
 
-  interface HopeNavbarLayoutOptions {
-    start: NavbarComponent[];
-    center: NavbarComponent[];
-    end: NavbarComponent[];
+  /**
+   * 导航栏布局选项
+   */
+  interface NavbarLayoutOptions {
+    start?: (NavbarComponent | string)[];
+    center?: (NavbarComponent | string)[];
+    end?: (NavbarComponent | string)[];
   }
   ```
 
@@ -65,9 +71,16 @@ tag:
 ### logoDark
 
 - 类型: `string`
-- 必填: 否
+- 默认值: `logo`
 
 夜间模式下导航栏图标，应为基于 `.vuepress/public` 文件夹的绝对路径。
+
+### navTitle
+
+- 类型: `string | false`
+- 默认值: `$siteLocale.title`
+
+导航栏标题
 
 ### repo
 
@@ -128,7 +141,7 @@ tag:
 
 是否在侧边栏显示图标。
 
-### sidebarSorter <Badge text="仅限 Root" />
+### sidebarSorter <Badge text="仅限 Root" type="warning" />
 
 - 类型: `SidebarSorter`
 

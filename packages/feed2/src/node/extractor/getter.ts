@@ -1,28 +1,30 @@
-import { type App, type Page, type PageFrontmatter } from "@vuepress/core";
-import { type GitData } from "@vuepress/plugin-git";
-import { isArray, isFunction, isPlainObject } from "@vuepress/shared";
+import type { App, Page, PageFrontmatter } from "@vuepress/core";
+import type { GitData } from "@vuepress/plugin-git";
+import type { AuthorInfo } from "vuepress-shared/node";
 import {
-  type AuthorInfo,
   getAuthor,
   getCategory,
   getPageExcerpt,
   getPageText,
   isAbsoluteUrl,
+  isArray,
+  isFunction,
+  isPlainObject,
   isUrl,
 } from "vuepress-shared/node";
 
 import { getPageRenderContent } from "./content.js";
-import { type Feed } from "../generator/feed.js";
-import {
-  type FeedAuthor,
-  type FeedCategory,
-  type FeedContributor,
-  type FeedEnclosure,
-  type FeedFrontmatterOption,
-  type FeedGetter,
-  type FeedItemInformation,
-  type FeedOptions,
-  type FeedPluginFrontmatter,
+import type { Feed } from "../generator/feed.js";
+import type {
+  FeedAuthor,
+  FeedCategory,
+  FeedContributor,
+  FeedEnclosure,
+  FeedFrontmatterOption,
+  FeedGetter,
+  FeedItemInformation,
+  FeedOptions,
+  FeedPluginFrontmatter,
 } from "../typings/index.js";
 import { getImageMineType, resolveUrl } from "../utils/index.js";
 
@@ -31,7 +33,7 @@ export class FeedInfo {
   private frontmatter: PageFrontmatter<FeedPluginFrontmatter>;
   private base: string;
   private getter: FeedGetter;
-  private shouldRemoveElement: (tagName: string) => boolean;
+  private isPreservedElement: (tagName: string) => boolean;
 
   constructor(
     private app: App,
@@ -46,15 +48,15 @@ export class FeedInfo {
     this.frontmatter = page.frontmatter;
     this.getter = options.getter || {};
     this.pageOptions = this.frontmatter.feed || {};
-    this.shouldRemoveElement = (tagName): boolean => {
-      const { removedElements } = this.options;
+    this.isPreservedElement = (tagName): boolean => {
+      const { preservedElements } = this.options;
 
-      return isArray(removedElements)
-        ? removedElements.some((item) =>
+      return isArray(preservedElements)
+        ? preservedElements.some((item) =>
             item instanceof RegExp ? item.test(tagName) : item === tagName
           )
-        : isFunction(removedElements)
-        ? removedElements(tagName)
+        : isFunction(preservedElements)
+        ? preservedElements(tagName)
         : false;
     };
   }
@@ -163,7 +165,7 @@ export class FeedInfo {
     if (this.pageOptions.summary) return this.pageOptions.summary;
 
     return getPageExcerpt(this.app, this.page, {
-      isCustomElement: this.shouldRemoveElement,
+      isCustomElement: this.isPreservedElement,
     });
   }
 
@@ -172,7 +174,7 @@ export class FeedInfo {
 
     if (this.pageOptions.content) return this.pageOptions.content;
 
-    return getPageRenderContent(this.app, this.page, this.shouldRemoveElement);
+    return getPageRenderContent(this.app, this.page, this.isPreservedElement);
   }
 
   get image(): string | null {

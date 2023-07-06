@@ -1,6 +1,6 @@
 import { sidebar } from "docs-shared";
 
-export const enSidebarConfig = sidebar({
+export const enSidebar = sidebar({
   "/": [
     "",
     {
@@ -20,6 +20,7 @@ export const enSidebarConfig = sidebar({
         "tasklist",
         "image",
         "include",
+        "card",
         "chart",
         "echarts",
         "flowchart",
@@ -63,6 +64,7 @@ export const enSidebarConfig = sidebar({
     "tasklist",
     "image",
     "include",
+    "card",
     "chart",
     "echarts",
     "flowchart",
@@ -89,7 +91,7 @@ export const enSidebarConfig = sidebar({
   ],
 });
 
-export const zhSidebarConfig = sidebar({
+export const zhSidebar = sidebar({
   "/zh/": [
     "",
     {
@@ -109,6 +111,7 @@ export const zhSidebarConfig = sidebar({
         "tasklist",
         "image",
         "include",
+        "card",
         "chart",
         "echarts",
         "flowchart",
@@ -152,6 +155,7 @@ export const zhSidebarConfig = sidebar({
     "tasklist",
     "image",
     "include",
+    "card",
     "chart",
     "echarts",
     "flowchart",

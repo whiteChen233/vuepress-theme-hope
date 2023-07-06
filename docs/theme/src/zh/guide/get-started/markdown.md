@@ -224,6 +224,18 @@ npm i -D vuepress-theme-hope
 
 - [查看详情](../markdown/image.md)
 
+#### 卡片
+
+```card
+title: Mr.Hope
+desc: Where there is light, there is hope
+logo: https://mister-hope.com/logo.svg
+link: https://mister-hope.com
+color: rgba(253, 230, 138, 0.15)
+```
+
+- [查看详情](../markdown/card.md)
+
 #### 图表
 
 ::: chart 一个散点图案例
@@ -334,7 +346,7 @@ $$
 
 #### 导入文件
 
-@include(../markdown/demo.snippet.md{9-13})
+<!-- @include: ../markdown/demo.snippet.md{9-13} -->
 
 - [查看详情](../markdown/include.md)
 
@@ -420,7 +432,7 @@ const msg = ref("Hello World!");
 
 ## 幻灯片 1
 
-一个有文字和 [链接](https://mrhope.site) 的段落
+一个有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 

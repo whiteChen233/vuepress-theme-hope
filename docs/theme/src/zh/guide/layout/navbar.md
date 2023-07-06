@@ -9,7 +9,7 @@ tag:
   - 导航栏
 ---
 
-导航栏可能包含你的站点名称、[搜索框](#搜索框)、 [导航栏链接](#导航栏链接)、[多语言支持](https://v2.vuepress.vuejs.org/zh/guide/i18n.html)、[仓库链接](#git-仓库和编辑链接) 和 [外观弹窗](#外观弹窗)。它们均取决于你的配置。
+导航栏可能包含你的站点名称、[搜索框](#搜索框)、 [导航栏链接](#导航栏链接)、[多语言支持](https://vuejs.press/zh/guide/i18n.html)、[仓库链接](#git-仓库和编辑链接) 和 [外观弹窗](#外观弹窗)。它们均取决于你的配置。
 
 <!-- more -->
 
@@ -442,7 +442,7 @@ export default {
 
 ## 多语言
 
-主题的导航栏支持 [多语言](https://v2.vuepress.vuejs.org/zh/guide/i18n.html)，所以你可以为每个语言单独设置上面提到的导航栏选项:
+主题的导航栏支持 [多语言](https://vuejs.press/zh/guide/i18n.html)，所以你可以为每个语言单独设置上面提到的导航栏选项:
 
 ::: code-tabs#language
 
@@ -568,7 +568,7 @@ export default {
 
 主题允许你自定义导航栏布局。 你可以在 `navbarLayout` 选项下的 `start`、`center` 和 `end` 键中添加组件。
 
-可用组件:
+除了全局组件名称之外，可用的内置组件如下:
 
 - Brand: 站点品牌
 - Links: 导航栏链接
@@ -678,7 +678,7 @@ export default navbar([
 ```ts
 import { navbar } from "vuepress-theme-hope";
 
-@include(../../../.vuepress/navbar/zh.ts{3-})
+<!-- @include: ../../../.vuepress/navbar/zh.ts{3-} -->
 ```
 
 @tab JS
@@ -686,7 +686,7 @@ import { navbar } from "vuepress-theme-hope";
 ```js
 import { navbar } from "vuepress-theme-hope";
 
-@include(../../../.vuepress/navbar/zh.ts{3-})
+<!-- @include: ../../../.vuepress/navbar/zh.ts{3-} -->
 ```
 
 :::

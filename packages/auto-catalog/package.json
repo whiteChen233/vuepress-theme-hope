@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-auto-catalog",
-  "version": "2.0.0-beta.185",
+  "version": "2.0.0-beta.230",
   "description": "Generate catalog for VuePress2",
   "keywords": [
     "vuepress",
@@ -23,11 +23,12 @@
   "author": {
     "email": "mister-hope@outlook.com",
     "name": "Mr.Hope",
-    "url": "https://mrhope.site"
+    "url": "https://mister-hope.com"
   },
   "type": "module",
   "exports": {
     ".": "./lib/node/index.js",
+    "./client": "./lib/client/index.js",
     "./package.json": "./package.json"
   },
   "main": "lib/node/index.js",
@@ -45,48 +46,32 @@
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
   "engines": {
-    "node": "^14.18.0 || >=16.0.0",
+    "node": ">=16.19.0",
     "npm": ">=8",
     "pnpm": ">=7"
   },
   "dependencies": {
-    "@vuepress/client": "2.0.0-beta.61",
-    "@vuepress/core": "2.0.0-beta.61",
-    "@vuepress/shared": "2.0.0-beta.61",
-    "@vuepress/utils": "2.0.0-beta.61",
-    "vue": "3.2.47",
-    "vue-router": "4.1.6",
+    "@vuepress/client": "2.0.0-beta.64",
+    "@vuepress/core": "2.0.0-beta.64",
+    "@vuepress/shared": "2.0.0-beta.64",
+    "@vuepress/utils": "2.0.0-beta.64",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.2",
     "vuepress-plugin-components": "workspace:*",
     "vuepress-plugin-sass-palette": "workspace:*",
     "vuepress-shared": "workspace:*"
   },
   "peerDependencies": {
-    "@vuepress/client": "2.0.0-beta.61",
-    "sass-loader": "^13.2.0",
-    "vuepress": "2.0.0-beta.61",
-    "vuepress-plugin-components": "workspace:*",
-    "vuepress-plugin-sass-palette": "workspace:*",
-    "vuepress-shared": "workspace:*",
-    "vuepress-vite": "2.0.0-beta.61",
-    "vuepress-webpack": "2.0.0-beta.61"
+    "sass-loader": "^13.3.2",
+    "vuepress": "2.0.0-beta.64",
+    "vuepress-vite": "2.0.0-beta.64",
+    "vuepress-webpack": "2.0.0-beta.64"
   },
   "peerDependenciesMeta": {
-    "@vuepress/client": {
-      "optional": true
-    },
     "sass-loader": {
       "optional": true
     },
     "vuepress": {
-      "optional": true
-    },
-    "vuepress-plugin-components": {
-      "optional": true
-    },
-    "vuepress-plugin-sass-palette": {
-      "optional": true
-    },
-    "vuepress-shared": {
       "optional": true
     },
     "vuepress-vite": {

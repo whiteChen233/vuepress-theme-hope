@@ -1,21 +1,13 @@
 import { usePageData } from "@vuepress/client";
-import {
-  type PropType,
-  type VNode,
-  computed,
-  defineComponent,
-  h,
-  ref,
-  toRef,
-  watch,
-} from "vue";
+import type { PropType, SlotsType, VNode } from "vue";
+import { computed, defineComponent, h, ref, toRef, watch } from "vue";
 
 import AutoLink from "@theme-hope/components/AutoLink";
 import HopeIcon from "@theme-hope/components/HopeIcon";
 
-import {
-  type AutoLinkOptions as AutoLinkType,
-  type NavGroup,
+import type {
+  AutoLinkOptions as AutoLinkType,
+  NavGroup,
 } from "../../../../shared/index.js";
 
 import "../styles/dropdown-link.scss";
@@ -34,6 +26,10 @@ export default defineComponent({
       required: true,
     },
   },
+
+  slots: Object as SlotsType<{
+    title: () => VNode;
+  }>,
 
   setup(props, { slots }) {
     const page = usePageData();
@@ -71,13 +67,13 @@ export default defineComponent({
         h(
           "button",
           {
-            class: "dropdown-title",
             type: "button",
+            class: "dropdown-title",
             "aria-label": dropdownAriaLabel.value,
             onClick: handleDropdown,
           },
           [
-            slots["title"]?.() ||
+            slots.title?.() ||
               h("span", { class: "title" }, [
                 h(HopeIcon, { icon: config.value.icon }),
                 props.config.text,

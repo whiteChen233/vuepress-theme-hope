@@ -1,14 +1,13 @@
-import {
-  type ComputedRef,
-  type InjectionKey,
-  computed,
-  inject,
-  provide,
-} from "vue";
-import { type Article, useBlogType } from "vuepress-plugin-blog2/client";
+import type { ComputedRef, InjectionKey } from "vue";
+import { computed, inject, provide } from "vue";
+import type { Article } from "vuepress-plugin-blog2/client";
+import { useBlogType } from "vuepress-plugin-blog2/client";
 import { getDate } from "vuepress-shared/client";
 
-import { type ArticleInfo, ArticleInfoType } from "../../../../shared/index.js";
+import type { ArticleInfo } from "../../../../shared/index.js";
+import { ArticleInfoType } from "../../../../shared/index.js";
+
+declare const __VUEPRESS_DEV__: boolean;
 
 export interface TimelineItem {
   year: number;
@@ -21,8 +20,9 @@ export type TimelinesRef = ComputedRef<{
   items: Article<ArticleInfo>[];
 }>;
 
-export const timelinesSymbol: InjectionKey<TimelinesRef> =
-  Symbol.for("timelines");
+export const timelinesSymbol: InjectionKey<TimelinesRef> = Symbol(
+  __VUEPRESS_DEV__ ? "timelines" : ""
+);
 
 /**
  * Inject timelines
@@ -46,8 +46,10 @@ export const setupTimelines = (): void => {
 
     // filter before sort
     timelines.value.items.forEach(({ info, path }) => {
-      const { year, month, day } =
-        getDate(info[ArticleInfoType.date])?.info || {};
+      const date = getDate(info[ArticleInfoType.date]);
+      const year = date?.getFullYear();
+      const month = date ? date.getMonth() + 1 : null;
+      const day = date?.getDate();
 
       if (year && month && day) {
         if (!timelineItems[0] || timelineItems[0].year !== year)

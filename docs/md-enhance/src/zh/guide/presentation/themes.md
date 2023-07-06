@@ -3,7 +3,7 @@ title: 幻灯片主题
 icon: palette
 ---
 
-<!--lint disable no-duplicate-headings-->
+<!--markdownlint-disable no-duplicate-header -->
 
 可用的主题:
 
@@ -20,8 +20,6 @@ icon: palette
 - `blood`
 - `moon`
 
-<!-- markdownlint-disable -->
-
 ## `auto`
 
 > 基于主题模式
@@ -30,7 +28,7 @@ icon: palette
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -52,7 +50,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -74,7 +72,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -96,7 +94,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -118,7 +116,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -140,7 +138,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -162,7 +160,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -184,7 +182,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -206,7 +204,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -228,7 +226,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -250,7 +248,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -272,7 +270,7 @@ const add = (a, b) => {
 
 ## 幻灯片标题
 
-一个拥有文字和 [链接](https://mrhope.site) 的段落
+一个拥有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 

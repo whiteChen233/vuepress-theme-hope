@@ -1,5 +1,6 @@
 import katex from "katex";
-import { type VNode, defineComponent, h, ref, watch } from "vue";
+import type { VNode } from "vue";
+import { defineComponent, h, ref, watch } from "vue";
 import { useLocaleConfig } from "vuepress-shared/client";
 
 import "katex/dist/katex.css";
@@ -13,10 +14,6 @@ const locales = {
   "/zh/": {
     input: "输入",
     output: "输出",
-  },
-  "/ru/": {
-    input: "Ввод",
-    output: "Вывод",
   },
 };
 
@@ -40,7 +37,7 @@ export default defineComponent({
         });
         inError.value = false;
       } catch (err) {
-        result.value = err.toString();
+        result.value = (<Error>err).toString();
         inError.value = true;
       }
     };
@@ -51,8 +48,8 @@ export default defineComponent({
       h("div", { class: "katex-playground" }, [
         h("h3", locale.value.input),
         h("textarea", {
-          name: "katex-playground",
           id: "katex-playground",
+          name: "katex-playground",
           cols: "30",
           rows: "10",
           placeholder: "Input your tex here",

@@ -1,8 +1,13 @@
-import { isArray, isString } from "@vuepress/shared";
 import { fs } from "@vuepress/utils";
-import { entries, startsWith, values } from "vuepress-shared/node";
+import {
+  entries,
+  isArray,
+  isString,
+  startsWith,
+  values,
+} from "vuepress-shared/node";
 
-import { type ThemeData } from "../../shared/index.js";
+import type { ThemeData } from "../../shared/index.js";
 import { TEMPLATE_FOLDER, logger } from "../utils.js";
 
 /** @private */

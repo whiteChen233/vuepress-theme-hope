@@ -1,15 +1,10 @@
-import {
-  type PropType,
-  type VNode,
-  defineComponent,
-  h,
-  resolveComponent,
-} from "vue";
-import { type ReadingTime } from "vuepress-plugin-reading-time2";
-import {
-  type AuthorInfo as AuthorInfoType,
-  type DateInfo as DateInfoType,
-} from "vuepress-shared/client";
+import type { PropType, VNode } from "vue";
+import { defineComponent, h, resolveComponent } from "vue";
+import type {
+  ReadingTime,
+  ReadingTimeLocale,
+} from "vuepress-plugin-reading-time2/client";
+import type { AuthorInfo as AuthorInfoType } from "vuepress-shared/client";
 
 import { usePure } from "@theme-hope/composables/index";
 import AuthorInfo from "@theme-hope/modules/info/components/AuthorInfo";
@@ -20,12 +15,12 @@ import PageViewInfo from "@theme-hope/modules/info/components/PageViewInfo";
 import ReadingTimeInfo from "@theme-hope/modules/info/components/ReadingTimeInfo";
 import TagInfo from "@theme-hope/modules/info/components/TagInfo";
 import WordInfo from "@theme-hope/modules/info/components/WordInfo";
-import {
-  type PageCategory,
-  type PageTag,
+import type {
+  PageCategory,
+  PageTag,
 } from "@theme-hope/modules/info/utils/index";
 
-import { type PageInfo } from "../../../../shared/index.js";
+import type { PageInfo } from "../../../../shared/index.js";
 
 import "balloon-css/balloon.css";
 import "../styles/page-info.scss";
@@ -60,7 +55,7 @@ export interface PageInfoProps {
    *
    * 写作日期
    */
-  date?: DateInfoType | null;
+  date?: Date | null;
 
   /**
    * Writing Date
@@ -93,6 +88,13 @@ export interface PageInfoProps {
    * 阅读时间
    */
   readingTime?: ReadingTime | null;
+
+  /**
+   * ReadingTime Locales
+   *
+   * 阅读时间多语言
+   */
+  readingTimeLocale?: ReadingTimeLocale | null;
 }
 
 export default defineComponent({

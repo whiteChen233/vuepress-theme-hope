@@ -1,5 +1,6 @@
 import { useRouteLocale } from "@vuepress/client";
-import { type VNode, defineComponent, h } from "vue";
+import type { SlotsType, VNode } from "vue";
+import { defineComponent, h } from "vue";
 import { useLink } from "vue-router";
 
 import CommonWrapper from "@theme-hope/components/CommonWrapper";
@@ -11,6 +12,10 @@ import "../styles/not-found.scss";
 
 export default defineComponent({
   name: "NotFound",
+
+  slots: Object as SlotsType<{
+    default: () => VNode | VNode[];
+  }>,
 
   setup(_props, { slots }) {
     const routeLocale = useRouteLocale();
@@ -25,13 +30,14 @@ export default defineComponent({
       h(CommonWrapper, { noSidebar: true }, () =>
         h(
           "main",
-          { class: "page not-found", id: "main-content" },
-          slots["default"]?.() || [
+          { id: "main-content", class: "vp-page not-found" },
+          slots.default?.() || [
             h(NotFoundHint),
             h("div", { class: "actions" }, [
               h(
                 "button",
                 {
+                  type: "button",
                   class: "action-button",
                   onClick: () => {
                     window.history.go(-1);
@@ -41,7 +47,11 @@ export default defineComponent({
               ),
               h(
                 "button",
-                { class: "action-button", onClick: () => navigate() },
+                {
+                  type: "button",
+                  class: "action-button",
+                  onClick: () => navigate(),
+                },
                 themeLocale.value.routeLocales.home
               ),
             ]),

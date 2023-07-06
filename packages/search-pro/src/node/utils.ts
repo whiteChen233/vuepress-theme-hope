@@ -1,6 +1,5 @@
-import { ensureEndingSlash } from "@vuepress/shared";
 import { getDirname, path } from "@vuepress/utils";
-import { Logger } from "vuepress-shared/node";
+import { Logger, ensureEndingSlash } from "vuepress-shared/node";
 
 const __dirname = getDirname(import.meta.url);
 
@@ -15,3 +14,6 @@ export const WORKER_FOLDER = ensureEndingSlash(
 export const PLUGIN_NAME = "vuepress-plugin-search-pro";
 
 export const logger = new Logger(PLUGIN_NAME);
+
+export const getLocaleChunkName = (locale: string): string =>
+  locale.replace(/\//g, "") || "root";

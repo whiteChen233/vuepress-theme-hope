@@ -39,7 +39,7 @@ files.forEach((pkgName) => {
       author: {
         name: "Mr.Hope",
         email: "mister-hope@outlook.com",
-        url: "https://mrhope.site",
+        url: "https://mister-hope.com",
       },
       type: "module",
       exports: {
@@ -75,7 +75,7 @@ files.forEach((pkgName) => {
       `\
 # vuepress-plugin-${pkgName}
 
-[![Version](https://img.shields.io/npm/v/vuepress-plugin-${pkgName}.svg?style=flat-square&logo=npm) ![Downloads](https://img.shields.io/npm/dm/vuepress-plugin-${pkgName}.svg?style=flat-square&logo=npm) ![Size](https://img.shields.io/bundlephobia/min/vuepress-plugin-${pkgName}?style=flat-square&logo=npm)](https://www.npmjs.com/package/vuepress-plugin-${pkgName})
+[![Version](https://img.shields.io/npm/v/vuepress-plugin-${pkgName}.svg?style=flat-square&logo=npm) ![Downloads](https://img.shields.io/npm/dm/vuepress-plugin-${pkgName}.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/vuepress-plugin-${pkgName})
 
 ${desc}.
 

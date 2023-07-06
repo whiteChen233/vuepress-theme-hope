@@ -93,6 +93,10 @@
 
     color: inherit;
 
+    @media (max-width: hope-config.$mobile) {
+      margin-inline: -0.75rem;
+    }
+
     .hint-container-title {
       padding-inline-start: 1.75rem;
 
@@ -240,6 +244,10 @@
     display: none;
   }
 
+  @media (max-width: hope-config.$mobile) {
+    margin-inline: -0.75rem;
+  }
+
   h4 {
     margin-top: 0;
   }
@@ -326,7 +334,7 @@
     }
   }
 
-  &[open] summary {
+  &[open] > summary {
     margin-bottom: 0.5em;
 
     &::after {

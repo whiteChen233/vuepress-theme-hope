@@ -1,7 +1,10 @@
+import type { Alias } from "@rollup/plugin-alias";
+import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import replace, { type RollupReplaceOptions } from "@rollup/plugin-replace";
-import { type RollupOptions, type RollupWarning } from "rollup";
+import type { RollupReplaceOptions } from "@rollup/plugin-replace";
+import replace from "@rollup/plugin-replace";
+import type { ModuleSideEffectsOption, RollupOptions } from "rollup";
 import copy from "rollup-plugin-copy";
 import dts from "rollup-plugin-dts";
 import esbuild from "rollup-plugin-esbuild";
@@ -13,6 +16,7 @@ const isProduction = process.env["NODE_ENV"] === "production";
 export interface FileInfo {
   base: string;
   files: string[];
+  target?: string;
 }
 
 export interface BundleOptions {
@@ -25,6 +29,8 @@ export interface BundleOptions {
   inlineDynamicImports?: boolean;
   preserveShebang?: boolean;
   replace?: RollupReplaceOptions;
+  alias?: Alias[] | { [find: string]: string };
+  moduleSideEffects?: ModuleSideEffectsOption;
 }
 
 export const bundle = (
@@ -42,7 +48,10 @@ export const bundle = (
     preserveShebang = typeof filePath === "object"
       ? filePath.base.startsWith("cli")
       : filePath.startsWith("cli/"),
+    alias: entries,
     replace: replaceOptions,
+    moduleSideEffects = (id): boolean =>
+      id.endsWith(".css") || id.endsWith(".scss"),
   }: BundleOptions = {}
 ): RollupOptions[] => [
   {
@@ -59,7 +68,10 @@ export const bundle = (
     output: [
       {
         ...(typeof filePath === "object"
-          ? { dir: `./lib/${filePath.base}`, entryFileNames: "[name].js" }
+          ? {
+              dir: `./lib/${filePath.target || filePath.base}`,
+              entryFileNames: "[name].js",
+            }
           : { file: `./lib/${filePath}.js` }),
         format: "esm",
         sourcemap: true,
@@ -76,6 +88,12 @@ export const bundle = (
             ...replaceOptions,
           })
         : null,
+      entries
+        ? // FIXME: This is an issue of ts NodeNext
+          (alias as unknown as typeof alias.default)({
+            entries,
+          })
+        : null,
       preserveShebang ? shebangPlugin() : null,
       ...(resolve
         ? [
@@ -88,7 +106,7 @@ export const bundle = (
       (esbuild as unknown as typeof esbuild.default)({
         charset: "utf8",
         minify: isProduction,
-        target: "node14",
+        target: "node16",
       }),
       copyOptions.length
         ? // FIXME: This is an issue of ts NodeNext
@@ -118,7 +136,7 @@ export const bundle = (
             "vue",
             "vue-router",
             "vuepress-shared/client",
-            /\.s?css$/,
+            /\.s?css(?:\?module)?$/,
           ]
         : (
             typeof filePath === "object"
@@ -140,17 +158,8 @@ export const bundle = (
     ],
 
     treeshake: {
-      moduleSideEffects: (id) => id.endsWith(".css") || id.endsWith(".scss"),
+      moduleSideEffects,
       preset: "smallest",
-    },
-
-    onwarn(
-      warning: RollupWarning,
-      warn: (warning: RollupWarning) => void
-    ): void {
-      if (warning.message.includes("Use of eval")) return;
-
-      warn(warning);
     },
   },
   ...(enableDts
@@ -169,7 +178,7 @@ export const bundle = (
             {
               ...(typeof filePath === "object"
                 ? {
-                    dir: `./lib/${filePath.base}`,
+                    dir: `./lib/${filePath.target || filePath.base}`,
                     entryFileNames: "[name].d.ts",
                   }
                 : { file: `./lib/${filePath}.d.ts` }),
@@ -178,6 +187,12 @@ export const bundle = (
             },
           ],
           plugins: [
+            entries
+              ? // FIXME: This is an issue of ts NodeNext
+                (alias as unknown as typeof alias.default)({
+                  entries,
+                })
+              : null,
             dts({
               compilerOptions: {
                 preserveSymlinks: false,

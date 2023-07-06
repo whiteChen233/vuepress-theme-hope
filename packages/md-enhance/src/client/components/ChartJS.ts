@@ -1,12 +1,6 @@
-import { type ChartConfiguration } from "chart.js";
-import {
-  type PropType,
-  type VNode,
-  defineComponent,
-  h,
-  onMounted,
-  ref,
-} from "vue";
+import type { ChartConfiguration } from "chart.js";
+import type { PropType, VNode } from "vue";
+import { defineComponent, h, onMounted, ref, shallowRef } from "vue";
 import { LoadingIcon, atou } from "vuepress-shared/client";
 
 import "../styles/chart.scss";
@@ -19,13 +13,19 @@ const parseChartConfig = (
 ): ChartConfiguration => {
   if (type === "json") return <ChartConfiguration>JSON.parse(config);
 
-  const exports = {};
-  const module = { exports };
+  // eslint-disable-next-line @typescript-eslint/no-implied-eval
+  const runner = new Function(
+    `\
+let config,__chart_js_config__;
+{
+${config}
+__chart_js_config__=config;
+}
+return __chart_js_config__;\
+`
+  );
 
-  eval(config);
-
-  // eslint-disable-next-line import/no-commonjs
-  return <ChartConfiguration>module.exports;
+  return <ChartConfiguration>runner();
 };
 
 export default defineComponent({
@@ -74,8 +74,8 @@ export default defineComponent({
   },
 
   setup(props) {
-    const chartElement = ref<HTMLElement>();
-    const chartCanvasElement = ref<HTMLCanvasElement>();
+    const chartElement = shallowRef<HTMLElement>();
+    const chartCanvasElement = shallowRef<HTMLCanvasElement>();
 
     const loading = ref(true);
 
@@ -98,16 +98,16 @@ export default defineComponent({
 
     return (): (VNode | null)[] => [
       props.title
-        ? h("div", { class: "chart-title" }, decodeURIComponent(props.title))
+        ? h("div", { class: "chartjs-title" }, decodeURIComponent(props.title))
         : null,
       loading.value
-        ? h(LoadingIcon, { class: "chart-loading", height: 192 })
+        ? h(LoadingIcon, { class: "chartjs-loading", height: 192 })
         : null,
       h(
         "div",
         {
           ref: chartElement,
-          class: "chart-wrapper",
+          class: "chartjs-wrapper",
           id: props.id,
           style: {
             display: loading.value ? "none" : "block",

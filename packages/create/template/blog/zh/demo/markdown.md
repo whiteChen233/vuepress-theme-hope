@@ -1,6 +1,6 @@
 ---
 title: Markdown 展示
-icon: markdown
+icon: fab fa-markdown
 order: 2
 category:
   - 使用指南
@@ -167,6 +167,18 @@ npm i -D vuepress-theme-hope
 
 - [查看详情](https://theme-hope.vuejs.press/zh/guide/markdown/image.html)
 
+#### 卡片
+
+```card
+title: Mr.Hope
+desc: Where there is light, there is hope
+logo: https://mister-hope.com/logo.svg
+link: https://mister-hope.com
+color: rgba(253, 230, 138, 0.15)
+```
+
+- [查看详情](https://theme-hope.vuejs.press/zh/guide/markdown/card.html)
+
 #### 图表
 
 ::: chart 一个散点图案例
@@ -277,7 +289,7 @@ $$
 
 #### 导入文件
 
-@include(./README.md{11-17})
+<!-- @include: ./README.md{11-17} -->
 
 - [查看详情](https://theme-hope.vuejs.press/zh/guide/markdown/include.html)
 
@@ -359,7 +371,7 @@ const msg = ref("Hello World!");
 
 ## 幻灯片 1
 
-一个有文字和 [链接](https://mrhope.site) 的段落
+一个有文字和 [链接](https://mister-hope.com) 的段落
 
 ---
 
@@ -388,4 +400,4 @@ $$
 
 - [查看详情](https://theme-hope.vuejs.press/zh/guide/markdown/presentation.html)
 
-[md-enhance]: https://md-enhance.vuejs.press/zh/
+[md-enhance]: https://plugin-md-enhance.vuejs.press/zh/
