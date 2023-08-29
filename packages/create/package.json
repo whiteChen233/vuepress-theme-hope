@@ -1,6 +1,6 @@
 {
   "name": "create-vuepress-theme-hope",
-  "version": "2.0.0-beta.230",
+  "version": "2.0.0-beta.236",
   "description": "Create vuepress-theme-hope demo project helper",
   "keywords": [
     "create",
@@ -41,10 +41,15 @@
     "dev": "pnpm dev:ts",
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
+  "engines": {
+    "node": ">=16.19.0",
+    "npm": ">=8",
+    "pnpm": ">=7"
+  },
   "dependencies": {
     "cac": "6.7.14",
-    "execa": "7.1.1",
-    "inquirer": "9.2.7"
+    "execa": "8.0.1",
+    "inquirer": "9.2.10"
   },
   "devDependencies": {
     "@types/inquirer": "9.0.3"

@@ -69,6 +69,7 @@ export default defineComponent({
 
   setup(props, { slots }) {
     // index of current active item
+    // eslint-disable-next-line vue/no-setup-props-destructure
     const activeIndex = ref(props.active);
 
     // refs of the tab buttons
@@ -111,7 +112,7 @@ export default defineComponent({
     const getInitialIndex = (): number => {
       if (props.tabId) {
         const valueIndex = props.data.findIndex(
-          ({ id }) => tabStore.value[props.tabId] === id
+          ({ id }) => tabStore.value[props.tabId] === id,
         );
 
         if (valueIndex !== -1) return valueIndex;
@@ -131,7 +132,7 @@ export default defineComponent({
 
             if (index !== -1) activeIndex.value = index;
           }
-        }
+        },
       );
     });
 
@@ -163,9 +164,9 @@ export default defineComponent({
                     onKeydown: (event: KeyboardEvent) =>
                       keyboardHandler(event, index),
                   },
-                  slots[`title${index}`]({ value: id, isActive })
+                  slots[`title${index}`]({ value: id, isActive }),
                 );
-              })
+              }),
             ),
             props.data.map(({ id }, index) => {
               const isActive = index === activeIndex.value;
@@ -178,7 +179,7 @@ export default defineComponent({
                   role: "tabpanel",
                   "aria-expanded": isActive,
                 },
-                slots[`tab${index}`]({ value: id, isActive })
+                slots[`tab${index}`]({ value: id, isActive }),
               );
             }),
           ])

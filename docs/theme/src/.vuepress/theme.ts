@@ -130,7 +130,7 @@ export default theme("theme", {
           if (file.startsWith("@echarts"))
             return file.replace(
               "@echarts",
-              path.resolve(__dirname, "../echarts")
+              path.resolve(__dirname, "../echarts"),
             );
 
           return file;
@@ -140,7 +140,7 @@ export default theme("theme", {
       mark: true,
       mermaid: true,
       playground: {
-        presets: ["ts", "vue"],
+        presets: ["ts", "vue", "unocss"],
       },
       presentation: ["highlight", "math", "search", "notes", "zoom"],
       stylize: [

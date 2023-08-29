@@ -32,21 +32,20 @@
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
   "dependencies": {
-    "@types/three": "0.152.1",
-    "@vuepress/cli": "2.0.0-beta.64",
-    "@vuepress/client": "2.0.0-beta.64",
-    "@vuepress/core": "2.0.0-beta.64",
-    "@vuepress/plugin-docsearch": "2.0.0-beta.64",
-    "@vuepress/shared": "2.0.0-beta.64",
-    "@vuepress/utils": "2.0.0-beta.64",
-    "three": "0.154.0",
+    "@types/three": "0.155.1",
+    "@vuepress/cli": "2.0.0-beta.67",
+    "@vuepress/client": "2.0.0-beta.67",
+    "@vuepress/core": "2.0.0-beta.67",
+    "@vuepress/plugin-docsearch": "2.0.0-beta.67",
+    "@vuepress/shared": "2.0.0-beta.67",
+    "@vuepress/utils": "2.0.0-beta.67",
+    "three": "0.155.0",
     "vue": "3.3.4",
     "vuepress-plugin-redirect": "workspace:*",
-    "vuepress-plugin-remove-pwa": "workspace:*",
     "vuepress-shared": "workspace:*",
     "vuepress-theme-hope": "workspace:*"
   },
   "devDependencies": {
-    "@vuepress/bundler-vite": "2.0.0-beta.64"
+    "@vuepress/bundler-vite": "2.0.0-beta.67"
   }
 }

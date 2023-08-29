@@ -4,7 +4,6 @@ import type { HeadConfig } from "@vuepress/core";
 import { docsearchPlugin } from "@vuepress/plugin-docsearch";
 import { getDirname, path } from "@vuepress/utils";
 import { redirectPlugin } from "vuepress-plugin-redirect";
-import { removePWAPlugin } from "vuepress-plugin-remove-pwa";
 import { addViteOptimizeDepsInclude } from "vuepress-shared/node";
 
 const __dirname = getDirname(import.meta.url);
@@ -29,7 +28,7 @@ export const config = (
     indexName,
     pwa = false,
   }: ConfigOptions,
-  { alias = {}, head = [], plugins = [], ...config }: UserConfig
+  { alias = {}, head = [], plugins = [], ...config }: UserConfig,
 ): UserConfig => {
   const docsBase = IS_NETLIFY
     ? "/"
@@ -45,8 +44,9 @@ export const config = (
     dest: "./dist",
 
     head: [
-      ...(pwa === false
-        ? <HeadConfig[]>[
+      ...(pwa
+        ? []
+        : <HeadConfig[]>[
             [
               "link",
               {
@@ -98,8 +98,7 @@ export const config = (
                 content: "black",
               },
             ],
-          ]
-        : []),
+          ]),
       ...head,
     ],
     markdown: {
@@ -162,7 +161,6 @@ export const config = (
             }),
           ]
         : []),
-      ...(pwa === false ? [removePWAPlugin()] : []),
       redirectPlugin({ switchLocale: "modal" }),
       ...plugins,
     ],
@@ -170,11 +168,11 @@ export const config = (
     alias: {
       "@theme-hope/components/HeroInfo": path.resolve(
         __dirname,
-        "./components/HopeHero.js"
+        "./components/HopeHero.js",
       ),
       "@theme-hope/components/NotFoundHint": path.resolve(
         __dirname,
-        "./components/HopeNotFoundHint.js"
+        "./components/HopeNotFoundHint.js",
       ),
       ...alias,
     },

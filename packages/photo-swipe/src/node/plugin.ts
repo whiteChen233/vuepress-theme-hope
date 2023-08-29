@@ -18,7 +18,7 @@ const __dirname = getDirname(import.meta.url);
 export const photoSwipePlugin =
   (options: PhotoSwipeOptions = {}): PluginFunction =>
   (app) => {
-    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.64");
+    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.67");
 
     if (app.env.isDebug) logger.info("Options:", options);
 
@@ -40,16 +40,16 @@ export const photoSwipePlugin =
               name: PLUGIN_NAME,
               default: photoSwipeLocales,
               config: options.locales,
-            })
+            }),
           ).map(([localePath, localeOptions]) => [
             localePath,
             fromEntries(
               entries(localeOptions).map(([key, value]) => [
                 `${key}Title`,
                 value,
-              ])
+              ]),
             ),
-          ])
+          ]),
         ),
       }),
 

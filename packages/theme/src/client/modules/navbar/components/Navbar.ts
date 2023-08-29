@@ -22,10 +22,7 @@ import ToggleNavbarButton from "@theme-hope/modules/navbar/components/ToggleNavb
 import ToggleSidebarButton from "@theme-hope/modules/navbar/components/ToggleSidebarButton";
 import OutlookButton from "@theme-hope/modules/outlook/components/OutlookButton";
 
-import type {
-  NavbarComponent,
-  NavbarLayoutOptions,
-} from "../../../../shared/index.js";
+import type { NavbarLayoutOptions } from "../../../../shared/index.js";
 
 import "../styles/navbar.scss";
 
@@ -72,13 +69,10 @@ export default defineComponent({
           start: ["Brand"],
           center: ["Links"],
           end: ["Language", "Repo", "Outlook", "Search"],
-        }
+        },
     );
 
-    const navbarComponentMap: Record<
-      NavbarComponent | string,
-      Component | string
-    > = {
+    const navbarComponentMap: Record<string, Component | string> = {
       Brand: NavbarBrand,
       Language: HAS_MULTIPLE_LANGUAGES ? LanguageDropdown : noopModule,
       Links: NavbarLinks,
@@ -91,9 +85,7 @@ export default defineComponent({
         : noopModule,
     };
 
-    const getNavbarComponent = (
-      component: NavbarComponent | string
-    ): Component | string =>
+    const getNavbarComponent = (component: string): Component | string =>
       navbarComponentMap[component] ??
       (hasGlobalComponent(component)
         ? resolveComponent(component)
@@ -126,8 +118,8 @@ export default defineComponent({
                 h(
                   <ComponentOptions | FunctionalComponent>(
                     getNavbarComponent(item)
-                  )
-                )
+                  ),
+                ),
               ),
               slots.startAfter?.(),
             ]),
@@ -138,8 +130,8 @@ export default defineComponent({
                 h(
                   <ComponentOptions | FunctionalComponent>(
                     getNavbarComponent(item)
-                  )
-                )
+                  ),
+                ),
               ),
               slots.centerAfter?.(),
             ]),
@@ -150,8 +142,8 @@ export default defineComponent({
                 h(
                   <ComponentOptions | FunctionalComponent>(
                     getNavbarComponent(item)
-                  )
-                )
+                  ),
+                ),
               ),
               slots.endAfter?.(),
 
@@ -162,7 +154,7 @@ export default defineComponent({
                 },
               }),
             ]),
-          ]
+          ],
         ),
         h(
           NavScreen,
@@ -175,7 +167,7 @@ export default defineComponent({
           {
             before: () => slots.screenTop?.(),
             after: () => slots.screenBottom?.(),
-          }
+          },
         ),
       ];
     };

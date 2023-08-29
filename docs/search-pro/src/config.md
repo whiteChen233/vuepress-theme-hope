@@ -156,7 +156,7 @@ Max stored query history count, set `0` to disable it.
 
 Max stored matched result history count, set `0` to disable it.
 
-### delay
+### searchDelay
 
 - Type: `number`
 - Default: `150`
@@ -169,7 +169,7 @@ Performing client search with huge contents could be slow, so under this case yo
 
 :::
 
-## sortStrategy
+### sortStrategy
 
 - Type: `"max" | "total"`
 - Default: `"max"`
@@ -214,7 +214,7 @@ Usually in development, users do not need to update the index database in real t
      * Function to process or normalize terms in the index field.
      */
     processTerm?: (
-      term: string
+      term: string,
     ) => string | string[] | null | undefined | false;
   }
   ```
@@ -237,7 +237,7 @@ Options used to create index.
      * Function to process or normalize terms in the index field.
      */
     processTerm?: (
-      term: string
+      term: string,
     ) => string | string[] | null | undefined | false;
   }
   ```
@@ -419,12 +419,12 @@ export interface SearchWorker {
   search: (
     query: string,
     locale: string,
-    searchOptions?: SearchOptions
+    searchOptions?: SearchOptions,
   ) => Promise<SearchResult[]>;
   terminate: () => void;
 }
 
 declare const createSearchWorker: (
-  options: SearchWorkerOptions
+  options: SearchWorkerOptions,
 ) => SearchWorker;
 ```

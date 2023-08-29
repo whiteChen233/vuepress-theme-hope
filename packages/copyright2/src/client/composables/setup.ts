@@ -16,7 +16,8 @@ declare const COPYRIGHT_DISABLE_COPY: boolean;
 declare const COPYRIGHT_DISABLE_SELECTION: boolean;
 declare const COPYRIGHT_GLOBAL: boolean;
 declare const COPYRIGHT_LOCALES: RequiredLocaleConfig<CopyrightLocaleData>;
-declare const COPYRIGHT_TRIGGER_WORDS: number;
+declare const COPYRIGHT_MAX_LENGTH: number;
+declare const COPYRIGHT_TRIGGER_LENGTH: number;
 
 const canonical = COPYRIGHT_CANONICAL;
 
@@ -28,36 +29,28 @@ export const setupCopyright = (): void => {
   const enabled = computed(
     () =>
       Boolean(frontmatter.value.copy) ||
-      (frontmatter.value.copy !== false && COPYRIGHT_GLOBAL)
+      (frontmatter.value.copy !== false && COPYRIGHT_GLOBAL),
   );
 
-  const disableCopy = computed(() => {
-    const frontmatterOptions = frontmatter.value.copy;
+  const copyOptions = computed(() =>
+    isPlainObject(frontmatter.value.copy) ? frontmatter.value.copy : null,
+  );
 
-    if (!enabled.value) return false;
+  const disableCopy = computed(
+    () => copyOptions.value?.disableCopy ?? COPYRIGHT_DISABLE_COPY,
+  );
 
-    if (
-      isPlainObject(frontmatterOptions) &&
-      "disableCopy" in frontmatterOptions
-    )
-      return frontmatterOptions.disableCopy;
+  const disableSelection = computed(
+    () => copyOptions.value?.disableSelection ?? COPYRIGHT_DISABLE_SELECTION,
+  );
 
-    return COPYRIGHT_DISABLE_COPY;
-  });
+  const maxLength = computed(() =>
+    enabled.value ? copyOptions.value?.maxLength ?? COPYRIGHT_MAX_LENGTH : 0,
+  );
 
-  const disableSelection = computed(() => {
-    const frontmatterOptions = frontmatter.value.copy;
-
-    if (!enabled.value) return false;
-
-    if (
-      isPlainObject(frontmatterOptions) &&
-      "disableSelection" in frontmatterOptions
-    )
-      return frontmatterOptions.disableSelection;
-
-    return COPYRIGHT_DISABLE_SELECTION;
-  });
+  const triggerLength = computed(
+    () => copyOptions.value?.triggerLength ?? COPYRIGHT_TRIGGER_LENGTH,
+  );
 
   const getCopyright = (): string => {
     const { author: authorInfo = "", license: licenseInfo = "" } =
@@ -71,9 +64,9 @@ export const setupCopyright = (): void => {
         ":link",
         canonical
           ? `${removeEndingSlash(
-              isLinkHttp(canonical) ? canonical : `https://${canonical}`
+              isLinkHttp(canonical) ? canonical : `https://${canonical}`,
             )}${page.value.path}`
-          : window.location.href
+          : window.location.href,
       ),
     ]
       .filter((item) => item)
@@ -87,9 +80,12 @@ export const setupCopyright = (): void => {
       const textRange = selection.getRangeAt(0);
 
       if (enabled.value) {
-        if (disableCopy.value) return event.preventDefault();
+        const textLength = textRange.toString().length;
 
-        if (textRange.toString().length >= COPYRIGHT_TRIGGER_WORDS) {
+        if (disableCopy.value || textLength > maxLength.value)
+          return event.preventDefault();
+
+        if (textLength >= triggerLength.value) {
           event.preventDefault();
 
           const copyright = getCopyright();
@@ -102,14 +98,14 @@ export const setupCopyright = (): void => {
               "text/html",
               `${node.innerHTML}<hr><div class="copyright">${copyright.replace(
                 /\\n/g,
-                "<br>"
-              )}</div>`
+                "<br>",
+              )}</div>`,
             );
             event.clipboardData.setData(
               "text/plain",
               `${
                 selection.getRangeAt(0).cloneContents().textContent || ""
-              }\n------\n${copyright}`
+              }\n------\n${copyright}`,
             );
           }
         }

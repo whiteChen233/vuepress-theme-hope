@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-md-enhance",
-  "version": "2.0.0-beta.230",
+  "version": "2.0.0-beta.236",
   "description": "Markdown enhancement plugin for vuepress",
   "keywords": [
     "vuepress",
@@ -76,7 +76,7 @@
     "pnpm": ">=7"
   },
   "dependencies": {
-    "@babel/core": "^7.22.5",
+    "@babel/core": "^7.22.11",
     "@mdit/plugin-align": "^0.4.8",
     "@mdit/plugin-attrs": "^0.4.8",
     "@mdit/plugin-container": "^0.4.8",
@@ -97,38 +97,38 @@
     "@mdit/plugin-tex": "^0.4.8",
     "@mdit/plugin-uml": "^0.4.8",
     "@types/js-yaml": "^4.0.5",
-    "@types/markdown-it": "^12.2.3",
-    "@vue/repl": "^2.4.0",
-    "@vuepress/client": "2.0.0-beta.64",
-    "@vuepress/shared": "2.0.0-beta.64",
-    "@vuepress/utils": "2.0.0-beta.64",
-    "@vueuse/core": "^10.2.1",
+    "@types/markdown-it": "^13.0.1",
+    "@vue/repl": "^2.5.8",
+    "@vuepress/client": "2.0.0-beta.67",
+    "@vuepress/shared": "2.0.0-beta.67",
+    "@vuepress/utils": "2.0.0-beta.67",
+    "@vueuse/core": "^10.4.1",
     "balloon-css": "^1.2.0",
-    "chart.js": "^4.3.0",
-    "echarts": "^5.4.2",
+    "chart.js": "^4.4.0",
+    "echarts": "^5.4.3",
     "flowchart.ts": "^1.0.0",
     "js-yaml": "^4.1.0",
     "katex": "^0.16.8",
     "markdown-it": "^13.0.1",
-    "mermaid": "10.2.4",
+    "mermaid": "10.4.0",
     "reveal.js": "^4.5.0",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.2",
+    "vue-router": "^4.2.4",
     "vuepress-plugin-sass-palette": "workspace:*",
     "vuepress-shared": "workspace:*"
   },
   "devDependencies": {
     "@types/babel__core": "7.20.1",
-    "@vuepress/bundler-vite": "2.0.0-beta.64",
-    "@vuepress/core": "2.0.0-beta.64",
-    "@vuepress/markdown": "2.0.0-beta.64",
-    "typescript": "5.1.6"
+    "@vuepress/bundler-vite": "2.0.0-beta.67",
+    "@vuepress/core": "2.0.0-beta.67",
+    "@vuepress/markdown": "2.0.0-beta.67",
+    "typescript": "5.2.2"
   },
   "peerDependencies": {
     "sass-loader": "^13.3.2",
-    "vuepress": "2.0.0-beta.64",
-    "vuepress-vite": "2.0.0-beta.64",
-    "vuepress-webpack": "2.0.0-beta.64"
+    "vuepress": "2.0.0-beta.67",
+    "vuepress-vite": "2.0.0-beta.67",
+    "vuepress-webpack": "2.0.0-beta.67"
   },
   "peerDependenciesMeta": {
     "sass-loader": {

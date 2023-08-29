@@ -22,9 +22,9 @@ export interface CopyrightOptions {
         ExtraPageFields extends Record<
           string | number | symbol,
           unknown
-        > = Record<never, never>
+        > = Record<never, never>,
       >(
-        page: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>
+        page: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>,
       ) => string);
 
   /**
@@ -46,19 +46,37 @@ export interface CopyrightOptions {
         ExtraPageFields extends Record<
           string | number | symbol,
           unknown
-        > = Record<never, never>
+        > = Record<never, never>,
       >(
-        page: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>
+        page: Page<ExtraPageData, ExtraPageFrontmatter, ExtraPageFields>,
       ) => string);
 
   /**
-   * Min words triggering copyright append
+   * @deprecated Use `triggerLength` instead
+   */
+  triggerWords?: number;
+
+  /**
+   * Min length triggering copyright append
    *
-   * 触发附加版权的最小字数
+   * 触发附加版权的最小长度
    *
    * @default 100
    */
-  triggerWords?: number;
+  triggerLength?: number;
+
+  /**
+   * Max length that allows to copy
+   *
+   * @description 0 means unlimited
+   *
+   * 允许复制的最大字数
+   *
+   * @description 0 表示无限制
+   *
+   * @default 0
+   */
+  maxLength?: number;
 
   /**
    * Whether enabled globally

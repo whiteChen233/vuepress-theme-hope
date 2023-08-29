@@ -30,7 +30,7 @@ export const searchProPlugin =
 
     useSassPalettePlugin(app, { id: "hope" });
 
-    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.64");
+    checkVersion(app, PLUGIN_NAME, "2.0.0-beta.67");
 
     if (app.env.isDebug) logger.info("Options:", options);
 
@@ -46,9 +46,9 @@ export const searchProPlugin =
         SEARCH_PRO_CUSTOM_FIELDS: fromEntries(
           (options.customFields || [])
             .map(({ formatter }, index) =>
-              formatter ? [index.toString(), formatter] : null
+              formatter ? [index.toString(), formatter] : null,
             )
-            .filter((item): item is [string, string] => item !== null)
+            .filter((item): item is [string, string] => item !== null),
         ),
         SEARCH_PRO_LOCALES: getLocales({
           app,
