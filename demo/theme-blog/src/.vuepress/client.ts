@@ -1,8 +1,10 @@
-import { defineClientConfig } from "@vuepress/client";
+import { h } from "vue";
+import { defineClientConfig } from "vuepress/client";
+import { Blog } from "vuepress-theme-hope/blog";
+import BingHeroBackground from "vuepress-theme-hope/presets/BingHeroBackground.js";
+import HitokotoBlogHero from "vuepress-theme-hope/presets/HitokotoBlogHero.js";
 import { setupRunningTimeFooter } from "vuepress-theme-hope/presets/footerRunningTime.js";
-
-import "vuepress-theme-hope/presets/bounce-icon.scss";
-import "vuepress-theme-hope/presets/left-blog-info.scss";
+import { setupTransparentNavbar } from "vuepress-theme-hope/presets/transparentNavbar.js";
 
 export default defineClientConfig({
   setup() {
@@ -14,5 +16,14 @@ export default defineClientConfig({
       },
       true,
     );
+    setupTransparentNavbar();
+  },
+
+  layouts: {
+    Blog: () =>
+      h(Blog, null, {
+        heroInfo: (info: { text: string }) => h(HitokotoBlogHero, info),
+        heroBg: () => h(BingHeroBackground),
+      }),
   },
 });

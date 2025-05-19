@@ -1,4 +1,4 @@
-import type { PropType, VNode } from "vue";
+import type { CSSProperties, PropType, VNode } from "vue";
 import {
   defineComponent,
   h,
@@ -9,7 +9,7 @@ import {
   watch,
 } from "vue";
 
-import DropTransition from "@theme-hope/components/transitions/DropTransition";
+import { DropTransition } from "vuepress-theme-hope/client";
 
 import "./hitokoto-blog-hero.scss";
 
@@ -35,6 +35,8 @@ interface HitokotoResult {
 export default defineComponent({
   name: "HitokotoBlogHero",
 
+  inheritAttrs: false,
+
   props: {
     /** Hero text */
     text: {
@@ -43,19 +45,16 @@ export default defineComponent({
     },
 
     /** Hero image */
-    image: { type: String, default: null },
+    image: [String, null],
 
     /** Hero image dark */
-    imageDark: { type: String, default: null },
+    imageDark: [String, null],
 
     /** Hero image alt */
-    alt: { type: String, required: true },
+    alt: String,
 
     /** Hero image style */
-    heroStyle: {
-      type: [String, Object] as PropType<string | Record<string, string>>,
-      default: null,
-    },
+    imageStyle: [String, Object] as PropType<string | CSSProperties>,
   },
 
   setup(props) {
@@ -66,7 +65,7 @@ export default defineComponent({
 
     const getHitokoto = (): Promise<void> =>
       fetch("https://v1.hitokoto.cn")
-        .then((res) => <Promise<HitokotoResult>>res.json())
+        .then((res) => res.json() as Promise<HitokotoResult>)
         .then(({ from, hitokoto }) => {
           text.value = hitokoto;
           author.value = from;
@@ -81,7 +80,7 @@ export default defineComponent({
 
         const renderNextWord = (): Promise<void> => {
           display.value += text.value[index];
-          index++;
+          index += 1;
 
           return nextTick().then(() => {
             if (index < text.value.length)
@@ -106,23 +105,23 @@ export default defineComponent({
     });
 
     return (): VNode[] => [
-      h(DropTransition, { appear: true, type: "group", delay: 0.04 }, () => [
+      h(DropTransition, { appear: true, group: true, delay: 0.04 }, () => [
         props.image
           ? h("img", {
               key: "light",
               class: ["vp-blog-hero-image", { light: props.imageDark }],
-              style: props.heroStyle,
+              style: props.imageStyle,
               src: props.image,
-              alt: props.alt,
+              alt: props.alt ?? props.text,
             })
           : null,
         props.imageDark
           ? h("img", {
               key: "dark",
               class: "vp-blog-hero-image dark",
-              style: props.heroStyle,
+              style: props.imageStyle,
               src: props.imageDark,
-              alt: props.alt,
+              alt: props.alt ?? props.text,
             })
           : null,
       ]),

@@ -1,5 +1,4 @@
-import { isPlainObject } from "@vuepress/shared";
-import { keys } from "vuepress-shared/client";
+import { isDef, isPlainObject, keys } from "@vuepress/helper/client";
 
 import type { Code } from "./typings.js";
 import type { CodeDemoOptions } from "../../../shared/index.js";
@@ -62,13 +61,13 @@ export const h = (
 
   if (isPlainObject(attrs))
     keys(attrs).forEach((key) => {
-      if (!key.indexOf("data")) {
+      if (key.indexOf("data")) {
+        // @ts-expect-error: Type is not accurate
+        node[key] = attrs[key];
+      } else {
         const k = key.replace("data", "");
 
         node.dataset[k] = attrs[key];
-      } else {
-        // @ts-ignore
-        node[key] = attrs[key];
       }
     });
 
@@ -85,19 +84,15 @@ export const getConfig = (
 ): CodeDemoOptions => ({
   ...options,
   ...config,
-  jsLib: Array.from(
-    new Set([...(options.jsLib || []), ...(config.jsLib || [])]),
-  ),
-  cssLib: Array.from(
-    new Set([...(options.cssLib || []), ...(config.cssLib || [])]),
-  ),
+  jsLib: Array.from(new Set([options.jsLib, config.jsLib ?? []].flat())),
+  cssLib: Array.from(new Set([options.cssLib, config.cssLib ?? []].flat())),
 });
 
 export const loadScript = (
   state: Record<string, Promise<void>>,
   link: string,
 ): Promise<void> => {
-  if (state[link] !== undefined) return state[link];
+  if (isDef(state[link])) return state[link];
 
   const loadEvent = new Promise<void>((resolve) => {
     const script = document.createElement("script");
@@ -118,7 +113,7 @@ export const loadScript = (
 export const injectCSS = (shadowRoot: ShadowRoot, code: Code): void => {
   if (
     code.css &&
-    // style not injected
+    // Style not injected
     Array.from(shadowRoot.childNodes).every(
       (element) => element.nodeName !== "STYLE",
     )
@@ -138,7 +133,7 @@ export const injectScript = (
 
   if (
     scriptText &&
-    // style not injected
+    // Style not injected
     Array.from(shadowRoot.childNodes).every(
       (element) => element.nodeName !== "SCRIPT",
     )
@@ -147,7 +142,7 @@ export const injectScript = (
 
     script.appendChild(
       document.createTextNode(
-        // here we are fixing `document` variable back to shadowDOM
+        // Here we are fixing `document` variable back to shadowDOM
         `{const document=window.document.querySelector('#${id} .vp-code-demo-display').shadowRoot;\n${scriptText}}`,
       ),
     );

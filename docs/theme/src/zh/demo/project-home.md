@@ -2,26 +2,26 @@
 home: true
 title: 功能项目主页
 icon: home
-heroImage: /logo.svg
+heroImage: https://theme-hope-assets.vuejs.press/logo.svg
 heroText: VuePress Theme Hope
 tagline: 一个具有强大功能的 vuepress 主题✨
 actions:
-  - text: 使用教程 🧭
-    link: /zh/cookbook/tutorial/
+  - text: 快速上手
+    link: /zh/get-started/
+    icon: signs-post
     type: primary
 
-  - text: 介绍 💡
-    link: /zh/guide/get-started/intro.html
+  - text: 指南
+    icon: lightbulb
+    link: /zh/guide/
 
-  - text: 配置 🛠
-    link: /zh/config/
-
-  - text: 在线案例 🪀
-    link: https://stackblitz.com/fork/vuepress-theme-hope
+  - text: 案例
+    icon: star
+    link: /zh/demo/
 
 features:
   - title: Markdown 增强
-    icon: fab fa-markdown
+    icon: b:markdown
     details: 新增文字对齐、上下角标、脚注、标记、任务列表、数学公式、流程图、图表与幻灯片支持
     link: /zh/guide/markdown/
 
@@ -60,11 +60,6 @@ features:
     details: 可以自由切换浅色模式与深色模式
     link: /zh/guide/interface/darkmode.html
 
-  - title: 完整的无障碍支持
-    icon: universal-access
-    details: 为你的网站带来完整的无障碍支持
-    link: /zh/guide/interface/accessibility.html
-
   - title: 文章加密
     icon: lock
     details: 你可以为你的特定页面或特定目录进行加密，以便陌生人不能随意访问它们
@@ -74,11 +69,6 @@ features:
     icon: search
     details: 支持 docsearch 和基于客户端的搜索
     link: /zh/guide/feature/search.html
-
-  - title: 代码复制
-    icon: copy
-    details: 一键复制代码块中的代码
-    link: /zh/guide/feature/copy-code.html
 
   - title: 图片预览
     icon: image
@@ -116,20 +106,20 @@ footer: MIT Licensed | Copyright © 2019-present Mr.Hope
 
 ## 🛠 安装
 
-在当前目录下的 `[dir]` 文件夹内创建 vuepress-theme-hope 项目:
+在当前目录下的 `<dir>` 文件夹内创建 vuepress-theme-hope 项目:
 
 ::: code-tabs#shell
 
 @tab pnpm
 
 ```bash
-pnpm create vuepress-theme-hope [dir]
+pnpm create vuepress-theme-hope <dir>
 ```
 
 @tab npm
 
 ```bash
-npm init vuepress-theme-hope [dir]
+npm init vuepress-theme-hope@latest <dir>
 ```
 
 :::
@@ -141,43 +131,20 @@ npm init vuepress-theme-hope [dir]
 @tab pnpm
 
 ```bash
-pnpm create vuepress-theme-hope add [dir]
+pnpm create vuepress-theme-hope add <dir>
 ```
 
 @tab npm
 
 ```bash
-npm init vuepress-theme-hope add [dir]
+npm init vuepress-theme-hope@latest add <dir>
 ```
 
 :::
 
 ## 🚀 使用
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default defineUserConfig({
-  // 站点选项
-  // ...
-
-  theme: hopeTheme({
-    // 主题选项
-    // ...
-  }),
-});
-```
-
-@tab JS
-
-```js
-// .vuepress/config.js
+```ts twoslash title=".vuepress/config.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
 export default {
@@ -190,12 +157,6 @@ export default {
   }),
 };
 ```
-
-:::
-
-## 使用教程
-
-- [详细小白教程](../cookbook/tutorial/README.md)
 
 ## 官方 QQ 群
 

@@ -1,28 +1,28 @@
 ---
-containerClass: home
 home: true
 icon: home
 title: Home
-heroImage: /logo.svg
+heroText: VuePress Theme Hope
+tagline: A VuePress theme with tons of features✨
+heroStyle:
+  min-height: 600px
 bgImage: https://theme-hope-assets.vuejs.press/bg/6-light.svg
 bgImageDark: https://theme-hope-assets.vuejs.press/bg/6-dark.svg
 bgImageStyle:
   background-attachment: fixed
-heroText: VuePress Theme Hope
-tagline: A VuePress theme with tons of features✨
 actions:
-  - text: Tutorial 🧭
-    link: ./cookbook/tutorial/
+  - text: Get Started
+    link: ./get-started/
+    icon: signs-post
     type: primary
 
-  - text: Intro 💡
-    link: ./guide/get-started/intro.html
+  - text: Guide
+    icon: lightbulb
+    link: ./guide/
 
-  - text: Config 🛠
-    link: ./config/
-
-  - text: Online Demo 🪀
-    link: https://stackblitz.com/fork/vuepress-theme-hope
+  - text: Demos
+    icon: star
+    link: ./demo/
 
 highlights:
   - header: Easy to install
@@ -47,117 +47,142 @@ highlights:
         details: Check markdown links
         link: ./guide/markdown/others.html#link-check
 
-      - title: Custom Container
+      - title: Hint box
         icon: box-archive
         details: Decorate Markdown content with styles
-        link: ./guide/markdown/container.html
+        link: ./guide/markdown/stylize/hint.html
+
+      - title: GFM alerts
+        icon: bell
+        details: GFM alert box
+        link: ./guide/markdown/stylize/alert.html
 
       - title: Tabs
         icon: table-columns
         details: Group similar content with tabs and switch them together
-        link: ./guide/markdown/tabs.html
+        link: ./guide/markdown/content/tabs.html
 
       - title: Code Tabs
         icon: code
         details: Group similar codes with tabs
-        link: ./guide/markdown/code-tabs.html
+        link: ./guide/markdown/code/code-tabs.html
 
       - title: Custom Align
         icon: align-center
         details: Let you decide to align paragraphs in the way you like
-        link: ./guide/markdown/align.html
+        link: ./guide/markdown/stylize/align.html
 
-      - title: Attrs support
+      - title: Attrs
         icon: code
         details: Allow you to add attributes for Markdown content
-        link: ./guide/markdown/attrs.html
+        link: ./guide/markdown/stylize/attrs.html
 
-      - title: Superscript and subscript support
+      - title: Superscript and subscript
         icon: superscript
-        details: Your Markdown now support superscript and subscript
-        link: ./guide/markdown/sup-sub.html
+        details: Inserting superscript and subscript
+        link: ./guide/markdown/stylize/sup-sub.html
 
-      - title: Footnote support
+      - title: Footnote
         icon: quote-left
         details: Your Markdown now support footnotes
-        link: ./guide/markdown/footnote.html
+        link: ./guide/markdown/content/footnote.html
 
-      - title: Mark Support
+      - title: Mark
         icon: highlighter
-        details: Mark words and sentences in Markdown
-        link: ./guide/markdown/mark.html
+        details: Mark and highlight contents
+        link: ./guide/markdown/stylize/mark.html
 
-      - title: Tasklist Support
+      - title: Spoiler
+        icon: eraser
+        details: Mark spoiler contents
+        link: ./guide/markdown/stylize/spoiler.html
+
+      - title: Tasklist
         icon: square-check
         details: Use tasklist in Markdown
-        link: ./guide/markdown/tasklist.html
+        link: ./guide/markdown/grammar/tasklist.html
 
-      - title: image syntax
+      - title: Image syntax
         icon: image
         details: improve syntax to specify size and color scheme
-        link: ./guide/markdown/image.html
+        link: ./guide/markdown/grammar/image.html
 
-      - title: Card Support
-        icon: square
-        details: Add cards in Markdown
-        link: ./guide/markdown/card.html
+      - title: Component Support
+        icon: puzzle-piece
+        details: Easily insert components in Markdown
+        link: ./guide/component/grammar.html
+
+      - title: Components
+        icon: puzzle-piece
+        details: Common components out fo box
+        link: ./guide/component/built-in.html
 
       - title: Chart Support
         icon: chart-simple
         details: Display charts in Markdown
-        link: ./guide/markdown/chart.html
+        link: ./guide/markdown/chart/chartjs.html
 
       - title: Flowchart Support
         icon: route
         details: Create your flowchart in Markdown
-        link: ./guide/markdown/flowchart.html
+        link: ./guide/markdown/chart/flowchart.html
 
       - title: Mermaid Support
         icon: chart-pie
         details: Add mermaid diagram in Markdown
-        link: ./guide/markdown/mermaid.html
+        link: ./guide/markdown/chart/mermaid.html
+
+      - title: Plantuml Support
+        icon: diagram-project
+        details: Add plantuml in Markdown
+        link: ./guide/markdown/chart/plantuml.html
 
       - title: Tex Support
         icon: square-root-variable
         details: Markdown now have Tex Support so you can write your formula
-        link: ./guide/markdown/tex.html
+        link: ./guide/markdown/grammar/math.html
 
       - title: Include snippet Support
-        icon: fab fa-markdown
+        icon: b:markdown
         details: split your docs with different parts and import them in Markdown
-        link: ./guide/markdown/include.html
+        link: ./guide/markdown/content/include.html
 
       - title: Playground Support
         icon: code
         details: You can add playground in Markdown files
-        link: ./guide/markdown/playground.html
+        link: ./guide/markdown/code/playground.html
+
+      - title: Kotlin playground Support
+        icon: b:kickstarter
+        details: Reactive kotlin playground
+        link: ./guide/markdown/code/kotlin-playground.html
 
       - title: Vue playground Support
-        icon: fab fa-vuejs
+        icon: b:vuejs
         details: Show living vue component in playground
-        link: ./guide/markdown/vue-playground.html
+        link: ./guide/markdown/code/vue-playground.html
+
+      - title: Sandpack playground Support
+        icon: code
+        details: A live coding environment driven by Sandpack.
+        link: ./guide/markdown/code/sandpack.html
 
       - title: Code Demo Support
         icon: laptop-code
         details: You can insert code demo easily
-        link: ./guide/markdown/demo/
+        link: ./guide/markdown/code/demo.html
 
       - title: Presentation Support
         icon: person-chalkboard
-        details: You can insert presentation in Markdown files directly
-        link: ./guide/markdown/presentation/
+        details: Insert presentation in Markdown files via Reveal.js
+        link: ./guide/markdown/content/revealjs.html
 
-  - header: Improved layouts
-    description: An awesome responsive layout with full a11y support.
-    image: /assets/image/layout.svg
-    bgImage: https://theme-hope-assets.vuejs.press/bg/5-light.svg
-    bgImageDark: https://theme-hope-assets.vuejs.press/bg/5-dark.svg
+  - header: Customizable UI
+    description: Customizable outlook with full a11y support.
+    image: /assets/image/ui.svg
+    bgImage: https://theme-hope-assets.vuejs.press/bg/9-light.svg
+    bgImageDark: https://theme-hope-assets.vuejs.press/bg/9-dark.svg
     highlights:
-      - title: Layout
-        icon: object-group
-        details: Improved navbar, sidebar, page nav and new breadcrumb, footer and toc. We also bring you a brand new homepage.
-        link: ./guide/layout/
-
       - title: Dark Mode
         icon: circle-half-stroke
         details: Switch between light and dark modes freely
@@ -165,27 +190,53 @@ highlights:
 
       - title: Customizable Theme Color
         icon: palette
-        details: Customize theme color
+        details: Set theme color with the brand color and even a picker
         link: ./guide/interface/theme-color.html
-
-      - title: Slide Page
-        icon: person-chalkboard
-        details: Adding slide pages to display things you like
-        link: ./guide/layout/slides
 
       - title: More
         icon: ellipsis
         details: RTL layout, print support, fullscreen button, etc.
         link: ./guide/interface/others.html
 
+  - header: Improved layouts
+    description: An awesome responsive layout
+    image: /assets/image/layout.svg
+    bgImage: https://theme-hope-assets.vuejs.press/bg/5-light.svg
+    bgImageDark: https://theme-hope-assets.vuejs.press/bg/5-dark.svg
+    highlights:
+      - title: Navbar
+        icon: window-maximize
+        details: Fully customizable navbar with improved mobile support
+        link: ./guide/layout/navbar.html
+
+      - title: Sidebar
+        icon: fas fa-window-maximize fa-rotate-270
+        details: Generate sidebar based on page headings and file structure
+        link: ./guide/layout/sidebar.html
+
+      - title: Slide Page
+        icon: person-chalkboard
+        details: Adding slide pages to display things you like
+        link: ./guide/layout/slides.html
+
+      - title: Other Layout Improvement
+        icon: object-group
+        details: Improved page nav and new breadcrumb, footer and toc. We also bring you a brand new homepage.
+        link: ./guide/layout/
+
   - header: New features
     image: /assets/image/features.svg
     bgImage: https://theme-hope-assets.vuejs.press/bg/1-light.svg
     bgImageDark: https://theme-hope-assets.vuejs.press/bg/1-dark.svg
     features:
+      - title: Catalog Page
+        icon: network-wired
+        details: Auto generating catalog page and out of box catalog component
+        link: ./guide/feature/catalog.html
+
       - title: Pageviews and Comments
         icon: comment-dots
-        details: Start pageview statistics and comment support with Waline
+        details: Pageview statistics and comment support with 4 comment service
         link: ./guide/feature/comment.html
 
       - title: Article Information
@@ -203,10 +254,10 @@ highlights:
         details: Support docsearch and client search
         link: ./guide/feature/search.html
 
-      - title: Copy Code Blocks
-        icon: copy
-        details: Copy codes with one click in code blocks
-        link: ./guide/feature/copy-code.html
+      - title: Code Block
+        icon: code
+        details: Customize code block themes, line number, highlight lines, copy button, etc.
+        link: ./guide/markdown/code/fence.html
 
       - title: Image Preview
         icon: image

@@ -1,8 +1,10 @@
 import { navbar } from "vuepress-theme-hope";
+
 import { version } from "../version.js";
 
 export const zhNavbar = navbar([
   "/zh/",
+  "/zh/portfolio",
   "/zh/demo/",
   {
     text: "指南",

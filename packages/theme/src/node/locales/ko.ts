@@ -20,7 +20,6 @@ export const koLocale: ThemeLocaleData = {
     toc: "이 페이지에서",
     prev: "이전",
     next: "다음",
-    lastUpdated: "마지막 수정",
     contributors: "기여자",
     editLink: "이 페이지 수정",
     print: "인쇄",
@@ -36,6 +35,7 @@ export const koLocale: ThemeLocaleData = {
     all: "모두",
     intro: "프로필",
     star: "스타",
+    empty: "$text가 비어있습니다.",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const koLocale: ThemeLocaleData = {
     errorHint: "정확한 비밀번호를 입력해주세요!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "본문으로 건너뛰기",
     notFoundTitle: "페이지를 찾을 수 없습니다.",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const koLocale: ThemeLocaleData = {
     ],
     back: "뒤로가기",
     home: "메인으로",
-    openInNewWindow: "새 창에서 열기",
   },
 };

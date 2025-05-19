@@ -20,7 +20,6 @@ export const plLocale: ThemeLocaleData = {
     toc: "Na tej stronie",
     prev: "Poprzednia",
     next: "Następna",
-    lastUpdated: "Ostatnia akutalizacja",
     contributors: "Współtwórcy",
     editLink: "Edytuj tą stronę",
     print: "Drukuj",
@@ -36,6 +35,7 @@ export const plLocale: ThemeLocaleData = {
     all: "Wszystkie",
     intro: "Osobiste wprowadzenie",
     star: "Gwiazda",
+    empty: "$text jest pusty",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const plLocale: ThemeLocaleData = {
     errorHint: "Podaj poprawne hasło!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Przejdź do głównej treści",
     notFoundTitle: "Nie znaleziono strony",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const plLocale: ThemeLocaleData = {
     ],
     back: "Wróć",
     home: "Strona główna",
-    openInNewWindow: "Otwórz w nowym oknie",
   },
 };

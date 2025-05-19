@@ -1,11 +1,12 @@
-import type { CompilerOptions } from "typescript";
 import {
   deepAssign,
   endsWith,
   entries,
+  isDef,
   isPlainObject,
   keys,
-} from "vuepress-shared/node";
+} from "@vuepress/helper";
+import type { CompilerOptions } from "typescript";
 
 import { compressToEncodedURIComponent } from "./ventors/lzstring.js";
 import { optionDeclarations } from "./ventors/optionDeclarations.js";
@@ -25,16 +26,16 @@ export const getURL = (
 
   const queryString = entries(compilerOptions)
     .map(([key, value]) => {
-      const item = optionDeclarations.find((option) => option.name === key)!;
+      const item = optionDeclarations.find((option) => option.name === key);
 
-      if (!item || value === null || value === undefined) return "";
+      if (!item || value === null || !isDef(value)) return "";
 
       const { type } = item;
 
       if (isPlainObject(type)) {
         const result = type[value as keyof typeof type];
 
-        return result?.toString() || "";
+        return result?.toString() ?? "";
       }
 
       return `${key}=${encodeURIComponent(value as string)}`;
@@ -54,24 +55,22 @@ export const getTSPlaygroundPreset = ({
     title = "",
     files,
     settings,
-    key,
   }: PlaygroundData): Record<string, string> => {
-    const tsfiles = keys(files).filter((key) => endsWith(key, ".ts"));
+    const tsFiles = keys(files).filter((key) => endsWith(key, ".ts"));
 
-    if (tsfiles.length !== 1)
+    if (tsFiles.length !== 1)
       logger.error("TS playground only support 1 ts file");
 
     const link = `${service}${getURL(
-      files[tsfiles[0]].content,
+      files[tsFiles[0]].content,
       deepAssign(
         {},
-        <CompilerOptions>settings || {},
-        <CompilerOptions>compilerOptions,
+        settings as CompilerOptions,
+        compilerOptions as CompilerOptions,
       ),
     )}`;
 
     return {
-      key,
       title,
       link: encodeURIComponent(link),
     };

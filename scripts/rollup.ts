@@ -6,12 +6,11 @@ import type { RollupReplaceOptions } from "@rollup/plugin-replace";
 import replace from "@rollup/plugin-replace";
 import type { ModuleSideEffectsOption, RollupOptions } from "rollup";
 import copy from "rollup-plugin-copy";
-import dts from "rollup-plugin-dts";
+import { dts } from "rollup-plugin-dts";
 import esbuild from "rollup-plugin-esbuild";
+import { shebang } from "rollup-plugin-resolve-shebang";
 
-import { shebangPlugin } from "./shebang.js";
-
-const isProduction = process.env["NODE_ENV"] === "production";
+const isProduction = process.env.NODE_ENV === "production";
 
 export interface FileInfo {
   base: string;
@@ -29,11 +28,11 @@ export interface BundleOptions {
   inlineDynamicImports?: boolean;
   preserveShebang?: boolean;
   replace?: RollupReplaceOptions;
-  alias?: Alias[] | { [find: string]: string };
+  alias?: Alias[] | Record<string, string>;
   moduleSideEffects?: ModuleSideEffectsOption;
 }
 
-export const bundle = (
+export const rollupBundle = (
   filePath: string | FileInfo,
   {
     dts: enableDts = typeof filePath === "object"
@@ -69,7 +68,7 @@ export const bundle = (
       {
         ...(typeof filePath === "object"
           ? {
-              dir: `./lib/${filePath.target || filePath.base}`,
+              dir: `./lib/${filePath.target ?? filePath.base}`,
               entryFileNames: "[name].js",
             }
           : { file: `./lib/${filePath}.js` }),
@@ -83,34 +82,29 @@ export const bundle = (
 
     plugins: [
       typeof replaceOptions === "object"
-        ? (replace as unknown as typeof replace.default)({
+        ? replace({
             preventAssignment: true,
             ...replaceOptions,
           })
         : null,
       entries
-        ? // FIXME: Types issue
-          (alias as unknown as typeof alias.default)({
+        ? alias({
             entries,
           })
         : null,
-      preserveShebang ? shebangPlugin() : null,
-      ...(resolve
-        ? [
-            nodeResolve({ preferBuiltins: true }),
-            // FIXME: Types issue
-            (commonjs as unknown as typeof commonjs.default)(),
-          ]
-        : []),
-      // FIXME: Types issue
-      (esbuild as unknown as typeof esbuild.default)({
+      preserveShebang ? shebang() : null,
+      ...(resolve ? [nodeResolve({ preferBuiltins: true }), commonjs()] : []),
+      esbuild({
         charset: "utf8",
         minify: isProduction,
-        target: "node16",
+        target: "node18",
+        loaders: {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          ".json": "json",
+        },
       }),
       copyOptions.length
-        ? // FIXME: Types issue
-          (copy as unknown as typeof copy.default)({
+        ? copy({
             targets: copyOptions.map((item) =>
               typeof item === "string"
                 ? { src: `./src/${item}`, dest: `./lib/${item}` }
@@ -121,41 +115,45 @@ export const bundle = (
     ],
 
     external: [
-      ...(resolve
+      resolve
         ? []
         : (
-            typeof filePath === "object"
-              ? filePath.base.startsWith("client")
-              : filePath.startsWith("client/")
-          )
-        ? [
-            /^@temp/,
-            "@vueuse/core",
-            "@vuepress/client",
-            "@vuepress/shared",
-            "vue",
-            "vue-router",
-            "vuepress-shared/client",
-            /\.s?css(?:\?module)?$/,
-          ]
-        : (
-            typeof filePath === "object"
-              ? filePath.base.startsWith("node") ||
-                filePath.base.startsWith("cli")
-              : filePath.startsWith("node/") || filePath.startsWith("cli/")
-          )
-        ? [
-            /^node:/,
-            "@vuepress/core",
-            "@vuepress/shared",
-            /^@vuepress\/plugin-/,
-            "@vuepress/utils",
-            /^vuepress-plugin-/,
-            "vuepress-shared/node",
-          ]
-        : []),
-      ...external,
-    ],
+              typeof filePath === "object"
+                ? filePath.base.startsWith("client")
+                : filePath.startsWith("client/")
+            )
+          ? [
+              /^@temp/,
+              "@vuepress/helper/client",
+              "@vuepress/helper/shared",
+              "@vueuse/core",
+              "vue",
+              "vuepress/client",
+              "vuepress/shared",
+              "vuepress-shared/client",
+              /\.s?css$/,
+            ]
+          : (
+                typeof filePath === "object"
+                  ? filePath.base.startsWith("node") ||
+                    filePath.base.startsWith("cli")
+                  : filePath.startsWith("node/") || filePath.startsWith("cli/")
+              )
+            ? [
+                /^node:/,
+                "@vuepress/helper",
+                "@vuepress/helper/shared",
+                /^@vuepress\/plugin-/,
+                "vuepress/cli",
+                "vuepress/core",
+                "vuepress/shared",
+                "vuepress/utils",
+                /^vuepress-plugin-/,
+                "vuepress-shared/node",
+              ]
+            : [],
+      external,
+    ].flat(),
 
     treeshake: {
       moduleSideEffects,
@@ -178,7 +176,7 @@ export const bundle = (
             {
               ...(typeof filePath === "object"
                 ? {
-                    dir: `./lib/${filePath.target || filePath.base}`,
+                    dir: `./lib/${filePath.target ?? filePath.base}`,
                     entryFileNames: "[name].d.ts",
                   }
                 : { file: `./lib/${filePath}.d.ts` }),
@@ -187,12 +185,7 @@ export const bundle = (
             },
           ],
           plugins: [
-            entries
-              ? // FIXME: Types issue
-                (alias as unknown as typeof alias.default)({
-                  entries,
-                })
-              : null,
+            entries ? alias({ entries }) : null,
             dts({
               compilerOptions: {
                 preserveSymlinks: false,
@@ -200,23 +193,40 @@ export const bundle = (
             }),
           ],
           external: [
-            ...(resolve
+            resolve
               ? []
               : (
-                  typeof filePath === "object"
-                    ? filePath.base.startsWith("client")
-                    : filePath.startsWith("client/")
-                )
-              ? [/^@temp/, "vuepress-shared/client", /\.s?css$/]
-              : (
-                  typeof filePath === "object"
-                    ? filePath.base.startsWith("node")
-                    : filePath.startsWith("node/")
-                )
-              ? [/^node:/, "vuepress-shared/node"]
-              : []),
-            ...dtsExternal,
-          ],
+                    typeof filePath === "object"
+                      ? filePath.base.startsWith("client")
+                      : filePath.startsWith("client/")
+                  )
+                ? [
+                    /^@temp/,
+                    "@vuepress/helper/client",
+                    "@vuepress/helper/shared",
+                    "vuepress/client",
+                    "vuepress/shared",
+                    "vuepress-shared/client",
+                    /\.s?css$/,
+                  ]
+                : (
+                      typeof filePath === "object"
+                        ? filePath.base.startsWith("node")
+                        : filePath.startsWith("node/")
+                    )
+                  ? [
+                      /^node:/,
+                      "@vuepress/helper",
+                      "@vuepress/helper/shared",
+                      "vuepress/cli",
+                      "vuepress/core",
+                      "vuepress/shared",
+                      "vuepress/utils",
+                      "vuepress-shared/node",
+                    ]
+                  : [],
+            dtsExternal,
+          ].flat(),
         } as RollupOptions,
       ]
     : []),

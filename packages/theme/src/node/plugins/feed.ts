@@ -1,41 +1,64 @@
-import type { Plugin } from "@vuepress/core";
-import type { FeedOptions } from "vuepress-plugin-feed2";
-import { feedPlugin } from "vuepress-plugin-feed2";
 import {
   deepAssign,
   entries,
   fromEntries,
-  getAuthor,
-  keys,
-} from "vuepress-shared/node";
+  isPlainObject,
+} from "@vuepress/helper";
+import type { FeedPluginOptions } from "@vuepress/plugin-feed";
+import type { Plugin } from "vuepress/core";
+import { colors } from "vuepress/utils";
 
 import type { ThemeData } from "../../shared/index.js";
+import { getAuthor } from "../../shared/index.js";
+import { logger } from "../utils.js";
+
+let feedPlugin:
+  | ((options: FeedPluginOptions, legacy?: boolean) => Plugin)
+  | null = null;
+
+try {
+  ({ feedPlugin } = await import("@vuepress/plugin-feed"));
+} catch {
+  // Do nothing
+}
 
 /**
  * @private
  *
- * Resolve options for vuepress-plugin-feed2
+ * Resolve options for @vuepress/plugin-feed
  */
 export const getFeedPlugin = (
   themeData: ThemeData,
-  options: Omit<FeedOptions, "hostname"> = {},
+  options?: Omit<FeedPluginOptions, "hostname"> | boolean,
   hostname?: string,
   favicon?: string,
   legacy = false,
 ): Plugin | null => {
-  // disable feed if no options for feed plugin
-  if (!keys(options).length) return null;
+  // Disable feed if feed is disabled or no options for feed plugin
+  if (!options) return null;
 
-  const globalAuthor = getAuthor(themeData.author);
+  if (!feedPlugin) {
+    logger.error(`${colors.cyan("@vuepress/plugin-feed")} is not installed!`);
 
-  const defaultOptions: FeedOptions = {
-    // @ts-expect-error
+    return null;
+  }
+
+  const globalAuthor = getAuthor(
+    themeData.author ?? themeData.locales["/"].author,
+  );
+
+  const defaultOptions: FeedPluginOptions = {
+    // @ts-expect-error: hostname may not exist here
     hostname,
+    filter: ({ frontmatter, filePathRelative }) =>
+      Boolean(
+        frontmatter.feed ??
+          frontmatter.article ??
+          (filePathRelative && !frontmatter.home),
+      ),
     channel: {
-      ...(favicon ? { icon: favicon } : {}),
-      ...(themeData.locales["/"].logo
-        ? { image: themeData.locales["/"].logo }
-        : {}),
+      icon: favicon,
+      image: themeData.locales["/"].logo,
       ...(globalAuthor.length ? { author: globalAuthor[0] } : {}),
     },
     locales: fromEntries(
@@ -47,8 +70,8 @@ export const getFeedPlugin = (
             localePath,
             {
               channel: {
-                ...(favicon ? { icon: favicon } : {}),
-                ...(logo ? { image: logo } : {}),
+                icon: favicon,
+                image: logo,
                 ...(localeAuthor.length ? { author: localeAuthor[0] } : {}),
                 ...(typeof copyright === "string" ? { copyright } : {}),
               },
@@ -59,5 +82,11 @@ export const getFeedPlugin = (
     ),
   };
 
-  return feedPlugin(deepAssign(defaultOptions, options), legacy);
+  return feedPlugin(
+    deepAssign(
+      defaultOptions,
+      isPlainObject(options) ? options : { rss: true },
+    ),
+    legacy,
+  );
 };

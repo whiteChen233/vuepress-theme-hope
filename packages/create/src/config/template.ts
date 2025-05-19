@@ -1,14 +1,15 @@
+import { execSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { execaCommandSync } from "execa";
-import inquirer from "inquirer";
+import { confirm, select } from "@inquirer/prompts";
 
+import type { PackageManager, SupportedPreset } from "./config.js";
+import { supportedPresets } from "./config.js";
 import { updateGitIgnore } from "./gitignore.js";
-import type { CreateI18n, Lang } from "./i18n.js";
 import { getWorkflowContent } from "./workflow.js";
-import type { PackageManager } from "../utils/index.js";
+import type { CreateLocale, SupportedLang } from "../i18n/index.js";
 import {
   checkGitInstalled,
   checkGitRepo,
@@ -16,63 +17,45 @@ import {
   ensureDirExistSync,
 } from "../utils/index.js";
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const __filename = fileURLToPath(import.meta.url);
-// eslint-disable-next-line @typescript-eslint/naming-convention
+
 const __dirname = dirname(__filename);
 
-export const generateTemplate = async (
-  targetDir: string,
-  {
-    cwd = process.cwd(),
-    packageManager,
-    lang,
-    message,
-    preset,
-  }: {
-    cwd?: string;
-    packageManager: PackageManager;
-    lang: Lang;
-    message: CreateI18n;
-    preset?: "blog" | "docs" | null;
-  },
-): Promise<void> => {
-  const { i18n, workflow } = await inquirer.prompt<{
-    i18n: boolean;
-    workflow: boolean;
-  }>([
-    // TODO: Support it
-    {
-      name: "i18n",
-      type: "confirm",
-      message: message.question.i18n,
-      default: false,
-    },
-    {
-      name: "workflow",
-      type: "confirm",
-      message: message.question.workflow,
-      default: true,
-    },
-  ]);
+interface TemplateOptions {
+  packageManager: PackageManager;
+  lang: SupportedLang;
+  locale: CreateLocale;
+  cwd?: string;
+  targetDir: string;
+  preset?: SupportedPreset | null;
+}
 
-  if (!preset)
-    preset = (
-      await inquirer.prompt<{ preset: "blog" | "docs" }>([
-        {
-          name: "preset",
-          type: "list",
-          message: message.question.preset,
-          choices: ["blog", "docs"],
-        },
-      ])
-    ).preset;
+export const generateTemplate = async ({
+  cwd = process.cwd(),
+  targetDir,
+  lang,
+  locale,
+  preset,
+  packageManager,
+}: TemplateOptions): Promise<void> => {
+  preset ??= await select<SupportedPreset>({
+    message: locale.question.preset,
+    choices: supportedPresets.map((preset) => ({
+      name: preset,
+      value: preset,
+    })),
+  });
 
-  console.log(message.flow.generateTemplate);
+  const enableI18n = await confirm({
+    message: locale.question.i18n,
+    default: false,
+  });
+
+  console.log(locale.flow.generateTemplate);
 
   const templateFolder = preset;
 
-  // copy public assets
+  // Copy public assets
   copy(
     resolve(__dirname, "../template/public"),
     resolve(cwd, targetDir, "./.vuepress/public"),
@@ -82,7 +65,7 @@ export const generateTemplate = async (
     resolve(cwd, targetDir, ".vuepress"),
   );
 
-  if (i18n) {
+  if (enableI18n) {
     copy(
       resolve(__dirname, "../template", templateFolder, "en"),
       resolve(cwd, targetDir),
@@ -95,7 +78,7 @@ export const generateTemplate = async (
       resolve(__dirname, "../template", templateFolder, "config/multi"),
       resolve(cwd, targetDir, ".vuepress"),
     );
-  } else if (lang === "简体中文") {
+  } else if (lang === "zh") {
     copy(
       resolve(__dirname, "../template", templateFolder, "zh"),
       resolve(cwd, targetDir),
@@ -115,38 +98,44 @@ export const generateTemplate = async (
     );
   }
 
-  if (workflow) {
+  // Git related
+  let isGitRepo = checkGitRepo(cwd);
+
+  if (isGitRepo) {
+    updateGitIgnore(targetDir, cwd);
+  } else if (checkGitInstalled()) {
+    if (
+      // enable git
+      await confirm({
+        message: locale.question.git,
+        default: true,
+      })
+    ) {
+      execSync("git init -b main", {
+        cwd,
+        stdio: "ignore",
+      });
+      updateGitIgnore(targetDir, cwd);
+      isGitRepo = true;
+    }
+  }
+
+  if (
+    isGitRepo &&
+    // enable workflow
+    (await confirm({
+      message: locale.question.workflow,
+      default: true,
+    }))
+  ) {
     const workflowDir = resolve(cwd, ".github/workflows");
 
     ensureDirExistSync(workflowDir);
 
     writeFileSync(
       resolve(workflowDir, "deploy-docs.yml"),
-      getWorkflowContent(packageManager, targetDir, lang),
+      getWorkflowContent(packageManager, cwd, targetDir, locale),
       { encoding: "utf-8" },
     );
-  }
-
-  // git related
-  const isGitRepo = checkGitRepo(cwd);
-
-  if (isGitRepo) {
-    updateGitIgnore(targetDir, cwd);
-  } else if (checkGitInstalled()) {
-    const { git } = await inquirer.prompt<{
-      git: boolean;
-    }>([
-      {
-        name: "git",
-        type: "confirm",
-        message: message.question.git,
-        default: true,
-      },
-    ]);
-
-    if (git) {
-      execaCommandSync("git init", { cwd });
-      updateGitIgnore(targetDir, cwd);
-    }
   }
 };

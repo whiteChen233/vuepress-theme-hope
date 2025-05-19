@@ -20,7 +20,6 @@ export const deATLocale: ThemeLocaleData = {
     toc: "On This Page",
     prev: "Prev",
     next: "Next",
-    lastUpdated: "Zuletzt geändert",
     contributors: "Mitwirkende",
     editLink: "Diese Seite barbeiten",
     print: "Drucken",
@@ -36,6 +35,7 @@ export const deATLocale: ThemeLocaleData = {
     all: "Alle",
     intro: "Persönliche Einleitung",
     star: "Star",
+    empty: "$text ist leer",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const deATLocale: ThemeLocaleData = {
     errorHint: "Bitte das korrekte Passwort eingeben!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Zum Hauptinhalt springen",
     notFoundTitle: "Seite nicht gefunden",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const deATLocale: ThemeLocaleData = {
     ],
     back: "Zurück",
     home: "Zur Startseite",
-    openInNewWindow: "Open in new window",
   },
 };

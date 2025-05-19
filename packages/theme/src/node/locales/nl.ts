@@ -20,7 +20,6 @@ export const nlLocale: ThemeLocaleData = {
     toc: "Op Deze Pagina",
     prev: "Vorige",
     next: "Volgende",
-    lastUpdated: "Laatst geüpdate",
     contributors: "Bijdragers",
     editLink: "Bewerk deze pagina",
     print: "Printen",
@@ -36,6 +35,7 @@ export const nlLocale: ThemeLocaleData = {
     all: "Alle",
     intro: "Persoonlijke Intro",
     star: "Star",
+    empty: "$text is leeg",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const nlLocale: ThemeLocaleData = {
     errorHint: "Geliebe het juiste paswoord in te vullen!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Ga naar de hoofdinhoud",
     notFoundTitle: "Pagina niet gevonden",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const nlLocale: ThemeLocaleData = {
     ],
     back: "Ga terug",
     home: "Ga terug naar home",
-    openInNewWindow: "Open in een nieuw venster",
   },
 };

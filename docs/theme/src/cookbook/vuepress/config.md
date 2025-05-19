@@ -27,11 +27,7 @@ The essential file for configuring a VuePress site is `.vuepress/config.js`, whi
 
 A basic config file looks like this:
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
+```js
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -47,26 +43,6 @@ export default defineUserConfig({
   }),
 });
 ```
-
-@tab JS
-
-```js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  // site config
-  lang: "en-US",
-  title: "Hello, VuePress!",
-  description: "This is my first VuePress site",
-
-  // theme
-  theme: hopeTheme({
-    // theme config
-  }),
-};
-```
-
-:::
 
 ::: tip
 
@@ -110,8 +86,8 @@ In most cases, the config file is sufficient to configure your VuePress site. Ho
 
 A basic client config file looks like this:
 
-```ts
-import { defineClientConfig } from "@vuepress/client";
+```ts twoslash
+import { defineClientConfig } from "vuepress/client";
 
 export default defineClientConfig({
   enhance({ app, router, siteData }) {},

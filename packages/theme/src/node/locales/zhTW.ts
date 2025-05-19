@@ -20,7 +20,6 @@ export const zhTWLocale: ThemeLocaleData = {
     toc: "此頁內容",
     prev: "上一頁",
     next: "下一頁",
-    lastUpdated: "上次編輯於",
     contributors: "貢獻者",
     editLink: "編輯此頁",
     print: "打印",
@@ -35,7 +34,8 @@ export const zhTWLocale: ThemeLocaleData = {
     timelineTitle: "昨日不在",
     all: "全部",
     intro: "個人介紹",
-    star: "收藏",
+    star: "星標",
+    empty: "$text 為空",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const zhTWLocale: ThemeLocaleData = {
     errorHint: "請輸入正確密碼",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "跳至主要內容",
     notFoundTitle: "頁面不存在",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const zhTWLocale: ThemeLocaleData = {
     ],
     back: "返回上一頁",
     home: "帶我回家",
-    openInNewWindow: "Open in new window",
   },
 };

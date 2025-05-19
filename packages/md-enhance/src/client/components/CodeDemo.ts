@@ -1,11 +1,11 @@
-import { useToggle } from "@vueuse/core";
+import { LoadingIcon, decodeData } from "@vuepress/helper/client";
+import { useEventListener, useResizeObserver, useToggle } from "@vueuse/core";
 import type { PropType, SlotsType, VNode } from "vue";
 import { computed, defineComponent, h, onMounted, ref, shallowRef } from "vue";
-import { LoadingIcon, atou } from "vuepress-shared/client";
 
 import { CODEPEN_SVG, JSFIDDLE_SVG } from "./icons.js";
 import type { CodeDemoOptions } from "../../shared/index.js";
-import { loadNormal, loadReact, loadVue } from "../composables/index.js";
+import { loadNormal, loadReact, loadVue } from "../composables/loadScript.js";
 import {
   getCode,
   getNormalCode,
@@ -17,8 +17,6 @@ import {
 
 import "balloon-css/balloon.css";
 import "../styles/code-demo.scss";
-
-declare const MARKDOWN_ENHANCE_DELAY: number;
 
 export default defineComponent({
   name: "CodeDemo",
@@ -49,20 +47,14 @@ export default defineComponent({
      *
      * 代码演示标题
      */
-    title: {
-      type: String,
-      default: "",
-    },
+    title: String,
 
     /**
      * Code demo config
      *
      * 代码演示配置
      */
-    config: {
-      type: String,
-      default: "",
-    },
+    config: String,
 
     /**
      * Code demo code content
@@ -88,13 +80,16 @@ export default defineComponent({
 
     const config = computed(
       () =>
-        <Partial<CodeDemoOptions>>(
-          JSON.parse(props.config ? atou(props.config) : "{}")
-        ),
+        JSON.parse(
+          props.config ? decodeData(props.config) : "{}",
+        ) as Partial<CodeDemoOptions>,
     );
 
     const codeType = computed(() => {
-      const codeConfig = <Record<string, string>>JSON.parse(atou(props.code));
+      const codeConfig = JSON.parse(decodeData(props.code)) as Record<
+        string,
+        string
+      >;
 
       return getCode(codeConfig);
     });
@@ -103,15 +98,16 @@ export default defineComponent({
       props.type === "react"
         ? getReactCode(codeType.value, config.value)
         : props.type === "vue"
-        ? getVueCode(codeType.value, config.value)
-        : getNormalCode(codeType.value, config.value),
+          ? getVueCode(codeType.value, config.value)
+          : getNormalCode(codeType.value, config.value),
     );
 
     const isLegal = computed(() => code.value.isLegal);
 
     const initDom = (innerHTML = false): void => {
-      // attach a shadow root to demo
+      // Attach a shadow root to demo
 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const shadowRoot = demoWrapper.value!.attachShadow({ mode: "open" });
       const appElement = document.createElement("div");
 
@@ -134,32 +130,56 @@ export default defineComponent({
     const loadDemo = (): Promise<void> => {
       switch (props.type) {
         case "react": {
-          return loadReact(code.value).then(() => initDom());
+          return loadReact(code.value).then(() => {
+            initDom();
+          });
         }
         case "vue": {
-          return loadVue(code.value).then(() => initDom());
+          return loadVue(code.value).then(() => {
+            initDom();
+          });
         }
 
         default: {
-          return loadNormal(code.value).then(() => initDom(true));
+          return loadNormal(code.value).then(() => {
+            initDom(true);
+          });
         }
       }
     };
 
-    onMounted(() => {
-      setTimeout(() => {
-        void loadDemo();
-      }, MARKDOWN_ENHANCE_DELAY);
+    let previousState: boolean | null = null;
+
+    useEventListener("beforeprint", () => {
+      toggleIsExpand(true);
+    });
+
+    useEventListener("afterprint", () => {
+      if (previousState !== null) {
+        toggleIsExpand(previousState);
+      }
+
+      previousState = null;
+    });
+
+    useResizeObserver(codeContainer, () => {
+      if (isExpanded.value) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        height.value = `${codeContainer.value!.clientHeight + 14}px`;
+      }
+    });
+
+    onMounted(async () => {
+      await loadDemo();
     });
 
     return (): VNode =>
-      h("div", { class: "vp-code-demo", id: props.id }, [
-        h("div", { class: "vp-code-demo-header" }, [
+      h("div", { class: "vp-container vp-code-demo", id: props.id }, [
+        h("div", { class: "vp-container-header" }, [
           code.value.isLegal
             ? h("button", {
                 type: "button",
                 title: "toggle",
-                "aria-hidden": true,
                 class: [
                   "vp-code-demo-toggle-button",
                   isExpanded.value ? "down" : "end",
@@ -167,7 +187,8 @@ export default defineComponent({
                 onClick: () => {
                   height.value = isExpanded.value
                     ? "0"
-                    : `${codeContainer.value!.clientHeight + 13.8}px`;
+                    : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                      `${codeContainer.value!.clientHeight + 14}px`;
                   toggleIsExpand();
                 },
               })
@@ -175,12 +196,12 @@ export default defineComponent({
           props.title
             ? h(
                 "span",
-                { class: "vp-code-demo-title" },
+                { class: "vp-container-title" },
                 decodeURIComponent(props.title),
               )
             : null,
 
-          code.value.isLegal && code.value.jsfiddle !== false
+          code.value.isLegal && (code.value.jsfiddle ?? true)
             ? h(
                 "form",
                 {
@@ -219,13 +240,13 @@ export default defineComponent({
                     class: "jsfiddle-button",
                     innerHTML: JSFIDDLE_SVG,
                     "aria-label": "JSFiddle",
-                    "data-balloon-pos": "up",
+                    "data-balloon-pos": "down",
                   }),
                 ],
               )
             : null,
 
-          !code.value.isLegal || code.value.codepen !== false
+          !code.value.isLegal || (code.value.codepen ?? true)
             ? h(
                 "form",
                 {
@@ -248,19 +269,13 @@ export default defineComponent({
                       css_external: code.value.cssLib.join(";"),
                       layout: code.value.codepenLayout,
                       // eslint-disable-next-line @typescript-eslint/naming-convention
-                      html_pre_processor: codeType.value
-                        ? codeType.value.html[1]
-                        : "none",
+                      html_pre_processor: codeType.value.html[1] ?? "none",
                       // eslint-disable-next-line @typescript-eslint/naming-convention
-                      js_pre_processor: codeType.value
-                        ? codeType.value.js[1]
-                        : code.value.jsx
-                        ? "babel"
-                        : "none",
+                      js_pre_processor:
+                        codeType.value.js[1] ??
+                        (code.value.jsx ? "babel" : "none"),
                       // eslint-disable-next-line @typescript-eslint/naming-convention
-                      css_pre_processor: codeType.value
-                        ? codeType.value.css[1]
-                        : "none",
+                      css_pre_processor: codeType.value.css[1] ?? "none",
                       editors: code.value.codepenEditors,
                     }),
                   }),
@@ -269,7 +284,7 @@ export default defineComponent({
                     innerHTML: CODEPEN_SVG,
                     class: "codepen-button",
                     "aria-label": "Codepen",
-                    "data-balloon-pos": "up",
+                    "data-balloon-pos": "down",
                   }),
                 ],
               )
@@ -296,7 +311,7 @@ export default defineComponent({
               ref: codeContainer,
               class: "vp-code-demo-codes",
             },
-            slots.default?.(),
+            slots.default(),
           ),
         ),
       ]);

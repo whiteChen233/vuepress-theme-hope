@@ -3,9 +3,16 @@ title: Demos
 icon: splotch
 ---
 
-## Living Demo
-
-- [stackblitz](https://stackblitz.com/fork/vuepress-theme-hope)
+```component VPBanner
+title: Living Demo
+content: Online template driven by StackBlitz
+logo: /assets/image/stackblitz.svg
+background: var(--bg-2)
+color: var(--banner-text)
+actions:
+  - text: Try it
+    link: https://stackblitz.com/fork/vuepress-theme-hope
+```
 
 ## Open Source Projects
 
@@ -19,6 +26,14 @@ icon: splotch
 
 - [Custom Blog HomePage](./custom-blog-home.md)
 
+- [Portfolio HomePage](./portfolio-home.md)
+
 - [Encrypt Page](./encrypt.md) (Password: 1234)
 
-- <ProjectLink name="md-enhance" path="/guide/presentation/demo.html">Slide Page</ProjectLink>
+- [Slide Page](https://ecosystem.vuejs.press/plugins/markdown/revealjs/demo.html)
+
+- [Page Slot Demo](./page-slot.md)
+
+- [Home Slot Demo](./home-slot.md)
+
+- [Blog Slot Demo](./blog-slot.md)

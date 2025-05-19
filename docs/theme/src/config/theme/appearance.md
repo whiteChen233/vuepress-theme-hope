@@ -19,36 +19,12 @@ These options are only valid when setting directly under the theme options, sett
 
 :::
 
-## iconAssets <Badge text="Root only" type="warning" />
-
-- Type: `FontIconAssets`
-
-  ```ts
-  type Link =
-    | `/${string}`
-    | `//${string}`
-    | `http://${string}`
-    | `https://${string}`;
-
-  type BuiltInFontIcon =
-    | "iconify"
-    | "iconfont"
-    | "fontawesome"
-    | "fontawesome-with-brands";
-
-  type FontIconAssets = BuiltInFontIcon | Link | (BuiltInFontIcon | Link)[];
-  ```
-
-- Required: No
-- Details: [Interface → Icon](../../guide/interface/icon.md)
-
-Link of font icon asset, `'iconfont'` and `'fontawesome'` keywords are supported.
-
 ## darkmode <Badge text="Enabled by default" /> <Badge text="Root only" type="warning" />
 
 - Type: `"switch" | "toggle" | "auto" | "enable" | "disable"`
 - Default: `"switch"`
-- Details: [Interface → Darkmode](../../guide/interface/darkmode.md)
+- Details:
+  - [Interface → Dark mode](../../guide/interface/darkmode.md)
 
 Dark mode support options:
 
@@ -64,46 +40,28 @@ If you don't need this feature, set `darkmode: "disable"` to disable it.
 
 :::
 
+## externalLinkIcon <Badge text="enabled by default" />
+
+- Type: `boolean`
+- Default: `true`
+
+Controls whether an icon is displayed on external links.
+
 ## fullscreen <Badge text="Root only" type="warning" />
 
 - Type: `boolean`
 - Default: `false`
-- Details: [Interface → FullScreen](../../guide/interface/others.md#fullscreen-button)
+- Details:
+  - [Interface → FullScreen](../../guide/interface/others.md#fullscreen-button)
 
 Whether show the "full screen" button.
-
-## backToTop <Badge text="Root only" type="warning" />
-
-- Type: `BackToTopOptions | boolean`
-
-  ```ts
-  interface BackToTopOptions {
-    /**
-     * Scroll threshold distance to display back to top button (in pixels)
-     *
-     * @default 100
-     */
-    threshold?: number;
-
-    /**
-     * Whether display scroll progress
-     *
-     * @default true
-     */
-    progress?: boolean;
-  }
-  ```
-
-- Default: `true`
-- Details: [Interface → Back to top button](../../guide/interface/others.md#back-to-top-button)
-
-Back to top button customization, setting it to `false` disables the button.
 
 ## pure <Badge text="Root only" type="warning" />
 
 - Type: `boolean`
 - Default: `false`
-- Details: [Interface → Pure mode](../../guide/interface/pure.md)
+- Details:
+  - [Interface → Pure mode](../../guide/interface/others.md#pure-mode)
 
 Whether enable pure mode.
 
@@ -115,17 +73,20 @@ Useful when you want to provide "A pure document site".
 
 :::
 
+## focus <Badge text="Root only" type="warning" />
+
+- Type: `number | boolean`
+- Default: value of `pure`
+- Details:
+  - [Interface → Focus mode](../../guide/interface/others.md#focus-mode)
+
+Whether enable focus mode, default when pure mode is enabled. Number value will be the delay time to trigger focus mode.
+
 ## print <Badge text="Root only" type="warning" />
 
 - Type: `boolean`
 - Default: `true`
+- Details:
+  - [Interface → Print button](../../guide/interface/others.md#print-button)
 
 Whether display print icon in desktop mode.
-
-## iconPrefix <Badge text="Root only" type="warning" />
-
-- Type: `string`
-- Default: Inferred from iconAssets
-- Details: [Interface → Icon](../../guide/interface/icon.md)
-
-Prefix of icon FontClass, usually, it can be automatically set by the theme.

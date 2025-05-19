@@ -1,6 +1,4 @@
-import type { FontIconAssets } from "vuepress-plugin-components";
-
-export type DarkmodeOptions =
+export type DarkModeOptions =
   | "switch"
   | "auto"
   | "toggle"
@@ -49,10 +47,22 @@ export interface AppearanceLocaleData {
   };
 }
 
+export interface DeprecatedAppearanceOptions {
+  /**
+   * @deprecated Use `plugins.icon.assets` instead
+   */
+  iconAssets?: never;
+
+  /**
+   * @deprecated Use `plugins.icon.prefix` instead
+   */
+  iconPrefix?: never;
+}
+
 /**
  * @kind root
  */
-export interface AppearanceOptions {
+export interface AppearanceOptions extends DeprecatedAppearanceOptions {
   /**
    * Whether enable pure mode
    *
@@ -63,7 +73,21 @@ export interface AppearanceOptions {
   pure?: boolean;
 
   /**
-   * Dark mode support options:
+   * Whether enable focus mode
+   *
+   * @description Focus mode will be enabled by default when the `pure` mode is enabled
+   * Fill in a number to indicate the delay time
+   *
+   * 是否开启沉浸模式
+   *
+   * @description 当 `pure` 模式启用时，沉浸模式将被默认启用，填入数字表示延迟时间
+   *
+   * @default false
+   */
+  focus?: number | boolean;
+
+  /**
+   * Dark mode options
    *
    * - `"switch"`: switch between dark, light and auto (default)
    * - `"toggle"`: toggle between lightmode and darkmode
@@ -71,7 +95,7 @@ export interface AppearanceOptions {
    * - `"enable"`: only dark mode
    * - `"disable"`: disable dark mode
    *
-   * 深色模式支持选项:
+   * 深色模式选项
    *
    * - `"switch"`: 在深色模式，浅色模式和自动之间切换 (默认)
    * - `"toggle"`: 在深色模式和浅色模式之间切换
@@ -81,7 +105,16 @@ export interface AppearanceOptions {
    *
    * @default "auto-switch"
    */
-  darkmode?: DarkmodeOptions;
+  darkmode?: DarkModeOptions;
+
+  /**
+   * Whether show external link icon
+   *
+   * 是否显示外部链接图标
+   *
+   * @default true
+   */
+  externalLinkIcon?: boolean;
 
   /**
    * Whether enable theme color picker
@@ -109,24 +142,6 @@ export interface AppearanceOptions {
    * @default false
    */
   fullscreen?: boolean;
-
-  /**
-   * Link of font icon asset
-   *
-   * 字体图标资源链接
-   *
-   * @description `"iconfont"` and `"fontawesome"` keywords are supported
-   */
-  iconAssets?: FontIconAssets;
-
-  /**
-   * Font Icon class prefix
-   *
-   * 字体图标 class 前缀
-   *
-   * @default ""
-   */
-  iconPrefix?: string;
 }
 
 export type AppearanceConfig = AppearanceOptions;

@@ -1,6 +1,5 @@
 {
   "name": "docs-shared",
-  "version": "2.0.0-beta.138",
   "private": true,
   "description": "Shared files for docs",
   "license": "MIT",
@@ -25,27 +24,25 @@
   "scripts": {
     "build": "pnpm build:ts && pnpm copy",
     "build:ts": "tsc --build tsconfig.release.json",
-    "clean": "rimraf ./lib ./*.tsbuildinfo",
-    "copy": "cpx \"src/**/*.{vue,scss}\" lib",
+    "clean": "rimraf --glob ./lib ./*.tsbuildinfo",
+    "copy": "cpx \"src/**/*.scss\" lib",
     "dev": "concurrently \"pnpm dev:copy\" \"pnpm dev:ts\"",
     "dev:copy": "pnpm copy -w",
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
   "dependencies": {
-    "@types/three": "0.155.1",
-    "@vuepress/cli": "2.0.0-beta.67",
-    "@vuepress/client": "2.0.0-beta.67",
-    "@vuepress/core": "2.0.0-beta.67",
-    "@vuepress/plugin-docsearch": "2.0.0-beta.67",
-    "@vuepress/shared": "2.0.0-beta.67",
-    "@vuepress/utils": "2.0.0-beta.67",
-    "three": "0.155.0",
-    "vue": "3.3.4",
-    "vuepress-plugin-redirect": "workspace:*",
-    "vuepress-shared": "workspace:*",
+    "@types/three": "0.176.0",
+    "@vueuse/core": "catalog:",
+    "@vuepress/bundler-vite": "catalog:vuepress",
+    "@vuepress/bundler-webpack": "catalog:vuepress",
+    "@vuepress/helper": "catalog:vuepress",
+    "@vuepress/plugin-docsearch": "catalog:vuepress",
+    "three": "0.176.0",
+    "vue": "catalog:",
+    "vuepress": "catalog:vuepress",
     "vuepress-theme-hope": "workspace:*"
   },
   "devDependencies": {
-    "@vuepress/bundler-vite": "2.0.0-beta.67"
+    "@vuepress/plugin-git": "catalog:vuepress"
   }
 }

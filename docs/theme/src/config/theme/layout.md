@@ -13,23 +13,17 @@ The following options control theme layout.
 
 <!-- more  -->
 
-## Navbar Config
+## Navbar Related
 
-For related guide, please see [Layout → Navbar](../../guide/layout/navbar.md).
+### navbar <Badge text="Recommended" type="tip" /> {#navbar-header}
 
-### navbar <Badge text="Recommended" type="tip" />
-
-- Type: `NavbarConfig | false`
+- Type: `NavbarOptions | false`
 - Default: `false`
+- Details:
+  - [Layout → Navbar → Navbar links](../../guide/layout/navbar.md#navbar-links)
+  - [Layout → Navbar → Disable Navbar](../../guide/layout/navbar.md#disabling-navbar)
 
-Navbar config
-
-### navbarIcon
-
-- Type: `boolean`
-- Default: `true`
-
-Whether display icons in navbar.
+Navbar config.
 
 ### navbarLayout
 
@@ -58,6 +52,8 @@ Whether display icons in navbar.
   ```
 
 - Default: `{ start: ["Brand"], center: ["Links"], end: ["Language", "Repo", "Outlook", "Search"] }`
+- Details:
+  - [Layout → Navbar → Navbar layout](../../guide/layout/navbar.md#layout-config)
 
 Customize navbar layout.
 
@@ -65,6 +61,8 @@ Customize navbar layout.
 
 - Type: `string`
 - Required: No
+- Details:
+  - [Layout → Navbar → Site Logo](../../guide/layout/navbar.md#site-logo)
 
 Navbar logo, should be absolute path relative to `.vuepress/public` folder.
 
@@ -72,20 +70,24 @@ Navbar logo, should be absolute path relative to `.vuepress/public` folder.
 
 - Type: `string`
 - Default: `logo`
+- Details:
+  - [Layout → Navbar → Site Logo](../../guide/layout/navbar.md#site-logo)
 
-Navbar logo in darkmode, should be absolute path relative to `.vuepress/public` folder.
+Navbar logo in dark mode, should be absolute path relative to `.vuepress/public` folder.
 
-### navTitle
+### navbarTitle
 
-- Type: `string | false`
+- Type: `string`
 - Default: `$siteLocale.title`
 
-Navbar title
+Navbar title, you can set it to an empty string to hide it.
 
 ### repo
 
 - Type: `string`
 - Required: No
+- Details:
+  - [Layout → Navbar → Git Repository and Edit Links](../../guide/layout/navbar.md#git-repository-and-edit-links)
 
 Repository link
 
@@ -93,6 +95,8 @@ Repository link
 
 - Type: `boolean`
 - Default: `true`
+- Details:
+  - [Layout → Navbar → Git Repository and Edit Links](../../guide/layout/navbar.md#git-repository-and-edit-links)
 
 Whether display repo link in navbar.
 
@@ -100,6 +104,8 @@ Whether display repo link in navbar.
 
 - Type: `string`
 - Required: No
+- Details:
+  - [Layout → Navbar → Git Repository and Edit Links](../../guide/layout/navbar.md#git-repository-and-edit-links)
 
 Repository aria label of navbar.
 
@@ -123,29 +129,27 @@ Whether to hide navbar when scrolling down.
 
 Whether hide site title on mobile.
 
-## Sidebar Config
+## Sidebar Related
 
 For guide, see [Layout → Sidebar](../../guide/layout/sidebar.md).
 
-### sidebar <Badge text="Recommended" type="tip" />
+### sidebar <Badge text="Recommended" type="tip" /> {#sidebar-header}
 
-- Type: `SidebarConfig | "structure" | "heading" | false`
+- Type: `SSidebarOptions`
 - Default: `"structure"`
 
 Sidebar Config.
-
-### sidebarIcon
-
-- Type: `boolean`
-- Default: `true`
-
-Whether show icons in the sidebar
 
 ### sidebarSorter <Badge text="Root only" type="warning" />
 
 - Type: `SidebarSorter`
 
-  ```ts
+  ```ts twoslash
+  import type {
+    ThemeNormalPageFrontmatter,
+    ThemePageData,
+  } from "vuepress-theme-hope";
+
   interface SidebarFileInfo {
     type: "file";
     filename: string;
@@ -217,13 +221,6 @@ Available keywords are:
 - `title`: alphabetically sort by title
 - `filename`: alphabetically sort by filename
 
-### headerDepth
-
-- Type: `number`
-- Default: `2`
-
-Nested headings depth in sidebar
-
 ## Route Navigation
 
 ### breadcrumb
@@ -254,14 +251,14 @@ Whether show prevLink in bottom.
 
 Whether show nextLink in bottom.
 
-## Title
+## Page Meta
 
 ### titleIcon
 
 - Type: `boolean`
 - Default: `true`
 
-Whether display icon besides page title
+Whether to display an icon beside the page title.
 
 ### pageInfo
 
@@ -281,8 +278,6 @@ Available items in `ArticleInfo`:
 - `"Word"`: word number for the article
 - `"PageView"`: pageviews
 
-## Meta
-
 ### lastUpdated
 
 - Type: `boolean`
@@ -292,10 +287,22 @@ Whether to show "Last Updated" or not.
 
 ### contributors
 
-- Type: `boolean`
-- Default: `true`
+- Type: `"content" | "meta" | boolean`
+- Default: `"meta"`
 
 Whether to show "Contributors" or not.
+
+- `"content"`: show as content in main text
+- `"meta"`: show as meta info at the bottom of content
+- `true`: same as `"meta"`
+- `false`: disable it
+
+### changelog
+
+- Type: `boolean`
+- Default: `false`
+
+Whether to show changelog.
 
 ### editLink
 
@@ -342,7 +349,7 @@ Docs dir location in repo
 ### footer
 
 - Type: `string`
-- Required: false
+- Required: No
 
 The default content for the footer, can accept HTMLString.
 
@@ -378,7 +385,40 @@ Whether to use RTL layout.
 
 ### toc {#toc-heading}
 
-- Type: `boolean`
+- Type: `GetHeadersOptions | boolean`
+
+  ```ts
+  export interface GetHeadersOptions {
+    /**
+     * The selector of the headers.
+     *
+     * @default "#markdown-content >  h1, #markdown-content > h2, #markdown-content > h3, #markdown-content > h4, #markdown-content > h5, #markdown-content > h6, [vp-content] > h2"
+     */
+    selector?: string;
+    /**
+     * Ignore specific elements within the header, should be an array of `CSS Selector`
+     *
+     * @default [".vp-badge", ".vp-icon"]
+     */
+    ignore?: string[];
+    /**
+     * The levels of the headers.
+     *
+     * `1` to `6` for `<h1>` to `<h6>`
+     *
+     * - `false`: No headers.
+     * - `number`: only headings of that level will be displayed.
+     * - `[number, number]: headings level tuple, where the first number should be less than the second number, for example, `[2, 4]` which means all headings from `<h2>` to `<h4>` will be displayed.
+     * - `deep`: same as `[2, 6]`, which means all headings from `<h2>` to `<h6>` will be displayed.
+     *
+     * @default "deep"
+     */
+    levels?: HeaderLevels;
+  }
+  ```
+
+- Default: value in theme options
+
 - Default: `true`
 
-Whether show toc list in desktop mode.
+Whether show toc list.

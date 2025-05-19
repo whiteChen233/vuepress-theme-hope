@@ -1,20 +1,14 @@
-import type { App, Page, PluginObject } from "@vuepress/core";
-import {
-  endsWith,
-  injectLocalizedDate,
-  isPlainObject,
-  keys,
-  startsWith,
-} from "vuepress-shared/node";
+import { endsWith, isPlainObject, keys, startsWith } from "@vuepress/helper";
+import type { App, Page, PluginObject } from "vuepress/core";
 
 import type {
+  StructureSidebarDirOptions,
   ThemeBlogHomePageFrontmatter,
   ThemeData,
   ThemeNormalPageFrontmatter,
   ThemePageData,
   ThemeProjectHomePageFrontmatter,
 } from "../../shared/index.js";
-import { ArticleInfoType, PageType } from "../../shared/index.js";
 import { checkFrontmatter } from "../check/index.js";
 import { convertFrontmatter } from "../compact/index.js";
 import type { HopeThemeBehaviorOptions } from "../typings/index.js";
@@ -25,67 +19,45 @@ import type { HopeThemeBehaviorOptions } from "../typings/index.js";
  * Inject basic page info
  */
 export const injectPageInfo = (page: Page<ThemePageData>): void => {
-  const { filePathRelative } = page;
   const frontmatter = page.frontmatter as
     | ThemeProjectHomePageFrontmatter
     | ThemeBlogHomePageFrontmatter
     | ThemeNormalPageFrontmatter;
 
-  const isArticle =
-    // declaring this is an article
-    frontmatter.article ||
-    // generated from markdown files
-    Boolean(frontmatter.article !== false && filePathRelative);
-  const isSlide = frontmatter.layout === "Slide";
+  // Set title
+  page.routeMeta.title = page.title;
 
-  // save page type to routeMeta
-  page.routeMeta[ArticleInfoType.type] = frontmatter.home
-    ? PageType.home
-    : isSlide
-    ? PageType.slide
-    : isArticle
-    ? PageType.article
-    : PageType.page;
+  // Set short title
+  if (frontmatter.shortTitle)
+    page.routeMeta.shortTitle = frontmatter.shortTitle;
 
-  // save relative file path into page data to generate edit link
-  page.data.filePathRelative = filePathRelative;
+  // Set icon
+  if (frontmatter.icon) page.routeMeta.icon = frontmatter.icon;
 
-  page.routeMeta[ArticleInfoType.title] = page.title;
-
-  if ("icon" in frontmatter)
-    page.routeMeta[ArticleInfoType.icon] = frontmatter.icon;
-
-  // catalog related
+  // Catalog related
   if (endsWith(page.path, "/")) {
     if (isPlainObject(frontmatter.dir)) {
       if ("order" in frontmatter.dir)
-        page.routeMeta[ArticleInfoType.order] = (
-          frontmatter as ThemeNormalPageFrontmatter
-        ).dir!.order;
+        page.routeMeta.order = (
+          frontmatter.dir as StructureSidebarDirOptions
+        ).order;
 
-      if (
-        "index" in frontmatter.dir &&
-        (frontmatter as ThemeNormalPageFrontmatter).dir!.index === false
-      )
-        page.routeMeta[ArticleInfoType.index] = 0;
+      if (frontmatter.dir.index === false) page.routeMeta.index = false;
     }
   } else {
-    if ("order" in frontmatter)
-      page.routeMeta[ArticleInfoType.order] = frontmatter.order;
-    if ("index" in frontmatter && frontmatter.index === false)
-      page.routeMeta[ArticleInfoType.index] = 0;
+    if ("order" in frontmatter) page.routeMeta.order = frontmatter.order;
+    if (frontmatter.index === false) page.routeMeta.index = false;
   }
 
-  // resolve shortTitle
-  if ("shortTitle" in frontmatter)
-    page.routeMeta[ArticleInfoType.shortTitle] = frontmatter.shortTitle;
+  // breadcrumb
+  if (frontmatter.breadcrumbExclude) page.routeMeta.breadcrumbExclude = true;
 };
 
 export const extendsPagePlugin = (
   themeData: ThemeData,
   behavior: HopeThemeBehaviorOptions,
 ): PluginObject => {
-  const encryptedPaths = keys(themeData.encrypt.config || {});
+  const encryptedPaths = keys(themeData.encrypt.config ?? {});
   const isPageEncrypted = ({ path }: Page): boolean =>
     encryptedPaths.some((key) => startsWith(decodeURI(path), key));
 
@@ -93,20 +65,34 @@ export const extendsPagePlugin = (
     name: "vuepress-theme-hope-extends-page",
 
     extendsPage: (page): void => {
+      const { filePathRelative } = page;
+
       if (behavior.compact)
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         page.frontmatter = convertFrontmatter(
           page.frontmatter,
-          page.filePathRelative,
+          filePathRelative ?? "",
         );
       if (behavior.check) checkFrontmatter(page);
 
       const isEncrypted = isPageEncrypted(page);
 
-      // encrypt page shall not have seo
-      if (isEncrypted) page.frontmatter["seo"] = false;
+      // Encrypt page shall not appear in feed items or perform seo
+      if (isEncrypted) {
+        page.frontmatter.feed = false;
+        page.frontmatter.seo = false;
+      }
 
-      injectPageInfo(<Page<ThemePageData>>page);
-      injectLocalizedDate(page);
+      const enableEditLink =
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        themeData.locales[page.pathLocale]?.editLink ?? true;
+
+      // Set edit link
+      if (enableEditLink)
+        // Save relative file path into page data to generate edit link
+        (page as Page<ThemePageData>).data.filePathRelative = filePathRelative;
+
+      injectPageInfo(page as Page<ThemePageData>);
     },
   };
 };

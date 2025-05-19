@@ -20,7 +20,6 @@ export const idLocale: ThemeLocaleData = {
     toc: "Pada Halaman Ini",
     prev: "Sebelumnya",
     next: "Selanjutnya",
-    lastUpdated: "Terakhir diperbarui",
     contributors: "Kontributor",
     editLink: "Edit halaman ini",
     print: "Cetak",
@@ -36,6 +35,7 @@ export const idLocale: ThemeLocaleData = {
     all: "Semua",
     intro: "Perkenalan",
     star: "Berbintang",
+    empty: "$text kosong",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const idLocale: ThemeLocaleData = {
     errorHint: "Mohon masukkan kata sandi yang benar!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Langsung ke konten utama",
     notFoundTitle: "Halaman tidak ditemukan",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const idLocale: ThemeLocaleData = {
     ],
     back: "Kembali",
     home: "Ke Beranda",
-    openInNewWindow: "Buka di jendela baru",
   },
 };

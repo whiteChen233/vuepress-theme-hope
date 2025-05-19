@@ -1,4 +1,6 @@
-import type { ThemeHopePageFrontmatter } from "./home.js";
+import type { CSSProperties } from "vue";
+
+import type { ThemeHomePageFrontmatter } from "./home.js";
 
 export interface ThemeProjectHomeActionOptions {
   /**
@@ -23,6 +25,13 @@ export interface ThemeProjectHomeActionOptions {
    * @default "default"
    */
   type?: "primary" | "default";
+
+  /**
+   * Action icon
+   *
+   * 操作图标
+   */
+  icon?: string;
 }
 
 export interface ThemeProjectHomeHighlightItem {
@@ -120,7 +129,7 @@ export interface ThemeProjectHomeHighlightOptions {
    *
    * 亮点背景图样式
    */
-  bgImageStyle?: Record<string, string> | string;
+  bgImageStyle?: CSSProperties | string;
 
   /**
    * Highlight section list type
@@ -198,7 +207,7 @@ export interface ThemeProjectHomeFeatureOptions {
    *
    * 功能背景图样式
    */
-  bgImageStyle?: Record<string, string> | string;
+  bgImageStyle?: CSSProperties | string;
 
   /**
    * Features
@@ -209,7 +218,7 @@ export interface ThemeProjectHomeFeatureOptions {
 }
 
 export interface ThemeProjectHomePageFrontmatter
-  extends ThemeHopePageFrontmatter {
+  extends ThemeHomePageFrontmatter {
   actions?: ThemeProjectHomeActionOptions[];
   features?: ThemeProjectHomeFeatureItem[];
   highlights?: (

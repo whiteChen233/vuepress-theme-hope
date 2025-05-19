@@ -1,14 +1,20 @@
+import { LoadingIcon, decodeData } from "@vuepress/helper/client";
 import { useDebounceFn, useEventListener } from "@vueuse/core";
 import type { Chart } from "flowchart.ts";
 import type { PropType, VNode } from "vue";
-import { computed, defineComponent, h, onMounted, ref, shallowRef } from "vue";
-import { LoadingIcon, atou } from "vuepress-shared/client";
+import {
+  computed,
+  defineComponent,
+  h,
+  onMounted,
+  onUnmounted,
+  ref,
+  shallowRef,
+} from "vue";
 
 import { flowchartPresets } from "../utils/index.js";
 
 import "../styles/flowchart.scss";
-
-declare const MARKDOWN_ENHANCE_DELAY: number;
 
 export default defineComponent({
   name: "FlowChart",
@@ -46,52 +52,47 @@ export default defineComponent({
     const loading = ref(true);
     const scale = ref(1);
 
-    const preset = computed<Record<string, unknown>>(() => {
-      const preset = flowchartPresets[props.preset];
-
-      if (!preset) {
-        console.warn(`[md-enhance:flowchart] Unknown preset: ${props.preset}`);
-
-        return flowchartPresets.vue;
-      }
-
-      return preset;
-    });
+    const preset = computed<Record<string, unknown>>(
+      () => flowchartPresets[props.preset],
+    );
 
     const getScale = (width: number): number =>
       width < 419 ? 0.8 : width > 1280 ? 1 : 0.9;
 
-    onMounted(() => {
-      void Promise.all([
-        import(/* webpackChunkName: "flowchart" */ "flowchart.ts"),
-        // delay
-        new Promise((resolve) => setTimeout(resolve, MARKDOWN_ENHANCE_DELAY)),
-      ]).then(([{ parse }]) => {
-        flowchart = parse(atou(props.code));
+    useEventListener(
+      "resize",
+      useDebounceFn(() => {
+        if (flowchart) {
+          const newScale = getScale(window.innerWidth);
 
-        // update scale
-        scale.value = getScale(window.innerWidth);
+          if (scale.value !== newScale) {
+            scale.value = newScale;
 
-        loading.value = false;
-
-        // draw svg to #id
-        flowchart.draw(props.id, { ...preset.value, scale: scale.value });
-      });
-
-      useEventListener(
-        "resize",
-        useDebounceFn(() => {
-          if (flowchart) {
-            const newScale = getScale(window.innerWidth);
-
-            if (scale.value !== newScale) {
-              scale.value = newScale;
-
-              flowchart.draw(props.id, { ...preset.value, scale: newScale });
-            }
+            flowchart.draw(props.id, { ...preset.value, scale: newScale });
           }
-        }, 100),
+        }
+      }, 100),
+    );
+
+    onMounted(async () => {
+      const { parse } = await import(
+        /* webpackChunkName: "flowchart" */ "flowchart.ts"
       );
+
+      flowchart = parse(decodeData(props.code));
+
+      // Update scale
+      scale.value = getScale(window.innerWidth);
+
+      loading.value = false;
+
+      // Draw svg to #id
+      flowchart.draw(props.id, { ...preset.value, scale: scale.value });
+    });
+
+    onUnmounted(() => {
+      flowchart?.clean();
+      flowchart = null;
     });
 
     return (): (VNode | null)[] => [

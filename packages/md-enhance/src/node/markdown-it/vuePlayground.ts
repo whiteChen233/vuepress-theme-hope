@@ -1,8 +1,8 @@
+import { entries, fromEntries } from "@vuepress/helper";
 import type { PluginSimple } from "markdown-it";
-import { entries, fromEntries } from "vuepress-shared/node";
 
-import { playground } from "./playground/index.js";
 import type { PlaygroundData } from "../typings/index.js";
+import { playground } from "./playground/index.js";
 
 const VUE_SUPPORTED_EXTENSIONS = [
   "html",
@@ -20,7 +20,7 @@ const encodeFiles = (files: PlaygroundData["files"]): string =>
       fromEntries(
         entries(files)
           .filter(([, { ext }]) => VUE_SUPPORTED_EXTENSIONS.includes(ext))
-          .map(([key, config]) => [key, config.content]),
+          .map(([key, { content }]) => [key, content]),
       ),
     ),
   ).toString("base64");
@@ -32,7 +32,7 @@ export const vuePlayground: PluginSimple = (md) => {
     propsGetter: ({ title = "", key, files, settings }: PlaygroundData) => ({
       title,
       key,
-      settings: encodeURIComponent(JSON.stringify(settings || {})),
+      settings: encodeURIComponent(JSON.stringify(settings)),
       files: encodeURIComponent(encodeFiles(files)),
     }),
   });

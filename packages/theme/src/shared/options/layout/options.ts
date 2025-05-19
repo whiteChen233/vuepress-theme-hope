@@ -1,4 +1,4 @@
-import type { BackToTopOptions } from "vuepress-plugin-components";
+import type { GetHeadersOptions } from "@vuepress/helper/shared";
 
 import type { FooterLocaleOptions } from "./footer.js";
 import type { DocsRepoLocaleOptions } from "./info.js";
@@ -6,7 +6,7 @@ import type { MetaLocaleOptions, MetaLocateData } from "./meta.js";
 import type { NavbarLocaleData, NavbarLocaleOptions } from "./navbar.js";
 import type { RouteLocaleData } from "./route.js";
 import type { SidebarLocaleOptions, SidebarSorter } from "./sidebar.js";
-import type { PageInfo } from "../../info.js";
+import type { PageInfoType } from "../../info.js";
 
 export interface LayoutLocaleData {
   /**
@@ -23,7 +23,14 @@ export interface LayoutLocaleData {
   /**
    * Router related i18n config
    */
-  routeLocales: RouteLocaleData;
+  routerLocales: RouteLocaleData;
+}
+
+export interface DeprecatedLayoutOptions {
+  /**
+   * @deprecated Use `toc.levels` instead
+   */
+  headerDepth?: number;
 }
 
 export interface LayoutLocaleOptions
@@ -81,19 +88,35 @@ export interface LayoutLocaleOptions
    *
    * @default ["Author", "Original", "Date", "PageView", "ReadingTime", "Category", "Tag"]
    */
-  pageInfo?: PageInfo[] | false;
+  pageInfo?: PageInfoType[] | false;
 
   /**
    * Whether show toc list in desktop mode
    *
+   * An object with the following properties can be set:
+   *
+   * - `selector`: The selector of the headers.
+   * - `ignore`: Ignore specific elements within the header.
+   * - `levels`: The levels of the headers.
+   *
    * 是否在桌面模式下展示标题列表
+   *
+   * 可以设置一个对象，包含以下属性：
+   *
+   * - `selector`: 选择器
+   * - `ignore`: 忽略特定元素
+   * - `levels`: 标题的级别
+   *
+   * @default true
    */
-  toc?: boolean;
+  toc?: GetHeadersOptions | boolean;
 
   /**
    * Whether rtl layout should be used
    *
    * 是否使用 rtl 布局
+   *
+   * @default false
    */
   rtl?: boolean;
 
@@ -123,20 +146,11 @@ export type LayoutLocaleConfig = LayoutLocaleOptions;
  */
 export interface LayoutOptions {
   /**
-   * Wether display back to top button
-   *
-   * 是否显示返回顶部按钮
-   *
-   * @default true
-   */
-  backToTop?: BackToTopOptions | boolean;
-
-  /**
    * Sorter of structure sidebar
    *
    * 结构化侧边栏排序器
    *
-   * @default ["readme", "index", "title", "filename"]
+   * @default ["readme", "order", "title", "filename"]
    */
   sidebarSorter?: SidebarSorter;
 }

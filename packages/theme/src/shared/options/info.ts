@@ -1,4 +1,4 @@
-import type { Author } from "vuepress-shared";
+import type { Author } from "../author.js";
 
 export interface InfoOptions {
   /**
@@ -9,6 +9,13 @@ export interface InfoOptions {
   favicon?: string;
 
   /**
+   * Domain which to be deployed to
+   *
+   * 网站部署域名
+   */
+  hostname?: string;
+
+  /**
    * Global default author
    *
    * 全局默认作者
@@ -16,11 +23,11 @@ export interface InfoOptions {
   author?: Author;
 
   /**
-   * domain which to be deployed to
+   * Global default license
    *
-   * 网站部署域名
+   * 全局默认协议
    */
-  hostname?: string;
+  license?: string;
 
   /**
    * Extra i18n sites
@@ -33,3 +40,5 @@ export interface InfoOptions {
    */
   extraLocales?: Record<string, string>;
 }
+
+export type InfoConfig = Omit<InfoOptions, "favicon" | "hostname">;

@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-components",
-  "version": "2.0.0-beta.236",
+  "version": "2.0.0-rc.88",
   "description": "Components collection plugin for VuePress2",
   "keywords": [
     "vuepress",
@@ -29,68 +29,75 @@
     "./client/*": "./lib/client/*",
     "./package.json": "./package.json"
   },
-  "main": "lib/node/index.js",
-  "types": "lib/node/index.d.ts",
+  "main": "./lib/node/index.js",
+  "types": "./lib/node/index.d.ts",
   "files": [
     "lib"
   ],
   "scripts": {
     "build": "rollup -c rollup.config.ts --configPlugin esbuild",
-    "clean": "rimraf ./lib ./*.tsbuildinfo",
-    "copy": "cpx \"src/client/**/*.{vue,scss}\" lib/client",
+    "clean": "rimraf --glob ./lib ./*.tsbuildinfo",
+    "copy": "cpx \"src/client/**/*.scss\" lib/client",
     "dev": "concurrently \"pnpm dev:copy\" \"pnpm dev:ts\"",
     "dev:copy": "pnpm copy -w",
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
-  "engines": {
-    "node": ">=16.19.0",
-    "npm": ">=8",
-    "pnpm": ">=7"
-  },
   "dependencies": {
-    "@stackblitz/sdk": "^1.9.0",
-    "@vuepress/client": "2.0.0-beta.67",
-    "@vuepress/shared": "2.0.0-beta.67",
-    "@vuepress/utils": "2.0.0-beta.67",
-    "@vueuse/core": "^10.4.1",
-    "artplayer": "^5.0.9",
-    "balloon-css": "^1.2.0",
-    "create-codepen": "0.0.3",
-    "dashjs": "^4.7.1",
-    "hls.js": "^1.4.10",
-    "mpegts.js": "^1.7.3",
-    "plyr": "^3.7.8",
-    "qrcode": "^1.5.3",
-    "vidstack": "^0.6.13",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.4",
-    "vuepress-plugin-reading-time2": "workspace:*",
-    "vuepress-plugin-sass-palette": "workspace:*",
+    "@stackblitz/sdk": "^1.11.0",
+    "@vuepress/helper": "catalog:vuepress",
+    "@vuepress/plugin-sass-palette": "catalog:vuepress",
+    "@vueuse/core": "catalog:range",
+    "balloon-css": "catalog:range",
+    "create-codepen": "^2.0.0",
+    "qrcode": "^1.5.4",
+    "vue": "catalog:range",
     "vuepress-shared": "workspace:*"
   },
   "devDependencies": {
-    "@types/qrcode": "1.5.1",
-    "@vuepress/bundler-vite": "2.0.0-beta.67",
-    "@vuepress/core": "2.0.0-beta.67"
+    "@types/qrcode": "1.5.5",
+    "@vuepress/bundler-vite": "catalog:vuepress"
   },
   "peerDependencies": {
-    "sass-loader": "^13.3.2",
-    "vuepress": "2.0.0-beta.67",
-    "vuepress-vite": "2.0.0-beta.67",
-    "vuepress-webpack": "2.0.0-beta.67"
+    "artplayer": "^5.0.0",
+    "dashjs": "4.7.4",
+    "hls.js": "^1.4.12",
+    "mpegts.js": "^1.7.3",
+    "sass": "catalog:range",
+    "sass-embedded": "catalog:range",
+    "sass-loader": "catalog:range",
+    "vidstack": "^1.12.9",
+    "vuepress": "catalog:vuepress"
   },
   "peerDependenciesMeta": {
+    "artplayer": {
+      "optional": true
+    },
+    "dashjs": {
+      "optional": true
+    },
+    "hls.js": {
+      "optional": true
+    },
+    "mpegts.js": {
+      "optional": true
+    },
+    "sass": {
+      "optional": true
+    },
+    "sass-embedded": {
+      "optional": true
+    },
     "sass-loader": {
       "optional": true
     },
-    "vuepress": {
-      "optional": true
-    },
-    "vuepress-vite": {
-      "optional": true
-    },
-    "vuepress-webpack": {
+    "vidstack": {
       "optional": true
     }
+  },
+  "engines": {
+    "node": ">= 20.6.0",
+    "npm": ">=8",
+    "pnpm": ">=7",
+    "yarn": ">=2"
   }
 }

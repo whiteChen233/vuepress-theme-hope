@@ -1,24 +1,24 @@
 export interface HopeThemeBehaviorOptions {
   /**
-   * Whether perform extra checks
+   * Whether to perform extra checks
    *
    * 是否执行额外检查
    *
-   * @default false
+   * @default true
    */
   check?: boolean;
 
   /**
-   * Whether compact with historical versions
+   * Whether to compact with historical versions
    *
    * 是否兼容历史版本
    *
-   * @default false
+   * @default true
    */
   compact?: boolean;
 
   /**
-   * Whether enable customization
+   * Whether to enable customization
    *
    * 是否启用自定义
    *
@@ -27,11 +27,20 @@ export interface HopeThemeBehaviorOptions {
   custom?: boolean;
 
   /**
-   * Whether enable debug mode
+   * Whether to enable debug mode
    *
    * 是否启用调试模式
    *
    * @default false
    */
   debug?: boolean;
+
+  /**
+   * Whether to check VuePress version
+   *
+   * 是否检查 VuePress 版本
+   *
+   * @default true
+   */
+  checkVuePress?: boolean;
 }

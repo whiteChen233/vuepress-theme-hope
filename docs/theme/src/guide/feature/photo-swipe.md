@@ -8,17 +8,37 @@ tag:
   - Image Preview
 ---
 
-By including <ProjectLink name="photo-swipe">vuepress-plugin-photo-swipe</ProjectLink>, vuepress-theme-hope will make the pictures in the body of the page enter the preview mode when clicked.
-
-If you don't need this feature, you can set `plugins.photoSwipe: false` in theme options to disable it.
-
-::: info
-
-`vuepress-theme-hope` passes `plugins.photoSwipe` in theme options as plugin options to `vuepress-plugin-photo-swipe`.
-
-:::
+By using [@vuepress/plugin-photo-swipe][photo-swipe], clicking images in pages will enter preview mode.
 
 <!-- more -->
+
+## Disable Feature
+
+If you don't need this feature, you can set `plugins.photoSwipe: false` in theme options to disable it:
+
+```ts twoslash {5} title=".vuepress/theme.ts"
+import { hopeTheme } from "vuepress-theme-hope";
+
+export default hopeTheme({
+  plugins: {
+    photoSwipe: false,
+  },
+});
+```
+
+If you want to disable it in specific pages, you can set `photoSwipe: false` in the page's frontmatter.
+
+```md
+---
+photoSwipe: false
+---
+```
+
+If you want to exclude specific images, you can add the `no-view` attribute to the image:
+
+```md
+<img src="https://vuejs.org/images/logo.png" no-view />
+```
 
 ## Browse Mode
 
@@ -40,16 +60,18 @@ In preview mode, you can:
 
 ## Customize Config
 
-You can check the <ProjectLink name="photo-swipe">plugin documentation</ProjectLink> for advanced configuration.
+`vuepress-theme-hope` passes `plugins.photoSwipe` in theme options as plugin options to `@vuepress/plugin-photo-swipe`.
+
+You can check the [photo-swipe plugin documentation][photo-swipe] for advanced configuration.
 
 ## Demo
 
 <!-- markdownlint-disable -->
 
 <div class="image-preview">
-  <img src="/assets/image/1.jpg" />
-  <img src="/assets/image/2.jpg" />
-  <img src="/assets/image/3.jpg" />
+  <img src="//theme-hope-assets.vuejs.press/files/img/1.jpg" />
+  <img src="//theme-hope-assets.vuejs.press/files/img/2.jpg" />
+  <img src="//theme-hope-assets.vuejs.press/files/img/3.jpg" />
 </div>
 
 <style>
@@ -81,3 +103,5 @@ You can check the <ProjectLink name="photo-swipe">plugin documentation</ProjectL
 </style>
 
 <!-- markdownlint-restore -->
+
+[photo-swipe]: https://ecosystem.vuejs.press/zh/plugins/features/photo-swipe.html

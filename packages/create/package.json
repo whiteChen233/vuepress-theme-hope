@@ -1,6 +1,6 @@
 {
   "name": "create-vuepress-theme-hope",
-  "version": "2.0.0-beta.236",
+  "version": "2.0.0-rc.88",
   "description": "Create vuepress-theme-hope demo project helper",
   "keywords": [
     "create",
@@ -28,6 +28,8 @@
   "exports": {
     "./package.json": "./package.json"
   },
+  "main": "./lib/node/index.js",
+  "types": "./lib/node/index.d.ts",
   "bin": {
     "create-vuepress-theme-hope": "./lib/index.js"
   },
@@ -37,21 +39,25 @@
   ],
   "scripts": {
     "build": "rollup -c rollup.config.ts --configPlugin esbuild",
-    "clean": "rimraf ./lib ./*.tsbuildinfo",
+    "clean": "rimraf --glob ./lib ./*.tsbuildinfo",
     "dev": "pnpm dev:ts",
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
-  "engines": {
-    "node": ">=16.19.0",
-    "npm": ">=8",
-    "pnpm": ">=7"
-  },
   "dependencies": {
-    "cac": "6.7.14",
-    "execa": "8.0.1",
-    "inquirer": "9.2.10"
+    "@inquirer/prompts": "^7.5.1",
+    "commander": "^13.1.0"
   },
   "devDependencies": {
-    "@types/inquirer": "9.0.3"
+    "sass-embedded": "catalog:range",
+    "sass-loader": "catalog:range",
+    "vue": "catalog:range",
+    "vuepress": "catalog:vuepress",
+    "vuepress-theme-hope": "workspace:*"
+  },
+  "engines": {
+    "node": ">= 20.6.0",
+    "npm": ">=8",
+    "pnpm": ">=7",
+    "yarn": ">=2"
   }
 }

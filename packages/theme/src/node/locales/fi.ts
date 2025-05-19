@@ -20,7 +20,6 @@ export const fiLocale: ThemeLocaleData = {
     toc: "Sisällys",
     prev: "Edellinen",
     next: "Seuraava",
-    lastUpdated: "Päivitetty",
     contributors: "Osallistujat",
     editLink: "Muokkaa tätä sivua",
     print: "Tulosta",
@@ -36,6 +35,7 @@ export const fiLocale: ThemeLocaleData = {
     all: "Kaikki",
     intro: "Intro",
     star: "Tähti",
+    empty: "$text on tyhjä",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const fiLocale: ThemeLocaleData = {
     errorHint: "Anna oikea salasana!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Hyppää sisältöön",
     notFoundTitle: "Sivua ei löytynyt",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const fiLocale: ThemeLocaleData = {
     ],
     back: "Palaa takaisin",
     home: "Etusivulle",
-    openInNewWindow: "Avaa uudessa ikkunassa",
   },
 };

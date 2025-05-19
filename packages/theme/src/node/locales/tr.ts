@@ -20,7 +20,6 @@ export const trLocale: ThemeLocaleData = {
     toc: "Bu sayfada",
     prev: "Önceki",
     next: "Sonraki",
-    lastUpdated: "Son Güncelleme",
     contributors: "Katkıda Bulunanlar",
     editLink: "Bu sayfayı düzenle",
     print: "Yazdır",
@@ -36,6 +35,7 @@ export const trLocale: ThemeLocaleData = {
     all: "Hepsi",
     intro: "Kişisel Tanıtım",
     star: "Yıldız",
+    empty: "$text boş",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const trLocale: ThemeLocaleData = {
     errorHint: "Lütfen doğru şifreyi girin!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Ana içeriğe atla",
     notFoundTitle: "Sayfa bulunamadı",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const trLocale: ThemeLocaleData = {
     ],
     back: "Geri dön",
     home: "Ana sayfaya git",
-    openInNewWindow: "Yeni pencerede aç",
   },
 };

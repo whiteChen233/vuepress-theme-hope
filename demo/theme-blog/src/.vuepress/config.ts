@@ -1,10 +1,10 @@
-import { defineUserConfig } from "@vuepress/cli";
-import { getDirname, path } from "@vuepress/utils";
+import { viteBundler } from "@vuepress/bundler-vite";
+import { webpackBundler } from "@vuepress/bundler-webpack";
+import { defineUserConfig } from "vuepress";
 
 import theme from "./theme.js";
 
-const __dirname = getDirname(import.meta.url);
-const base = <"/" | `/${string}/`>process.env["BASE"] || "/";
+const base = (process.env.BASE as "/" | `/${string}/` | undefined) ?? "/";
 
 export default defineUserConfig({
   base,
@@ -24,14 +24,9 @@ export default defineUserConfig({
     },
   },
 
+  bundler: process.env.BUNDLER === "webpack" ? webpackBundler() : viteBundler(),
+
   theme,
 
   shouldPrefetch: false,
-
-  alias: {
-    "@theme-hope/modules/blog/components/BlogHero": path.resolve(
-      __dirname,
-      "./components/BlogHero.vue",
-    ),
-  },
 });

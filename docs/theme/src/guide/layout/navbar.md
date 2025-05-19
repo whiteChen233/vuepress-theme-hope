@@ -9,7 +9,16 @@ tag:
   - Navbar
 ---
 
-The Navbar may contain your site title, [Search Box](#search-box), [Navbar Links](#navbar-links), [I18n](https://vuejs.press/guide/i18n.html), [Repository Link](#git-repository-and-edit-links) and [Outlook Popup](#outlook-popup). They all depend on your configuration.
+The Navbar contains:
+
+- Site title
+- [Search Box](#search-box)
+- [Navbar Links](#navbar-links)
+- [Language dropdown](https://vuejs.press/guide/i18n.html)
+- [Repository Link](#git-repository-and-edit-links)
+- [Outlook Popup](#outlook-popup)
+
+All of them are customizable, and you can also [fully customize Navbar layout](#layout-config).
 
 <!-- more -->
 
@@ -21,40 +30,20 @@ You can add links to the navbar via `navbar` options, it accepts an array.
 
 The easiest way to configure the navbar is to fill in the paths of the page files to be displayed in turn, so that the text, icons and links of the item will be automatically generated from the corresponding files.
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
+```ts twoslash {4,6-7} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default defineUserConfig({
-  theme: hopeTheme({
-    navbar: ["/guide/README.md", "/config/README.md", "/faq.md"],
-  }),
+export default hopeTheme({
+  navbar: ["/guide/README.md", "/config/README.md", "/faq.md"],
+
+  // equivalent to:
+  // navbar: ["/guide/", "/config/", "/faq"],
 });
 ```
 
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    navbar: ["/guide/README.md", "/config/README.md", "/faq.md"],
-  }),
-};
-```
-
-:::
-
 ::: tip
 
-You can omit the `.md` extension, and paths ending with `/` are inferred as `/README.md`.
+We recommend you to omit the `.md` extension, and paths ending with `/` are inferred as `/README.md`.
 
 :::
 
@@ -67,80 +56,42 @@ If you are not satisfied with the page's icon or feel that the page title is too
 - `icon`: item icon (optional)
 - `activeMatch`: item active math (optional), support regexp strings
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
+```ts twoslash {4-21} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default defineUserConfig({
-  theme: hopeTheme({
-    navbar: [
-      {
-        text: "Guide",
-        link: "/guide/README.md",
-        icon: "lightbulb",
-        // only active in `/guide/`
-        activeMatch: "^/guide/$",
-      },
-      { text: "Config", link: "/config/README.md", icon: "config" },
-      {
-        text: "FAQ",
-        link: "/faq.md",
-        icon: "circle-question",
-        // active in path starting with `/faq`
-        // so it will active in path like `/faq/xxx.html`
-        activeMatch: "^/zh/faq/",
-      },
-    ],
-  }),
+export default hopeTheme({
+  navbar: [
+    {
+      text: "Guide",
+      link: "/guide/README.md",
+      icon: "lightbulb",
+      // only active in `/guide/`
+      activeMatch: "^/guide/$",
+    },
+    { text: "Config", link: "/config/README.md", icon: "config" },
+    {
+      text: "FAQ",
+      link: "/faq.md",
+      icon: "circle-question",
+      // active in path starting with `/faq`
+      // so it will active in path like `/faq/xxx.html`
+      activeMatch: "^/faq/",
+    },
+  ],
 });
 ```
 
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    navbar: [
-      {
-        text: "Guide",
-        link: "/guide/README.md",
-        icon: "lightbulb",
-        // only active in `/guide/`
-        activeMatch: "^/guide/$",
-      },
-      { text: "Config", link: "/config/README.md", icon: "config" },
-      {
-        text: "FAQ",
-        link: "/faq.md",
-        icon: "circle-question",
-        // active in path starting with `/faq`
-        // so it will active in path like `/faq/xxx.html`
-        activeMatch: "^/zh/faq/",
-      },
-    ],
-  }),
-};
-```
-
-:::
-
 ::: tip Advanced usage of activeMatch
 
-`activeMatch` gives you the ability to control whether the path is active, for example you may have the following dropdown:
+`activeMatch` gives you the ability to control whether the path is active through RegExps.
+
+For example you may have the following dropdown:
 
 - `/path/`
 - `/path/a/`
 - `/path/b/`
 
-But you may have multiple folders with files under `/path/`. To avoid multiple dropdown items been activated under route starting with `/path/a/` or `/path/b/`, you can set `activeMatch` option for the first item with `^/path/(?:(?!a/|b/).*)?$`.
+To avoid multiple dropdown items been activated under route starting with `/path/a/` or `/path/b/`, you can set `activeMatch` option for `/path/` with `^/path/(?:(?!a/|b/).*)?$`.
 
 :::
 
@@ -150,250 +101,90 @@ To display more links, you can group similar links into a dropdown list.
 
 You need to use object format and provide the additional `children` option to nest links:
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
+```ts twoslash {5-9} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default defineUserConfig({
-  theme: hopeTheme({
-    navbar: [
-      {
-        text: "Basic",
-        icon: "circle-info",
-        children: ["/basic/markdown.md", "/basic/vuepress.md"],
-      },
-    ],
-  }),
+export default hopeTheme({
+  navbar: [
+    {
+      text: "Basic",
+      icon: "circle-info",
+      children: ["/basic/markdown.md", "/basic/vuepress.md"],
+    },
+  ],
 });
 ```
-
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    navbar: [
-      {
-        text: "Basic",
-        icon: "circle-info",
-        children: ["/basic/markdown.md", "/basic/vuepress.md"],
-      },
-    ],
-  }),
-};
-```
-
-:::
 
 In most cases, the grouped items in the navbar belong to the same category and will be placed in the same subdirectory, and they have the same path prefix.
 
 To simplify the configuration, you can add the `prefix` field to add a prefix to each sub-link in the group:
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
+```ts twoslash {8} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default defineUserConfig({
-  theme: hopeTheme({
-    navbar: [
-      {
-        text: "Basic",
-        icon: "circle-info",
-        prefix: "/basic/",
-        children: ["markdown.md", "vuepress.md"],
-      },
-    ],
-  }),
+export default hopeTheme({
+  navbar: [
+    {
+      text: "Basic",
+      icon: "circle-info",
+      prefix: "/basic/",
+      children: [
+        "markdown.md", // /basic/markdown.md
+        "vuepress.md", // /basic/vuepress.md
+      ],
+    },
+  ],
 });
 ```
-
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    navbar: [
-      {
-        text: "Basic",
-        icon: "circle-info",
-        prefix: "/basic/",
-        children: ["markdown.md", "vuepress.md"],
-      },
-    ],
-  }),
-};
-```
-
-:::
 
 You can also have subgroups inside a dropdown by having nested `children`:
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
+```ts twoslash {11-13,17-19} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default defineUserConfig({
-  theme: hopeTheme({
-    navbar: [
-      {
-        text: "Project",
-        icon: "circle-info",
-        children: [
-          {
-            text: "Built in Plugins",
-            icon: "puzzle-piece",
-            children: [
-              /* Some items */
-            ],
-          },
-          {
-            text: "Third party Plugins",
-            icon: "puzzle-piece",
-            children: [
-              /* Some items */
-            ],
-          },
-        ],
-      },
-    ],
-  }),
+export default hopeTheme({
+  navbar: [
+    {
+      text: "Project",
+      icon: "circle-info",
+      children: [
+        {
+          text: "Built in Plugins",
+          children: [
+            /* Some items */
+          ],
+        },
+        {
+          text: "Third party Plugins",
+          children: [
+            /* Some items */
+          ],
+        },
+      ],
+    },
+  ],
 });
 ```
 
-@tab JS
+## Disabling Navbar
 
-```js
-// .vuepress/config.js
+To disable navbar globally, set `navbar: false` in theme options:
+
+```ts twoslash {4} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default {
-  theme: hopeTheme({
-    navbar: [
-      {
-        text: "Project",
-        icon: "circle-info",
-        children: [
-          {
-            text: "Built in Plugins",
-            icon: "puzzle-piece",
-            children: [
-              /* Some items */
-            ],
-          },
-          {
-            text: "Third party Plugins",
-            icon: "puzzle-piece",
-            children: [
-              /* Some items */
-            ],
-          },
-        ],
-      },
-    ],
-  }),
-};
-```
-
-:::
-
-## Disable Navbar
-
-To disable the navbar globally, set `navbar: false` in theme options:
-
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default defineUserConfig({
-  theme: hopeTheme({
-    navbar: false,
-  }),
+export default hopeTheme({
+  navbar: false,
 });
 ```
 
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    navbar: false,
-  }),
-};
-```
-
-:::
-
-You can disable the navbar for a specific page via `YAML front matter`:
+You can also disable the navbar for a specific page via frontmatter:
 
 ```md
 ---
 navbar: false
 ---
 ```
-
-## Disable Navbar Icon
-
-To disable the navbar icon, set `navbarIcon: false` in theme options:
-
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default defineUserConfig({
-  theme: hopeTheme({
-    navbarIcon: false,
-  }),
-});
-```
-
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    navbarIcon: false,
-  }),
-};
-```
-
-:::
 
 ## Site Logo
 
@@ -407,36 +198,13 @@ Please fill in an absolute path and place the logo in `.vuepress/public` folder.
 
 :::
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
+```ts twoslash {4} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default defineUserConfig({
-  theme: hopeTheme({
-    logo: "/logo.png",
-  }),
+export default hopeTheme({
+  logo: "/logo.png",
 });
 ```
-
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    logo: "/logo.png",
-  }),
-};
-```
-
-:::
 
 ::: tip
 
@@ -448,62 +216,28 @@ You can set `logoDark` to display another logo in dark mode.
 
 The theme's navbar supports [I18n](https://vuejs.press/guide/i18n.html), so you can set navbar options mentioned above individually in each language:
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
+```ts twoslash {5,7-10,13,15-18} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default defineUserConfig({
-  theme: hopeTheme({
-    locales: {
-      "/": {
-        logo: "/logo.svg",
-        navbar: [
-          /* English config under root */
-        ],
-      },
-      "/zh/": {
-        logo: "/zh-logo.svg",
-        navbar: [
-          /* Chinese config under zh folder */
-        ],
-      },
+export default hopeTheme({
+  locales: {
+    "/": {
+      logo: "/logo.svg",
+
+      navbar: [
+        /* English config under root */
+      ],
     },
-  }),
+    "/zh/": {
+      logo: "/zh-logo.svg",
+
+      navbar: [
+        /* Chinese config under zh folder */
+      ],
+    },
+  },
 });
 ```
-
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    locales: {
-      "/": {
-        logo: "/logo.svg",
-        navbar: [
-          /* English config under root */
-        ],
-      },
-      "/zh/": {
-        logo: "/zh-logo.svg",
-        navbar: [
-          /* Chinese config under zh folder */
-        ],
-      },
-    },
-  }),
-};
-```
-
-:::
 
 ## Search Box
 
@@ -517,48 +251,17 @@ A repo button will appear in navbar if you set `repo` in theme options.
 
 You can control whether showing the repository button via `repoDisplay` in theme options.
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
+```ts twoslash {5,7,8} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default defineUserConfig({
-  theme: hopeTheme({
-    // Assumes GitHub. Can also be a full GitLab url.
-    repo: "vuepress-theme-hope/vuepress-theme-hope",
-    // Customizing the header label
-    // Defaults to "GitHub" / "GitLab" / "Gitee" / "Bitbucket" or "Source" depending on `repo`
-    repoLabel: "GitHub",
-    // Whether to display repo link, default is `true`
-    repoDisplay: true,
-  }),
+export default hopeTheme({
+  // Support shorthand repo name, which will be parsed to GitHub, and can also be a full URL
+  repo: "vuepress-theme-hope/vuepress-theme-hope",
+  // Defaults to one of "GitHub" / "GitLab" / "Gitee" / "Bitbucket" or "Source" depending on `repo`
+  repoLabel: "GitHub",
+  repoDisplay: true,
 });
 ```
-
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    // Assumes GitHub. Can also be a full GitLab url.
-    repo: "vuepress-theme-hope/vuepress-theme-hope",
-    // Customizing the header label
-    // Defaults to "GitHub" / "GitLab" / "Gitee" / "Bitbucket" or "Source" depending on `repo`
-    repoLabel: "GitHub",
-    // Whether to display repo link, default is `true`
-    repoDisplay: true,
-  }),
-};
-```
-
-:::
 
 ## Outlook Popup
 
@@ -570,9 +273,9 @@ The following three functions are provided:
 
 ## Layout config
 
-`vuepress-theme-hope` allows you to customize navbar layout. You can add components in `start`, `center` and `end` keys under `navbarLayout` options.
+You can customize navbar layout via `navbarLayout` in theme options, where you can add components using `start`, `center` and `end` keys.
 
-Besides global components, the following built-in components are supported:
+The following built-in components can be used directly via their names:
 
 - Brand: Site Brand
 - Links: Navbar links
@@ -581,50 +284,25 @@ Besides global components, the following built-in components are supported:
 - Outlook: Outlook Popup
 - Repo: Project Repo
 
-By default, we are using the following options:
+And you can also use other names of global components.
 
-::: code-tabs#language
+By default, the theme use the following options:
 
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
+```ts twoslash {4-8} title=".vuepress/theme.ts"
 import { hopeTheme } from "vuepress-theme-hope";
 
-export default defineUserConfig({
-  theme: hopeTheme({
-    navbarLayout: {
-      start: ["Brand"],
-      center: ["Links"],
-      end: ["Language", "Repo", "Outlook", "Search"],
-    },
-  }),
+export default hopeTheme({
+  navbarLayout: {
+    start: ["Brand"],
+    center: ["Links"],
+    end: ["Language", "Repo", "Outlook", "Search"],
+  },
 });
 ```
 
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  theme: hopeTheme({
-    navbarLayout: {
-      start: ["Brand"],
-      center: ["Links"],
-      end: ["Language", "Repo", "Outlook", "Search"],
-    },
-  }),
-};
-```
-
-:::
-
 ## Types and Helpers
 
-`vuepress-theme-hope` exports the type of navbar as `NavbarConfig`, and provides a `navbar` helper function. They can provide validation and autocompletion of navbar configuration in TS and JS.
+`vuepress-theme-hope` exports the type of navbar as `NavbarOptions`, and provides a `navbar` helper function.
 
 ::: tip
 
@@ -632,67 +310,22 @@ They mainly deal with scenarios when you split your VuePress configuration into 
 
 :::
 
-::: code-tabs#language
-
-@tab TS Helper
-
-```ts
-// .vuepress/navbar.ts
+```ts twoslash title=".vuepress/navbar.ts"
 import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   /* Your navbar configuration */
 ]);
 ```
-
-@tab TS Type
-
-```ts
-// .vuepress/navbar.ts
-import type { NavbarConfig } from "vuepress-theme-hope";
-
-const navbarConfig: NavbarConfig = [
-  /* Your navbar configuration */
-];
-
-export default navbarConfig;
-```
-
-@tab JS
-
-```js
-// .vuepress/navbar.js
-import { navbar } from "vuepress-theme-hope";
-
-export default navbar([
-  /* Your navbar configuration */
-]);
-```
-
-:::
 
 ## Demo
 
-:::: details Configuration of this documentation
+::: details Configuration of this documentation
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
+```ts twoslash
 import { navbar } from "vuepress-theme-hope";
 
-<!-- @include: ../../.vuepress/navbar/en.ts{3-} -->
-```
-
-@tab JS
-
-```js
-import { navbar } from "vuepress-theme-hope";
-
-<!-- @include: ../../.vuepress/navbar/en.ts{3-} -->
+<!-- @include: ../../.vuepress/navbar/en.ts#config -->
 ```
 
 :::
-
-::::

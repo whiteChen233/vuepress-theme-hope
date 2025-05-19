@@ -1,4 +1,4 @@
-import { endsWith, keys } from "vuepress-shared/node";
+import { endsWith, keys } from "@vuepress/helper";
 
 import { compressToEncodedURIComponent as encode } from "./ventors/lzstring.js";
 import type {
@@ -9,11 +9,7 @@ import type {
 import { logger } from "../../utils.js";
 
 /** Gets a query string representation (hash + queries) */
-const getUrlJoinParam = (
-  key: string,
-  value: string,
-  sign: string = "&",
-): string => {
+const getUrlJoinParam = (key: string, value: string, sign = "&"): string => {
   if (value) return `${sign}${key}=${encode(value)}`;
 
   return "";
@@ -40,7 +36,6 @@ export const getUnoPlaygroundPreset = ({
   propsGetter: ({
     title = "",
     files,
-    key,
   }: PlaygroundData): Record<string, string> => {
     const htmlFiles = keys(files).filter((key) => endsWith(key, ".html"));
     const cssFiles = keys(files).filter((key) => endsWith(key, ".css"));
@@ -51,9 +46,8 @@ export const getUnoPlaygroundPreset = ({
     if (htmlFiles.length > 1 || cssFiles.length > 1 || configFiles.length > 1)
       logger.error("UnoCSS playground only support 1 html/css/config file");
 
-    const simplifyParam = (inputFiles: string[]): string => {
-      return inputFiles.length === 1 ? files[inputFiles[0]].content : "";
-    };
+    const simplifyParam = (inputFiles: string[]): string =>
+      inputFiles.length === 1 ? files[inputFiles[0]].content : "";
 
     const link = generateUnoURL(
       service,
@@ -63,7 +57,6 @@ export const getUnoPlaygroundPreset = ({
     );
 
     return {
-      key,
       title,
       link: encodeURIComponent(link),
     };

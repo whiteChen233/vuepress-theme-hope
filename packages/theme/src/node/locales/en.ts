@@ -20,7 +20,6 @@ export const enLocale: ThemeLocaleData = {
     toc: "On This Page",
     prev: "Prev",
     next: "Next",
-    lastUpdated: "Last update",
     contributors: "Contributors",
     editLink: "Edit this page",
     print: "Print",
@@ -36,6 +35,7 @@ export const enLocale: ThemeLocaleData = {
     all: "All",
     intro: "Personal Intro",
     star: "Star",
+    empty: "No $text",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const enLocale: ThemeLocaleData = {
     errorHint: "Please enter the correct password!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Skip to main content",
     notFoundTitle: "Page not found",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const enLocale: ThemeLocaleData = {
     ],
     back: "Go back",
     home: "Take me home",
-    openInNewWindow: "Open in new window",
   },
 };

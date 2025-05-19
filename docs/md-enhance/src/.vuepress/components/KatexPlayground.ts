@@ -1,10 +1,12 @@
-import katex from "katex";
+import { useLocaleConfig } from "@vuepress/helper/client";
+import { watchImmediate } from "@vueuse/core";
 import type { VNode } from "vue";
-import { defineComponent, h, ref, watch } from "vue";
-import { useLocaleConfig } from "vuepress-shared/client";
+import { defineComponent, h, ref } from "vue";
 
 import "katex/dist/katex.css";
 import "./katex-playground.scss";
+
+declare const __VUEPRESS_SSR__: boolean;
 
 const locales = {
   "/": {
@@ -29,37 +31,35 @@ export default defineComponent({
     const result = ref("");
     const inError = ref(false);
 
-    const katexRender = () => {
+    watchImmediate(input, async () => {
+      if (__VUEPRESS_SSR__) return;
+
       try {
-        result.value = // FIXME: Type issues
-          (katex as unknown as typeof katex.default).renderToString(
-            input.value,
-            {
-              displayMode: true,
-              throwOnError: true,
-            },
-          );
+        const { default: katex } = await import("katex");
+
+        result.value = katex.renderToString(input.value, {
+          displayMode: true,
+          throwOnError: true,
+        });
         inError.value = false;
       } catch (err) {
-        result.value = (<Error>err).toString();
+        result.value = (err as Error).toString();
         inError.value = true;
       }
-    };
-
-    watch(input, katexRender, { immediate: true });
+    });
 
     return (): VNode =>
       h("div", { class: "katex-playground" }, [
         h("h3", locale.value.input),
         h("textarea", {
-          id: "katex-playground",
           name: "katex-playground",
+          id: "katex-playground",
           cols: "30",
           rows: "10",
           placeholder: "Input your tex here",
           value: input.value,
           onInput: ({ target }: InputEvent) => {
-            input.value = (<HTMLInputElement>target).value;
+            input.value = (target as HTMLInputElement).value;
           },
         }),
         h("h3", locale.value.output),

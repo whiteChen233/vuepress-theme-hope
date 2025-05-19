@@ -1,8 +1,9 @@
 ---
 title: About VuePress
-icon: fab fa-vuejs
+icon: b:vuejs
 dir:
-  order: 3
+  collapsible: false
+  order: 2
 category:
   - Cookbook
   - VuePress

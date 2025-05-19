@@ -8,126 +8,17 @@ tag:
   - 搜索
 ---
 
-主题对 <ProjectLink name="search-pro" path="/zh/">`vuepress-plugin-search-pro`</ProjectLink>、 [`@vuepress/plugin-docsearch`][docsearch] 和 [`@vuepress/plugin-search`][search] 提供了内置支持。你只需要添加并配置所需的搜索插件，就能够在导航栏获得一个搜索框。
-
-如果你需要搜索插件，请通过 [**VuePress 配置文件**](../../cookbook/vuepress/config.md) 的 `plugins` 选项应用它。
-
-::: warning
-
-主题只是添加了上述搜索插件的支持，而并没有捆绑它们，你需要自己安装和调用。
-
-:::
-
-::: danger
-
-**请勿**在主题选项中使用 `plugins.search`。
-
-由于主题只能调用它捆绑的插件，因此主题选项中的 `plugins` 字段仅接受**特定**插件名称。
-
-:::
+主题对 [`@vuepress/plugin-docsearch`][docsearch] 、[@vuepress/plugin-slimsearch][slimsearch] 和 [`@vuepress/plugin-search`][search] 提供了内置支持。你只需要安装并配置所需的搜索插件，就能够在导航栏获得一个搜索框。
 
 <!-- more -->
-
-## 使用 `vuepress-plugin-search-pro`
-
-1. 安装 `vuepress-plugin-search-pro`
-
-   ::: code-tabs#shell
-
-   @tab pnpm
-
-   ```bash
-   pnpm add -D vuepress-plugin-search-pro
-   ```
-
-   @tab yarn
-
-   ```bash
-   yarn add -D vuepress-plugin-search-pro
-   ```
-
-   @tab npm
-
-   ```bash
-   npm i -D vuepress-plugin-search-pro
-   ```
-
-   :::
-
-1. 从 `vuepress-plugin-search-pro` 导入 `searchProPlugin` 并将其应用至 `config.{ts,js}` 下的 `plugins` 选项.
-
-   ::: code-tabs#language
-
-   @tab TS
-
-   ```ts
-   // .vuepress/config.ts
-   import { defineUserConfig } from "vuepress";
-   import { searchProPlugin } from "vuepress-plugin-search-pro";
-
-   export default defineUserConfig({
-     plugins: [
-       searchProPlugin({
-         // 索引全部内容
-         indexContent: true,
-         // 为分类和标签添加索引
-         customFields: [
-           {
-             getter: (page) => page.frontmatter.category,
-             formatter: "分类：$content",
-           },
-           {
-             getter: (page) => page.frontmatter.tag,
-             formatter: "标签：$content",
-           },
-         ],
-       }),
-     ],
-   });
-   ```
-
-   @tab JS
-
-   ```js
-   // .vuepress/config.js
-   import { searchProPlugin } from "vuepress-plugin-search-pro";
-
-   export default {
-     plugins: [
-       searchProPlugin({
-         // 索引全部内容
-         indexContent: true,
-         // 为分类和标签添加索引
-         customFields: [
-           {
-             getter: (page) => page.frontmatter.category,
-             formatter: "分类：$content",
-           },
-           {
-             getter: (page) => page.frontmatter.tag,
-             formatter: "标签：$content",
-           },
-         ],
-       }),
-     ],
-   };
-   ```
-
-   :::
-
-::: info 更多
-
-关于搜索插件的可用选项，详见 <ProjectLink name="search-pro" path="/zh/">插件文档</ProjectLink>。
-
-:::
 
 ## 使用 `@vuepress/plugin-docsearch`
 
 1. 你需要 [提交你的网站 URL](https://docsearch.algolia.com/apply/) 来加入 DocSearch 项目。
 
-   当你的索引成功创建后， DocSearch 团队会将 apiKey 和 indexName 发送到你的邮箱。接下来，你就可以配置该插件，在 VuePress 中启用 DocSearch 了。
+   当你的索引成功创建后， DocSearch 团队会将 apiKey 和 indexName 发送到你的邮箱。接下来，你就可以配置此插件，在 VuePress 中启用 DocSearch 了。
 
-   或者，你也可以 [运行你自己的爬虫](https://docsearch.algolia.com/docs/run-your-own/) 来创建索引，然后使用你自己的 appId, apiKey 和 indexName 来配置该插件。
+   或者，你也可以 [运行你自己的爬虫](https://docsearch.algolia.com/docs/run-your-own/) 来创建索引，然后使用你自己的 appId, apiKey 和 indexName 来配置此插件。
 
 1. 为了正常的使用插件，你需要按照下列要求正确设置 Algolia Crawler。
    前往 [Algolia Crawler](https://crawler.algolia.com/admin/crawlers/) 来更新你的爬虫配置。
@@ -147,7 +38,7 @@ tag:
        "https://YOUR_WEBSITE_URL/",
      ],
      sitemaps: [
-       // 如果你在使用 Sitemap 插件 (如: vuepress-plugin-sitemap2)，你可以提供 Sitemap 链接
+       // 如果你在使用 Sitemap 插件 (如: @vuepress/plugin-sitemap)，你可以提供 Sitemap 链接
        "https://YOUR_WEBSITE_URL/sitemap.xml",
      ],
      ignoreCanonicalTo: false,
@@ -170,22 +61,21 @@ tag:
          // 控制 Algolia 如何抓取你的站点
          recordExtractor: ({ $, helpers }) => {
            // 以下是适用于 vuepress-theme-hope 的默认选项选项
-           // vuepress-theme-hope 默认的容器类名为 theme-hope-content
            return helpers.docsearch({
              recordProps: {
                lvl0: {
-                 selectors: ".sidebar-heading.active",
+                 selectors: [".vp-sidebar-link.active", "[vp-content] h1"],
                  defaultValue: "Documentation",
                },
-               lvl1: ".theme-hope-content h1",
-               lvl2: ".theme-hope-content h2",
-               lvl3: ".theme-hope-content h3",
-               lvl4: ".theme-hope-content h4",
-               lvl5: ".theme-hope-content h5",
-               lvl6: ".theme-hope-content h6",
-               content: ".theme-hope-content p, .theme-hope-content li",
+               lvl1: "[vp-content] h1",
+               lvl2: "[vp-content] h2",
+               lvl3: "[vp-content] h3",
+               lvl4: "[vp-content] h4",
+               lvl5: "[vp-content] h5",
+               lvl6: "[vp-content] h6",
+               content: "[vp-content] p, [vp-content] li",
              },
-             indexHeadings: true,
+             recordVersion: "v3",
            });
          },
        },
@@ -266,7 +156,7 @@ tag:
 
    ::: warning
 
-   Crawler 配置中 `initialIndexSettings.YOUR_INDEX_NAME.attributesForFaceting` 字段**必须**包含 `"lang"`，否则该插件将无法正常工作。
+   Crawler 配置中 `initialIndexSettings.YOUR_INDEX_NAME.attributesForFaceting` 字段**必须**包含 `"lang"`，否则此插件将无法正常工作。
 
    :::
 
@@ -294,44 +184,20 @@ tag:
 
    :::
 
-1. 从 `@vuepress/plugin-docsearch` 导入 `docsearchPlugin`，并在 `config.{ts,js}` 中的 `plugins` 应用。
+1. 通过 `plugins.docsearch` 选项配置插件
 
-   ::: code-tabs#language
+   ```ts twoslash {5-8} title=".vuepress/theme.ts"
+   import { hopeTheme } from "vuepress-theme-hope";
 
-   @tab TS
-
-   ```ts
-   // .vuepress/config.ts
-   import { docsearchPlugin } from "@vuepress/plugin-docsearch";
-   import { defineUserConfig } from "vuepress";
-
-   export default defineUserConfig({
-     plugins: [
-       docsearchPlugin({
+   export default hopeTheme({
+     plugins: {
+       docsearch: {
          // 你的选项
          // appId, apiKey 和 indexName 是必填的
-       }),
-     ],
+       },
+     },
    });
    ```
-
-   @tab JS
-
-   ```js
-   // .vuepress/config.js
-   import { docsearchPlugin } from "@vuepress/plugin-docsearch";
-
-   export default {
-     plugins: [
-       docsearchPlugin({
-         // 你的选项
-         // appId, apiKey 和 indexName 是必填的
-       }),
-     ],
-   };
-   ```
-
-   :::
 
 ::: info 更多
 
@@ -339,136 +205,352 @@ tag:
 
 :::
 
-### `@vuepress/plugin-docsearch` 本地化翻译
+## 使用 `@vuepress/plugin-slimsearch`
 
-你可以通过插件选项中的 `locales` 配置多语言。
+1. 安装 `@vuepress/plugin-slimsearch`
 
-:::: details 中文多语言配置示例
+   ::: code-tabs#shell
 
-::: code-tabs#language
+   @tab pnpm
 
-@tab TS
+   ```bash
+   pnpm add -D @vuepress/plugin-slimsearch@next
+   ```
 
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
-import { docsearchPlugin } from "@vuepress/plugin-docsearch";
+   @tab yarn
 
-export default defineUserConfig({
-  plugins: [
-    docsearchPlugin({
-      // ...
+   ```bash
+   yarn add -D @vuepress/plugin-slimsearch@next
+   ```
 
-      locales: {
-        "/zh/": {
-          placeholder: "搜索文档",
-          translations: {
-            button: {
-              buttonText: "搜索文档",
-              buttonAriaLabel: "搜索文档",
-            },
-            modal: {
-              searchBox: {
-                resetButtonTitle: "清除查询条件",
-                resetButtonAriaLabel: "清除查询条件",
-                cancelButtonText: "取消",
-                cancelButtonAriaLabel: "取消",
-              },
-              startScreen: {
-                recentSearchesTitle: "搜索历史",
-                noRecentSearchesText: "没有搜索历史",
-                saveRecentSearchButtonTitle: "保存至搜索历史",
-                removeRecentSearchButtonTitle: "从搜索历史中移除",
-                favoriteSearchesTitle: "收藏",
-                removeFavoriteSearchButtonTitle: "从收藏中移除",
-              },
-              errorScreen: {
-                titleText: "无法获取结果",
-                helpText: "你可能需要检查你的网络连接",
-              },
-              footer: {
-                selectText: "选择",
-                navigateText: "切换",
-                closeText: "关闭",
-                searchByText: "搜索提供者",
-              },
-              noResultsScreen: {
-                noResultsText: "无法找到相关结果",
-                suggestedQueryText: "你可以尝试查询",
-                reportMissingResultsText: "你认为该查询应该有结果？",
-                reportMissingResultsLinkText: "点击反馈",
-              },
-            },
-          },
-        },
-      },
-    }),
-  ],
-});
-```
+   @tab npm
 
-@tab JS
+   ```bash
+   npm i -D @vuepress/plugin-slimsearch@next
+   ```
 
-```js
-// .vuepress/config.js
-import { docsearchPlugin } from "@vuepress/plugin-docsearch";
+   :::
 
-export default {
-  plugins: [
-    docsearchPlugin({
-      // ...
+1. 在主题选项中配置 `plugins.slimsearch`。
 
-      locales: {
-        "/zh/": {
-          placeholder: "搜索文档",
-          translations: {
-            button: {
-              buttonText: "搜索文档",
-              buttonAriaLabel: "搜索文档",
-            },
-            modal: {
-              searchBox: {
-                resetButtonTitle: "清除查询条件",
-                resetButtonAriaLabel: "清除查询条件",
-                cancelButtonText: "取消",
-                cancelButtonAriaLabel: "取消",
-              },
-              startScreen: {
-                recentSearchesTitle: "搜索历史",
-                noRecentSearchesText: "没有搜索历史",
-                saveRecentSearchButtonTitle: "保存至搜索历史",
-                removeRecentSearchButtonTitle: "从搜索历史中移除",
-                favoriteSearchesTitle: "收藏",
-                removeFavoriteSearchButtonTitle: "从收藏中移除",
-              },
-              errorScreen: {
-                titleText: "无法获取结果",
-                helpText: "你可能需要检查你的网络连接",
-              },
-              footer: {
-                selectText: "选择",
-                navigateText: "切换",
-                closeText: "关闭",
-                searchByText: "搜索提供者",
-              },
-              noResultsScreen: {
-                noResultsText: "无法找到相关结果",
-                suggestedQueryText: "你可以尝试查询",
-                openIssueText: "你认为该查询应该有结果？",
-                openIssueLinkText: "点击反馈",
-              },
-            },
-          },
-        },
-      },
-    }),
-  ],
-};
-```
+   你可以将 `plugins.slimsearch` 设置为 `true` 来直接启用它，或者将其设置为一个对象来自定义插件。
+
+   ```ts twoslash {5-8} title=".vuepress/theme.ts"
+   import { hopeTheme } from "vuepress-theme-hope";
+
+   export default hopeTheme({
+     plugins: {
+       slimsearch: {
+         // 插件选项
+       },
+       // 或 slimsearch: true,
+     },
+   });
+   ```
+
+::: info 更多
+
+关于搜索插件的可用选项，详见 [插件文档][slimsearch]。
 
 :::
 
-::::
+## 使用 `@vuepress/plugin-meilisearch`
+
+::: tip
+
+这需要你拥有一个自己的服务器来运行 MeiliSearch。
+
+:::
+
+1. 首先拉取最新的 MeiliSearch Docker 镜像：
+
+   ```sh
+   docker pull getmeili/meilisearch:latest
+   ```
+
+1. 启动容器：
+
+   ```sh :no-line-numbers
+   docker run -it --rm \
+     # 将容器名称设置为 "MeiliSearch"
+     --name MeiliSearch \
+     # 设置你自己的主密钥
+     # 替换 <YOUR_MASTER_KEY> 为你自己的主密钥
+     -e MEILI_MASTER_KEY='<YOUR_MASTER_KEY>' \
+     # 切换到生产模式
+     -e MEILI_ENV=production \
+     # 禁用 MeiliSearch 分析
+     -e MEILI_NO_ANALYTICS=1 \
+     # 将 7700 端口映射到主机
+     -p 7700:7700 \
+     # 挂载索引数据库到主机
+     # 你可以将路径更改为任何位置
+     -v $(pwd)/meili_data:/meili_data \
+     getmeili/meilisearch:latest
+   ```
+
+   此处 `<YOUR_MASTER_KEY>` 是你需要自行设置的 MeiliSearch 主密钥（需 >= 16 字节），用于访问 MeiliSearch API。
+
+   ::: important 不要暴露主密钥
+
+   搜索密钥可以生成供公共访问，仅允许执行搜索操作。
+
+   你的主密钥应仅用于内部服务器访问（包括抓取），因为它授予完整的操作权限。不要混用它们，并且 **绝不要暴露此密钥**！
+
+   :::
+
+1. 拉取最新的 MeiliSearch 抓取器镜像：
+
+   ```sh
+   docker pull getmeili/docs-scraper:latest
+   ```
+
+1. 在你的服务器上为抓取器创建一个 `scraper.json` file：
+
+   ```json :collapsed-lines=10
+   {
+     "index_uid": "<YOUR_INDEX_NAME>",
+     "start_urls": ["https://<YOUR_WEBSITE_URL>/"],
+     "sitemap_urls": ["https://<YOUR_WEBSITE_URL>/sitemap.xml"],
+     "selectors": {
+       "lvl0": {
+         "selector": ".vp-sidebar-heading.active",
+         "global": true,
+         "default_value": "Documentation"
+       },
+       "lvl1": "[vp-content] h1",
+       "lvl2": "[vp-content] h2",
+       "lvl3": "[vp-content] h3",
+       "lvl4": "[vp-content] h4",
+       "lvl5": "[vp-content] h5",
+       "lvl6": "[vp-content] h6",
+       "content": "[vp-content] p, [vp-content] li",
+       "lang": {
+         "selector": "/html/@lang",
+         "global": true,
+         "type": "xpath"
+       }
+     },
+     "custom_settings": {
+       "searchableAttributes": [
+         "hierarchy_radio_lvl0",
+         "hierarchy_radio_lvl1",
+         "hierarchy_radio_lvl2",
+         "hierarchy_radio_lvl3",
+         "hierarchy_radio_lvl4",
+         "hierarchy_radio_lvl5",
+         "hierarchy_lvl0",
+         "hierarchy_lvl1",
+         "hierarchy_lvl2",
+         "hierarchy_lvl3",
+         "hierarchy_lvl4",
+         "hierarchy_lvl5",
+         "hierarchy_lvl6",
+         "content",
+         "lang",
+         "objectID",
+         "page_rank",
+         "level",
+         "position"
+       ],
+       "displayedAttributes": [
+         "hierarchy_radio_lvl0",
+         "hierarchy_radio_lvl1",
+         "hierarchy_radio_lvl2",
+         "hierarchy_radio_lvl3",
+         "hierarchy_radio_lvl4",
+         "hierarchy_radio_lvl5",
+         "hierarchy_lvl0",
+         "hierarchy_lvl1",
+         "hierarchy_lvl2",
+         "hierarchy_lvl3",
+         "hierarchy_lvl4",
+         "hierarchy_lvl5",
+         "hierarchy_lvl6",
+         "anchor",
+         "url",
+         "lang",
+         "content",
+         "objectID"
+       ],
+       "filterableAttributes": ["lang"]
+     }
+   }
+   ```
+
+   - `index_uid` 应为你的索引分配一个唯一名称，用于搜索。
+   - `start_urls` 和 `sitemap_urls`（可选）应根据要抓取的网站进行自定义。
+   - `selectors` 字段可以根据第三方主题 DOM 结构进行自定义。
+   - 你可以根据需要向 `custom_settings` 中添加新字段。
+
+   ::: important 配置文件要求
+
+   为了让插件正常工作：
+
+   - `lang` 选择器必须在 `selectors` 字段中保持不变
+   - `custom_settings` 中的所有当前字段不得删除。
+
+   :::
+
+1. 确保 MeiliSearch 正在运行，然后通过运行以下 Docker 命令来抓取文档：
+
+   ```sh
+   docker run -t --rm \
+     --network=host \
+     -e MEILISEARCH_HOST_URL='<MEILISEARCH_HOST_URL>' \
+     -e MEILISEARCH_API_KEY='<MEILISEARCH_MASTER_KEY>' \
+     -v <absolute-path-to-your-config-file>:/docs-scraper/config.json \
+     getmeili/docs-scraper:latest pipenv run ./docs_scraper config.json
+   ```
+
+   此处：
+
+   - `<MEILISEARCH_HOST_URL>` 应为你的 MeiliSearch 实例的主机 URL
+   - `<MEILISEARCH_MASTER_KEY>` 是你提供的主密钥。
+   - `<absolute-path-to-your-config-file>` 是你创建的配置文件的绝对路径。
+
+   抓取完成后，MeiliSearch 将更新现有索引以包含最新的文档内容。
+
+1. 使用以下命令创建仅限搜索的访问密钥：
+
+   ```sh
+   curl \
+     # 将 <YOUR_HOST> 替换为你的 MeiliSearch 主机 URL
+     -X POST '<YOUR_HOST>/keys' \
+     -H 'Content-Type: application/json' \
+     -H 'Authorization: Bearer <MASTER_KEY>' \
+     # 描述 f
+     --data-binary '{
+       "indexes": ["<YOUR_INDEX_NAME>"],
+       "actions": ["search"],
+       "expiresAt": null,
+       "description": "Search key for <YOUR_INDEX_NAME>"
+     }'
+   ```
+
+   此处：
+
+   - `<YOUR_HOST>` 是你的 MeiliSearch 实例的主机 URL
+   - `<MASTER_KEY>` 是 MeiliSearch 生成的主密钥
+   - `<YOUR_INDEX_NAME>` 是你创建的索引名称
+   - `actions` 指定此密钥可以执行的操作。在此情况下，设置为 `["search"]`，表示它只能执行搜索操作。
+   - `expiresAt` 设置密钥的过期日期，允许你控制密钥的有效期限，`null` 表示永远不会过期。
+
+   如果成功，响应将如下所示：
+
+   ```json
+   {
+     "name": null,
+     "description": "Search key for <YOUR_INDEX_NAME>",
+     "key": "adaf72e2a6d6f428ec465bc786ec41de868bbd53121997e89ba2299e9566c88213",
+     "uid": "b84d1be5-caa5-4752-b078-8f40be39051d",
+     "actions": ["search"],
+     "indexes": ["<YOUR_INDEX_NAME>"],
+     "expiresAt": null,
+     "createdAt": "2024-01-27T06:50:33.668329328Z",
+     "updatedAt": "2024-01-27T06:50:33.668329328Z"
+   }
+   ```
+
+   现在，你可以将 `key` 用于插件配置。
+
+1. 安装 `@vuepress/plugin-meilisearch`
+
+   ::: code-tabs#shell
+
+   @tab pnpm
+
+   ```bash
+   pnpm add -D @vuepress/plugin-meilisearch@next
+   ```
+
+   @tab yarn
+
+   ```bash
+   yarn add -D @vuepress/plugin-meilisearch@next
+   ```
+
+   @tab npm
+
+   ```bash
+   npm i -D @vuepress/plugin-meilisearch@next
+   ```
+
+   :::
+
+1. 在主题中设置插件选项
+
+   ```ts twoslash {5-8} title=".vuepress/theme.ts"
+   import { hopeTheme } from "vuepress-theme-hope";
+
+   export default hopeTheme({
+     plugins: {
+       meilisearch: {
+         host: "<MEILISEARCH_HOST_URL>",
+         apiKey: "<YOUR_SEARCH_ONLY_KEY>",
+         indexUid: "<YOUR_INDEX_NAME>",
+       },
+     },
+   });
+   ```
+
+1. 使用 GitHub Actions 自动重新抓取
+
+   将你的抓取器配置文件放在项目中的某个位置。
+
+   然后转到 `Settings` -> `Secrets and variables` -> `Actions` 在你的 GitHub 仓库中。点击 `New repository secret` 并设置 `MEILISEARCH_MASTER_KEY` 为你自己的 MeiliSearch 主密钥。
+
+   接下来在你的 GitHub Actions 工作流文件中添加一个新的步骤 `scrape`，它将在部署步骤之后运行。以下是操作示例：
+
+   ```yml
+   name: 部署和抓取
+
+   on:
+     push:
+       branches:
+         - main
+
+   jobs:
+     deploy:
+       runs-on: ubuntu-latest
+       steps:
+         # 在此处部署你的文档
+         # ...
+
+     scrape:
+       needs: deploy
+       runs-on: ubuntu-latest
+       name: 重新抓取 MeiliSearch 文档
+       steps:
+         - 名称：Checkout
+           uses: actions/checkout@v4
+
+         - 名称：运行抓取器
+           env：
+             # 替换为你自己的 MeiliSearch 主机 URL
+             HOST_URL: <YOUR_MEILISEARCH_HOST_URL>
+             API_KEY: ${{ secrets.MEILISEARCH_MASTER_KEY }}
+             # 替换为配置文件的路径
+             CONFIG_FILE_PATH: ${{ github.workspace }}/<path/to/your/scraper/config.json>
+           run: |
+             docker run -t --rm \
+               -e MEILISEARCH_HOST_URL=$HOST_URL \
+               -e MEILISEARCH_API_KEY=$API_KEY \
+               -v $CONFIG_FILE_PATH:/docs-scraper/config.json \
+               getmeili/docs-scraper:latest pipenv run ./docs_scraper config.json
+   ```
+
+   ::: tip 抓取器密钥
+
+   为了保护你的 MeiliSearch 实例，你可以为抓取器创建一个具有有限权限的新密钥。与上面的搜索密钥类似，此密钥应仅对以下操作具有访问权限：`["indexes.create","indexes.delete","settings.update","documents.add"]`。
+
+   :::
+
+::: info 更多
+
+关于搜索插件的可用选项，详见 [插件文档][meilisearch]。
+
+:::
 
 ## 使用 `@vuepress/plugin-search`
 
@@ -496,42 +578,21 @@ export default {
 
    :::
 
-1. 从 `@vuepress/plugin-search` 导入 `searchPlugin` 并将其应用至 `config.{ts,js}` 下的 `plugins` 选项.
+1. 在主题选项中配置 `plugins.search`。
 
-   ::: code-tabs#language
+   ```ts twoslash {5-8} title=".vuepress/theme.ts"
+   import { hopeTheme } from "vuepress-theme-hope";
 
-   @tab TS
-
-   ```ts
-   // .vuepress/config.ts
-   import { searchPlugin } from "@vuepress/plugin-search";
-   import { defineUserConfig } from "vuepress";
-
-   export default defineUserConfig({
-     plugins: [
-       searchPlugin({
-         // 你的选项
-       }),
-     ],
+   export default hopeTheme({
+     plugins: {
+       // 插件选项
+       search: {
+         // ...
+       },
+       // 或 search: true,
+     },
    });
    ```
-
-   @tab JS
-
-   ```js
-   // .vuepress/config.js
-   import { searchPlugin } from "@vuepress/plugin-search";
-
-   export default {
-     plugins: [
-       searchPlugin({
-         // 你的选项
-       }),
-     ],
-   };
-   ```
-
-   :::
 
 ::: info 更多
 
@@ -539,60 +600,7 @@ export default {
 
 :::
 
-### `@vuepress/plugin-search` 本地化翻译
-
-如果你正在提供中文文档，你可以将其设置到插件选项中的 `locales` 中。
-
-:::: details 中文多语言配置
-
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
-import { defineUserConfig } from "vuepress";
-import { searchPlugin } from "@vuepress/plugin-search";
-
-export default defineUserConfig({
-  plugins: [
-    searchPlugin({
-      // ...
-
-      locales: {
-        "/zh/": {
-          placeholder: "搜索",
-        },
-      },
-    }),
-  ],
-});
-```
-
-@tab JS
-
-```js
-// .vuepress/config.js
-import { searchPlugin } from "@vuepress/plugin-search";
-
-export default {
-  plugins: [
-    searchPlugin({
-      // ...
-
-      locales: {
-        "/zh/": {
-          placeholder: "搜索",
-        },
-      },
-    }),
-  ],
-};
-```
-
-:::
-
-::::
-
-[docsearch]: https://vuejs.press/zh/reference/plugin/docsearch.html
-[search]: https://vuejs.press/zh/reference/plugin/search.html
+[docsearch]: https://ecosystem.vuejs.press/zh/plugins/search/docsearch.html
+[meilisearch]: https://ecosystem.vuejs.press/zh/plugins/search/meilisearch.html
+[search]: https://ecosystem.vuejs.press/zh/plugins/search/search.html
+[slimsearch]: https://ecosystem.vuejs.press/zh/plugins/search/slimsearch.html

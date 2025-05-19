@@ -1,7 +1,7 @@
 ---
 title: 页面
 icon: file
-order: 5
+order: 4
 category:
   - 布局
 tag:
@@ -11,7 +11,7 @@ tag:
 
 ## 图标支持
 
-你可以在页面的 frontmatter 中配置 `icon` 字段，填入对应图标的 FontClass 即可绑定图标到页面。
+你可以在页面 Frontmatter 中设置 `icon` 来为页面设置图标，详见 [图标支持](../interface/icon.md)。
 
 该图标会在导航栏，侧边栏，路径导航和标题中使用。
 
@@ -25,15 +25,15 @@ icon: home
 
 :::
 
-::: info
-
-图标的相关设置，详见 [图标支持](../interface/icon.md)
-
-:::
-
 ## 路径导航
 
-详见 [路径导航](breadcrumb.md) 章节。
+主题添加了开箱即用的路径导航支持。
+
+你可以在主题选项和页面 Frontmatter 中通过 `breadcrumb` 设置一个布尔值来控制全局和特定页面的路径导航显示。
+
+路径导航的图标也是可配置的，你可以在主题选项和页面 Frontmatter 中通过 `breadcrumbIcon` 设置一个布尔值来控制全局和特定页面的行为。
+
+如果你不希望某个页面被添加到路径导航中（例如：首页），你可以在页面的 Frontmatter 中设置 `breadcrumbExclude: true`。
 
 ## 文章信息展示
 
@@ -45,17 +45,26 @@ icon: home
 
 如果你不希望在桌面模式下显示右侧的标题列表，请在主题选项中设置 `toc: false`。
 
-你也可以在特定页面的 frontmatter 中通过 `toc` 来指定它。
+你也可以在特定页面的 Frontmatter 中通过 `toc` 来指定它。
 
-### 设置标题深度
+::: tip 自定义 TOC 标题
 
-你可以通过在主题选项和页面 frontmatter 中设置 headerDepth 来自定义标题列表的深度。
+你可以通过在主题选项和页面 Frontmatter 中设置一个对象 `toc` 来自定义 TOC 标题，该对象可能包含以下属性：
 
-::: note
+- `selector`: 选择器的标题。
 
-有效最大值取决于你通过 [markdown.headers.level](https://vuejs.press/zh/reference/config.html#markdown.headers) 提取了哪些级别的标题。
+  默认值为 `"#markdown-content >  h1, #markdown-content > h2, #markdown-content > h3, #markdown-content > h4, #markdown-content > h5, #markdown-content > h6, [vp-content] > h2"`。
 
-由于 [markdown.headers.level](https://vuejs.press/zh/reference/config.html#markdown.headers) 的默认值是 `[2, 3]` ，因此 `headerDepth` 的默认最大值是 `2` 。
+- `depth`: 标题的级别。
+
+  `1` 到 `6` 对应 `<h1>` 到 `<h6>`
+
+  - `false`: 没有标题。
+  - `number`: 仅显示该级别的标题。
+  - `[number, number]`: 标题级别元组，第一个数字应该小于第二个数字，例如 `[2, 4]`，表示将显示所有从 `<h2>` 到 `<h4>` 的标题。
+  - `deep` (默认): 同 `[2, 6]`，表示将显示所有从 `<h2>` 到 `<h6>` 的标题。
+
+- `ignore`: 忽略标题中的特定元素，应该是一个字符串数组，默认值为 `[".vp-badge", ".vp-icon"]`。
 
 :::
 
@@ -65,8 +74,6 @@ icon: home
 
 ## 上 / 下一篇链接
 
-<!-- TODO: Improve it -->
-
 上一篇和下一篇文章的链接将会自动地根据当前页面的侧边栏的顺序来获取。你也可以通过主题选项或 frontmatter 来明确地重写或者禁用它:
 
 ```md
@@ -75,6 +82,8 @@ prev: ./some-other-page
 next: false
 ---
 ```
+
+你也可以通过传递一个拥有 title, icon 和 link 的对象来完全自定义它。
 
 ## 评论
 
@@ -101,7 +110,7 @@ layout: SpecialLayout
 - 在博客功能启用时提供 `Blog` 布局
 - 在幻灯片功能启用时提供 `Slide` 布局
 
-如果你想使用你自己的布局，详见 [继承主题](../advanced/extend.md)。
+如果你想使用你自己的布局，你可以在 [客户端配置文件中注册布局](https://vuejs.press/zh/advanced/cookbook/usage-of-client-config.html#layouts)。
 
 :::
 

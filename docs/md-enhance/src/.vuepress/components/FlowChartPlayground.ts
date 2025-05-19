@@ -1,15 +1,16 @@
+import { useLocaleConfig } from "@vuepress/helper/client";
 import { useDebounceFn, useEventListener } from "@vueuse/core";
 import type { Chart } from "flowchart.ts";
-import { flowchartPresets } from "vuepress-plugin-md-enhance/client";
 import type { VNode } from "vue";
 import { defineComponent, h, onMounted, ref, shallowRef, watch } from "vue";
-import { useLocaleConfig } from "vuepress-shared/client";
-
-declare const MARKDOWN_ENHANCE_DELAY: number;
+import { flowchartPresets } from "vuepress-plugin-md-enhance/client";
 
 import "./flowchart-playground.scss";
 
-const id = "flowchart-playground";
+declare const __VUEPRESS_SSR__: boolean;
+
+const CONTAINER_ID = "flowchart-playground";
+
 const DEFAULT_FLOWCHART = `\
 st=>start: Start|past:>http://www.google.com[blank]
 e=>end: End|future:>http://www.google.com
@@ -55,70 +56,60 @@ export default defineComponent({
     const getScale = (width: number): number =>
       width < 419 ? 0.8 : width > 1280 ? 1 : 0.9;
 
-    onMounted(() => {
-      let parseAction: ((input?: string | undefined) => Chart) | null = null;
+    useEventListener(
+      "resize",
+      useDebounceFn(() => {
+        if (flowchart) {
+          const newScale = getScale(window.innerWidth);
 
-      Promise.all([
-        import("flowchart.ts"),
-        new Promise((resolve) => setTimeout(resolve, MARKDOWN_ENHANCE_DELAY)),
-      ]).then(([{ parse }]) => {
-        parseAction = parse;
-        try {
-          flowchart = parse(config.value);
+          if (scale.value !== newScale) {
+            scale.value = newScale;
 
-          // update scale
-          scale.value = getScale(window.innerWidth);
-
-          // draw svg to #id
-          // @ts-ignore
-          flowchart.draw(id, {
-            ...flowchartPresets[preset.value],
-            scale: scale.value,
-          });
-        } catch (err) {
-          console.log(err);
+            // @ts-expect-error: Preset type issues
+            flowchart.draw(CONTAINER_ID, {
+              ...flowchartPresets[preset.value],
+              scale: newScale,
+            });
+          }
         }
+      }, 100),
+    );
+
+    const renderFlowchart = (parse: (input?: string) => Chart): void => {
+      try {
+        flowchart = parse(config.value);
+
+        // Update scale
+        scale.value = getScale(window.innerWidth);
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        element.value!.innerHTML = "";
+
+        // draw svg to #id
+        // @ts-expect-error: Preset type issues
+        flowchart.draw(CONTAINER_ID, {
+          ...flowchartPresets[preset.value],
+          scale: scale.value,
+        });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      }
+    };
+
+    onMounted(() => {
+      if (__VUEPRESS_SSR__) return;
+
+      let parseFlowChart: ((input?: string) => Chart) | null = null;
+
+      void import("flowchart.ts").then(({ parse }) => {
+        parseFlowChart = parse;
+        renderFlowchart(parse);
       });
 
       watch([config, preset], () => {
-        if (parseAction)
-          try {
-            flowchart = parseAction(config.value);
-
-            // update scale
-            scale.value = getScale(window.innerWidth);
-
-            element.value!.innerHTML = "";
-
-            // draw svg to #id
-            // @ts-ignore
-            flowchart.draw(id, {
-              ...flowchartPresets[preset.value],
-              scale: scale.value,
-            });
-          } catch (err) {
-            console.log(err);
-          }
+        if (parseFlowChart) renderFlowchart(parseFlowChart);
       });
-
-      useEventListener(
-        "resize",
-        useDebounceFn(() => {
-          if (flowchart) {
-            const newScale = getScale(window.innerWidth);
-
-            if (scale.value !== newScale) {
-              scale.value = newScale;
-
-              // @ts-ignore
-              flowchart.draw(id, {
-                ...flowchartPresets[preset.value],
-                scale: newScale,
-              });
-            }
-          }
-        }, 100),
-      );
     });
 
     return (): VNode =>
@@ -132,7 +123,7 @@ export default defineComponent({
           id: "flowchart-playground-config",
           value: config.value,
           onInput: ({ target }: InputEvent) => {
-            config.value = (<HTMLInputElement>target).value;
+            config.value = (target as HTMLInputElement).value;
           },
         }),
         h("div", [
@@ -147,9 +138,10 @@ export default defineComponent({
               id: "flowchart-playground-preset",
               value: preset.value,
               onChange: ({ target }: Event) => {
-                preset.value = <"ant" | "pie" | "vue">(
-                  (<HTMLSelectElement>target).value
-                );
+                preset.value = (target as HTMLSelectElement).value as
+                  | "ant"
+                  | "pie"
+                  | "vue";
               },
             },
             ["ant", "pie", "vue"].map((preset) =>
@@ -157,11 +149,11 @@ export default defineComponent({
             ),
           ),
         ]),
-        h("label", { for: id }, `${locale.value.result}:`),
+        h("label", { for: CONTAINER_ID }, `${locale.value.result}:`),
         h("div", {
           ref: element,
           class: ["flowchart-wrapper", preset.value],
-          id,
+          id: CONTAINER_ID,
         }),
       ]);
   },

@@ -14,28 +14,28 @@ export default defineComponent({
      *
      * CodePen 链接
      */
-    link: { type: String, default: "" },
+    link: String,
 
     /**
      * CodePen username
      *
      * CodePen 用户名
      */
-    user: { type: String, default: "" },
+    user: String,
 
     /**
      * CodePen hash
      *
      * CodePen hash
      */
-    slugHash: { type: String, default: "" },
+    slugHash: String,
 
     /**
      * CodePen title
      *
      * CodePen 标题
      */
-    title: { type: String, default: "" },
+    title: String,
 
     /**
      * CodePen height
@@ -83,10 +83,11 @@ export default defineComponent({
       user: string | undefined;
       slugHash: string | undefined;
     } => {
-      const result =
-        /(?:^(?:https?:)?\/\/codepen.io\/|^\/|^)(.*?)\/(?:pen|embed)\/(.*?)\/?$/.exec(
-          props.link,
-        );
+      const result = props.link
+        ? /(?:^(?:https?:)?\/\/codepen.io\/|^\/|^)(.*?)\/(?:pen|embed)\/(.*?)\/?$/.exec(
+            props.link,
+          )
+        : null;
 
       return {
         user: result?.[1],
@@ -94,13 +95,13 @@ export default defineComponent({
       };
     };
 
-    const user = computed(() => getInfo().user || props.user);
+    const user = computed(() => getInfo().user ?? props.user);
 
-    const slugHash = computed(() => getInfo().slugHash || props.slugHash);
+    const slugHash = computed(() => getInfo().slugHash ?? props.slugHash);
 
     const options = computed(
       () =>
-        <CodePenOptions>{
+        ({
           user: user.value,
           "slug-hash": slugHash.value,
           "theme-id": props.theme,
@@ -108,7 +109,7 @@ export default defineComponent({
           "pen-title": props.title,
           height: props.height,
           preview: props.status === "preview" ? "true" : "",
-        },
+        }) as CodePenOptions,
     );
 
     onMounted(() => {
@@ -137,12 +138,12 @@ export default defineComponent({
               )
             : null,
           h("span", [
-            "See the Pen ",
-            h("a", { href: props.link }, [props.title]),
+            "See ",
+            h("a", { href: props.link }, props.title ?? "awesome CodePen"),
             " by ",
-            h("a", { href: `https://codepen.io/${user.value}` }, [user.value]),
+            h("a", { href: `https://codepen.io/${user.value}` }, user.value),
             " on ",
-            h("a", { href: `https://codepen.io` }, ["CodePen"]),
+            h("a", { href: `https://codepen.io` }, "CodePen"),
             ".",
           ]),
         ],

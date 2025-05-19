@@ -1,7 +1,6 @@
-/* eslint-disable vue/no-unused-properties */
+import { LoadingIcon } from "@vuepress/helper/client";
 import type { VNode } from "vue";
 import { computed, defineComponent, h, ref } from "vue";
-import { LoadingIcon } from "vuepress-shared/client";
 
 import { useSize } from "../composables/index.js";
 import { videoIframeAllow } from "../utils/index.js";
@@ -19,30 +18,21 @@ export default defineComponent({
      *
      * B 站视频 ID
      */
-    bvid: {
-      type: String,
-      default: "",
-    },
+    bvid: String,
 
     /**
      * BiliBili video aid
      *
      * B 站视频 a ID
      */
-    aid: {
-      type: String,
-      default: "",
-    },
+    aid: String,
 
     /**
      * BiliBili video cid
      *
      * B 站视频 CID
      */
-    cid: {
-      type: String,
-      default: "",
-    },
+    cid: String,
 
     /**
      * BiliBili video title
@@ -79,10 +69,7 @@ export default defineComponent({
      *
      * 组件高度
      */
-    height: {
-      type: [String, Number],
-      default: undefined,
-    },
+    height: [String, Number],
 
     /**
      * Component width / height ratio
@@ -113,7 +100,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const { el, width, height } = useSize<HTMLIFrameElement>(props);
+    const { el, width, height, resize } = useSize<HTMLIFrameElement>(props);
 
     const loaded = ref(false);
 
@@ -123,10 +110,10 @@ export default defineComponent({
       return aid && cid
         ? `${VIDEO_LINK}?aid=${aid}&cid=${cid}&t=${time}&autoplay=${
             autoplay ? 1 : 0
-          }&page=${page}`
+          }&p=${page}`
         : bvid
-        ? `${VIDEO_LINK}?bvid=${bvid}&t=${time}&autoplay=${autoplay ? 1 : 0}`
-        : null;
+          ? `${VIDEO_LINK}?bvid=${bvid}&t=${time}&autoplay=${autoplay ? 1 : 0}`
+          : null;
     });
 
     return (): (VNode | null)[] =>
@@ -150,6 +137,7 @@ export default defineComponent({
               },
               onLoad: () => {
                 loaded.value = true;
+                resize();
               },
             }),
             loaded.value ? null : h(LoadingIcon),

@@ -13,23 +13,17 @@ tag:
 
 <!-- more -->
 
-## 导航栏
+## 导航栏相关
 
-具体介绍详见 [布局 → 导航栏](../../guide/layout/navbar.md)。
+### navbar <Badge text="建议配置" type="tip" /> {#navbar-header}
 
-### navbar <Badge text="建议配置" type="tip" />
-
-- 类型: `NavbarConfig | false`
+- 类型: `NavbarOptions | false`
 - 默认值: `false`
+- 详情:
+  - [布局 → 导航栏 → 导航栏链接](../../guide/layout/navbar.md#导航栏链接)
+  - [布局 → 导航栏 → 禁用导航栏](../../guide/layout/navbar.md#禁用导航栏)
 
-导航栏配置，具体配置方式见上方详情。
-
-### navbarIcon
-
-- 类型: `boolean`
-- 默认值: `true`
-
-是否在导航栏显示图标。
+导航栏配置。
 
 ### navbarLayout
 
@@ -58,13 +52,17 @@ tag:
   ```
 
 - 默认值: `{ start: ["Brand"], center: ["Links"], end: ["Language", "Repo", "Outlook", "Search"] }`
+- 详情:
+  - [布局 → 导航栏 → 导航栏布局](../../guide/layout/navbar.md#布局配置)
 
-自定义导航栏布局
+自定义导航栏布局。
 
 ### logo <Badge text="建议配置" type="tip" />
 
 - 类型: `string`
 - 必填: 否
+- 详情:
+  - [布局 → 导航栏 → 站点图标](../../guide/layout/navbar.md#站点图标)
 
 导航栏图标，应为基于 `.vuepress/public` 文件夹的绝对路径。
 
@@ -72,20 +70,24 @@ tag:
 
 - 类型: `string`
 - 默认值: `logo`
+- 详情:
+  - [布局 → 导航栏 → 站点图标](../../guide/layout/navbar.md#站点图标)
 
 夜间模式下导航栏图标，应为基于 `.vuepress/public` 文件夹的绝对路径。
 
-### navTitle
+### navbarTitle
 
-- 类型: `string | false`
+- 类型: `string`
 - 默认值: `$siteLocale.title`
 
-导航栏标题
+导航栏标题，你可以设置为 `''` 来隐藏它。
 
 ### repo
 
 - 类型: `string`
 - 必填: 否
+- 详情:
+  - [布局 → 导航栏 → Git 仓库和编辑链接](../../guide/layout/navbar.md#git-仓库和编辑链接)
 
 仓库配置，用于在导航栏中显示仓库链接。
 
@@ -93,6 +95,8 @@ tag:
 
 - 类型: `boolean`
 - 默认值: `true`
+- 详情:
+  - [布局 → 导航栏 → Git 仓库和编辑链接](../../guide/layout/navbar.md#git-仓库和编辑链接)
 
 是否在导航栏显示仓库链接。
 
@@ -100,6 +104,8 @@ tag:
 
 - 类型: `string`
 - 必填: 否
+- 详情:
+  - [布局 → 导航栏 → Git 仓库和编辑链接](../../guide/layout/navbar.md#git-仓库和编辑链接)
 
 用于导航栏仓库按钮的无障碍标签。
 
@@ -123,29 +129,27 @@ tag:
 
 是否在移动视图下隐藏站点名称。
 
-## 侧边栏
+## 侧边栏相关
 
 关于配置指南，详见 [布局 → 侧边栏](../../guide/layout/sidebar.md)。
 
-### sidebar <Badge text="建议配置" type="tip" />
+### sidebar <Badge text="建议配置" type="tip" /> {#sidebar-header}
 
-- 类型: `SidebarConfig | "structure" | "heading" | false`
+- 类型: `SidebarOptions`
 - 默认值: `"structure"`
 
 侧边栏配置。
-
-### sidebarIcon
-
-- 类型: `boolean`
-- 默认值: `true`
-
-是否在侧边栏显示图标。
 
 ### sidebarSorter <Badge text="仅限 Root" type="warning" />
 
 - 类型: `SidebarSorter`
 
-  ```ts
+  ```ts twoslash
+  import type {
+    ThemeNormalPageFrontmatter,
+    ThemePageData,
+  } from "vuepress-theme-hope";
+
   interface SidebarFileInfo {
     type: "file";
     filename: string;
@@ -217,14 +221,7 @@ tag:
 - `title`: 按标题字母顺序排序
 - `filename`: 按文件名字母顺序排序
 
-### headerDepth
-
-- 类型: `number`
-- 默认值: `2`
-
-侧边栏嵌套的标题深度。
-
-## 路径导航
+## 导航相关
 
 ### breadcrumb
 
@@ -254,14 +251,7 @@ tag:
 
 是否在页面底部显示下一篇链接。
 
-## 标题
-
-### titleIcon
-
-- 类型: `boolean`
-- 默认值: `true`
-
-是否在页面标题旁显示图标。
+## 页面元数据
 
 ### pageInfo
 
@@ -281,7 +271,12 @@ tag:
 - `"Word"`: 字数
 - `"PageView"`: 页面浏览量
 
-## Meta
+### titleIcon
+
+- 类型: `boolean`
+- 默认值: `true`
+
+是否在页面标题旁显示图标。
 
 ### lastUpdated
 
@@ -292,10 +287,22 @@ tag:
 
 ### contributors
 
-- 类型: `boolean`
-- 默认值: `true`
+- 类型: `"content" | "meta" | boolean`
+- 默认值: `"meta"`
 
 是否显示页面贡献者
+
+- `"content"`: 显示在页面内容中
+- `"meta"`: 显示在页面底部的元信息中
+- `true`: 和 `"meta"` 相同
+- `false`: 不显示
+
+### changelog
+
+- 类型: `boolean`
+- 默认值: `false`
+
+是否显示变更日志
 
 ### editLink
 
@@ -378,7 +385,38 @@ tag:
 
 ### toc {#toc-heading}
 
-- 类型: `boolean`
+- 类型: `GetHeadersOptions | boolean`
+
+  ```ts
+  export interface GetHeadersOptions {
+    /**
+     * 标题的选择器
+     *
+     * @default "#markdown-content >  h1, #markdown-content > h2, #markdown-content > h3, #markdown-content > h4, #markdown-content > h5, #markdown-content > h6, [vp-content] > h2"
+     */
+    selector?: string;
+    /**
+     * 忽略标题中的特定元素，应是一个 CSS 选择器数组
+     *
+     * @default [".vp-badge", ".vp-icon"]
+     */
+    ignore?: string[];
+    /**
+     * 标题的级别
+     *
+     * `1` 到 `6` 对应 `<h1>` 到 `<h6>`
+     *
+     * - `false`: 不显示标题列表
+     * - `number`: 仅显示该级别的标题
+     * - `[number, number]: 标题级别元组，第一个数字应小于第二个数字，例如 `[2, 4]`，表示显示所有 `<h2>` 到 `<h4>` 的标题。
+     * - `deep`: 和 `[2, 6]` 相同，表示显示所有 `<h2>` 到 `<h6>` 的标题。
+     *
+     * @default "deep"
+     */
+    levels?: HeaderLevels;
+  }
+  ```
+
 - 默认值: `true`
 
-是否在桌面模式下右侧展示标题列表
+是否显示标题列表

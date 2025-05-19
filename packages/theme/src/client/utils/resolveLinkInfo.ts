@@ -1,37 +1,27 @@
-import type { Router } from "vue-router";
-import {
-  inferRouteLink,
-  resolveRouteWithRedirect,
-} from "vuepress-shared/client";
+import { resolveRoute } from "vuepress/client";
 
-import type { AutoLinkOptions } from "../../shared/index.js";
-import { ArticleInfoType } from "../../shared/index.js";
+import type { AutoLinkOptions, PageInfoData } from "../../shared/index.js";
 
 /**
  * Resolve AutoLink props from string
  *
  */
 export const resolveLinkInfo = (
-  router: Router,
   item: string,
   preferFull = false,
+  currentPath?: string,
 ): AutoLinkOptions => {
-  let result = resolveRouteWithRedirect(
-    router,
-    inferRouteLink(encodeURI(item)),
+  const { meta, path, notFound } = resolveRoute<PageInfoData>(
+    item,
+    currentPath,
   );
 
-  // the inferred path may be wrong, so we need to resolve the original path
-  if (result.name === "404") result = resolveRouteWithRedirect(router, item);
-
-  const { fullPath, meta, name } = result;
-
-  return {
-    text:
-      !preferFull && meta[ArticleInfoType.shortTitle]
-        ? meta[ArticleInfoType.shortTitle]
-        : meta[ArticleInfoType.title] || item,
-    link: name === "404" ? item : fullPath,
-    ...(meta[ArticleInfoType.icon] ? { icon: meta[ArticleInfoType.icon] } : {}),
-  };
+  return notFound
+    ? { text: path, link: path }
+    : {
+        text:
+          !preferFull && meta.shortTitle ? meta.shortTitle : meta.title || path,
+        link: path,
+        icon: meta.icon,
+      };
 };

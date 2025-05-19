@@ -1,20 +1,20 @@
-/* eslint-disable vue/no-unused-properties */
-import { usePageLang } from "@vuepress/client";
+import { LoadingIcon, keys } from "@vuepress/helper/client";
 import type Artplayer from "artplayer";
 import type { Option as ArtPlayerInitOptions } from "artplayer/types/option.js";
 import type { PropType, VNode } from "vue";
 import { camelize, defineComponent, h, onMounted, onUnmounted, ref } from "vue";
-import { LoadingIcon, keys } from "vuepress-shared/client";
+import { useLang } from "vuepress/client";
 
 import type { ArtPlayerOptions } from "../../shared/index.js";
 import { useSize } from "../composables/index.js";
+import { getLink } from "../utils/getLink.js";
 import {
   SUPPORTED_VIDEO_TYPES,
   getTypeByUrl,
   registerMseDash,
   registerMseFlv,
   registerMseHls,
-} from "../utils/mse.js";
+} from "../utils/registerMse.js";
 
 import "../styles/art-player.scss";
 
@@ -48,8 +48,18 @@ const BOOLEAN_FALSE_ATTRS = [
   "subtitle-offset",
 ] as const;
 
-// NOTE: This should be updated with https://github.com/zhw2590582/ArtPlayer/blob/master/packages/artplayer/src/i18n/index.js
-const SUPPORTED_LANG_NAME = ["en", "pl", "cs", "es", "fa", "fr", "id", "ru"];
+// Note: This should be updated with https://github.com/zhw2590582/ArtPlayer/blob/master/packages/artplayer/src/i18n/index.js
+const SUPPORTED_LANG_NAME = [
+  "en",
+  "pl",
+  "cs",
+  "es",
+  "fa",
+  "fr",
+  "id",
+  "ru",
+  "tr",
+];
 const SUPPORTED_LANG_CODE = ["zh-cn", "zh-tw"];
 
 type KebabCaseToCamelCase<
@@ -61,8 +71,8 @@ type KebabCaseToCamelCase<
       true
     >}`
   : Cap extends true
-  ? Capitalize<S>
-  : S;
+    ? Capitalize<S>
+    : S;
 
 type ArtPlayerBooleanOptionKey =
   | (typeof BOOLEAN_TRUE_ATTRS extends readonly (infer T extends string)[]
@@ -78,15 +88,15 @@ declare const ART_PLAYER_OPTIONS: ArtPlayerOptions;
 
 const getLang = (lang: string): string => {
   const langCode = lang.toLowerCase();
-  const langName = langCode.split("-")[0]!;
+  const [langName] = langCode.split("-");
 
   return SUPPORTED_LANG_CODE.includes(langCode)
     ? langCode
     : SUPPORTED_LANG_NAME.includes(langName)
-    ? langName
-    : langName === "zh"
-    ? "zh-cn"
-    : "en";
+      ? langName
+      : langName === "zh"
+        ? "zh-cn"
+        : "en";
 };
 
 export default defineComponent({
@@ -110,30 +120,21 @@ export default defineComponent({
      *
      * 视频类型
      */
-    type: {
-      type: String,
-      default: "",
-    },
+    type: String,
 
     /**
      * Video poster
      *
      * 视频封面
      */
-    poster: {
-      type: String,
-      default: "",
-    },
+    poster: String,
 
     /**
      * Video title
      *
      * 视频标题
      */
-    title: {
-      type: String,
-      default: "",
-    },
+    title: String,
 
     /**
      * Component width
@@ -150,10 +151,7 @@ export default defineComponent({
      *
      * 组件高度
      */
-    height: {
-      type: [String, Number],
-      default: undefined,
-    },
+    height: [String, Number],
 
     /**
      * Component width / height ratio
@@ -170,45 +168,39 @@ export default defineComponent({
      *
      * ArtPlayer 配置
      */
-    config: {
-      type: Object as PropType<Omit<ArtPlayerOptions, "container">>,
-      default: null,
-    },
+    config: Object as PropType<Omit<ArtPlayerOptions, "container">>,
 
     /**
      * Customize Artplayer
      *
      * 对 Artplayer 进行自定义
      */
-    customPlayer: {
-      type: Function as PropType<
-        (
-          player: Artplayer,
-        ) => Artplayer | void | Promise<Artplayer> | Promise<void>
-      >,
-
-      default: (player: Artplayer) => player,
-    },
+    customPlayer: Function as PropType<
+      (
+        player: Artplayer,
+      ) => Artplayer | void | Promise<Artplayer> | Promise<void>
+    >,
   },
 
   setup(props, { attrs }) {
-    const lang = usePageLang();
-    const { el, width, height } = useSize<HTMLDivElement>(props, 0);
+    const lang = useLang();
+    const { el, width, height, resize } = useSize<HTMLDivElement>(props, 0);
 
     const loaded = ref(false);
-    let artPlayerInstance: Artplayer;
+    let artPlayerInstance: Artplayer | null = null;
 
     const getInitOptions = (): ArtPlayerInitOptions => {
       const initOptions: ArtPlayerInitOptions = {
         theme: "#3eaf7c",
         ...ART_PLAYER_OPTIONS,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         container: el.value!,
         poster: props.poster,
-        url: props.src,
-        type: props.type || getTypeByUrl(props.src),
+        url: getLink(props.src),
+        type: props.type ?? getTypeByUrl(props.src),
         lang: getLang(lang.value),
         ...props.config,
-        // this option must be set false to avoid problems
+        // This option must be set false to avoid problems
         useSSR: false,
       };
 
@@ -217,20 +209,20 @@ export default defineComponent({
       BOOLEAN_TRUE_ATTRS.forEach((config) => {
         if (attrsKeys.includes(config))
           initOptions[
-            <ArtPlayerBooleanOptionKey>camelize(config.replace(/^no-/, ""))
+            camelize(config.replace(/^no-/, "")) as ArtPlayerBooleanOptionKey
           ] = false;
       });
       BOOLEAN_FALSE_ATTRS.forEach((config) => {
         if (attrsKeys.includes(config))
-          initOptions[<ArtPlayerBooleanOptionKey>camelize(config)] = true;
+          initOptions[camelize(config) as ArtPlayerBooleanOptionKey] = true;
       });
 
-      // auto config mse
+      // Auto config mse
       if (initOptions.type) {
         const customType = (initOptions.customType ??= {});
 
         if (SUPPORTED_VIDEO_TYPES.includes(initOptions.type.toLowerCase()))
-          switch (initOptions.type) {
+          switch (initOptions.type.toLowerCase()) {
             case "m3u8":
             case "hls":
               customType[initOptions.type] ??= (
@@ -244,6 +236,7 @@ export default defineComponent({
               break;
 
             case "flv":
+            case "ts":
               customType[initOptions.type] ??= (
                 video: HTMLVideoElement,
                 src: string,
@@ -265,8 +258,11 @@ export default defineComponent({
                   player.on("destroy", destroy);
                 });
               break;
+
+            default:
           }
         else
+          // eslint-disable-next-line no-console
           console.warn(
             `[components]: ArtPlayer does not support current file type ${initOptions.type}!`,
           );
@@ -276,13 +272,16 @@ export default defineComponent({
     };
 
     onMounted(async () => {
+      if (__VUEPRESS_SSR__) return;
+
       const { default: Artplayer } = await import(
         /* webpackChunkName: "artplayer" */ "artplayer"
       );
       const player = new Artplayer(getInitOptions());
 
-      artPlayerInstance = (await props.customPlayer(player)) || player;
+      artPlayerInstance = (await props.customPlayer?.(player)) ?? player;
       loaded.value = true;
+      resize();
     });
 
     onUnmounted(() => {

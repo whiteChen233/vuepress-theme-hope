@@ -1,8 +1,9 @@
 @use "vars";
 @use "normalize";
 @use "code";
-@use "sr-only";
+@use "external-link-icon";
 @use "content";
-@use "theme";
 @use "layout";
+@use "not-found";
+@use "plugins";
 @use "@sass-palette/hope-style";

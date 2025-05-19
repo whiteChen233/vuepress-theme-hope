@@ -1,8 +1,9 @@
 ---
 title: Markdown Introduction
-icon: fab fa-markdown
+icon: b:markdown
 dir:
-  order: 2
+  collapsible: false
+  order: 1
 category:
   - Cookbook
   - Markdown

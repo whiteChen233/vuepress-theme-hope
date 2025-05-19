@@ -20,7 +20,6 @@ export const zhLocale: ThemeLocaleData = {
     toc: "此页内容",
     prev: "上一页",
     next: "下一页",
-    lastUpdated: "上次编辑于",
     contributors: "贡献者",
     editLink: "编辑此页",
     print: "打印",
@@ -35,7 +34,8 @@ export const zhLocale: ThemeLocaleData = {
     timelineTitle: "昨日不在",
     all: "全部",
     intro: "个人介绍",
-    star: "收藏",
+    star: "星标",
+    empty: "$text 为空",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const zhLocale: ThemeLocaleData = {
     errorHint: "请输入正确的密码",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "跳至主要內容",
     notFoundTitle: "页面不存在",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const zhLocale: ThemeLocaleData = {
     ],
     back: "返回上一页",
     home: "带我回家",
-    openInNewWindow: "Open in new window",
   },
 };

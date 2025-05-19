@@ -18,15 +18,9 @@ The theme also provides navigation buttons for previous and next pages depending
 
 `vuepress-theme-hope` uses the built-in [`@vuepress/plugin-git`][git] plugin to automatically generate page create time, last update time and contributors.
 
-The plugin will automatically generate the page creation time and last update time from the UNIX timestamp (ms) of the last `git` commit of the page file, and generate contributors based on the commit record.
+The plugin will automatically generate the page creation time and last update time from the UNIX timestamp (ms) of `git` commit history of the page file, and generate contributors based on the commit record.
 
 The theme will display last update time in the appropriate date format, along with all page contributors at the bottom of the page.
-
-::: tip
-
-The theme will use `Date.toLocaleString(pageLang)` to automatically localize the text of last update time according to the current language.
-
-:::
 
 ::: warning Limitations
 
@@ -45,12 +39,45 @@ You can automatically generate edit links for each page by setting the following
 - `docsDir`: the directory of docs in the repository, defaults to root directory
 - `docsBranch`: docs branch, defaults to `"main"`
 
+```ts twoslash {4-6} title=".vuepress/theme.ts"
+import { hopeTheme } from "vuepress-theme-hope";
+
+export default hopeTheme({
+  docsRepo: "vuepress/docs",
+  docsDir: "docs",
+  docsBranch: "next",
+});
+```
+
 ## Display Control
 
-To hide these items globally, set the corresponding items below to `false` in theme options. You can also enable/disable specific pages by setting these items in `YAML front matter`:
+To hide these items globally, set the corresponding items below to `false` in theme options. You can also enable/disable specific pages by setting these items in page frontmatter:
 
 - `lastUpdated`: whether to display last update time of the page
-- `contributors`: whether to show page contributors
+- `contributors`: whether to show page contributors, support `content`, `meta` and `boolean`
 - `editLink`: whether to display "edit page" link
+- `changelog`: whether to show changelog
 
-[git]: https://vuejs.press/reference/plugin/git.html
+::: details Example
+
+Disable contributors globally:
+
+```ts twoslash {4} title=".vuepress/theme.ts"
+import { hopeTheme } from "vuepress-theme-hope";
+
+export default hopeTheme({
+  contributors: false,
+});
+```
+
+Disable changelog in `example.md` page:
+
+```md title="example.md"
+---
+changelog: false
+---
+```
+
+:::
+
+[git]: https://ecosystem.vuejs.press/plugins/development/git.html

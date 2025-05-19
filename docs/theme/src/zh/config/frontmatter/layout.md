@@ -15,6 +15,10 @@ tag:
 
 - 类型: `PageInfo[] | false`
 - 默认值: 主题选项中的值
+- 详情:
+  - [功能 → 页面信息](../../guide/feature/page-info.md)
+
+自定义当前页面的页面信息。
 
 `PageInfo` 可选的值和对应内容如下:
 
@@ -29,25 +33,12 @@ tag:
 | `"Word"`        | 字数         | N/A(自动生成)               |
 | `"PageView"`    | 访问量       | `pageview` (仅 Waline 可用) |
 
-文章信息展示项目。
-
-## pageview
-
-- 类型: `boolean`
-- 默认值: 主题选项中的值
-
-是否显示浏览量。
-
-::: tip
-
-显示浏览量功能需要你拥有有效的 Waline 评论服务配置。
-
-:::
-
 ## breadcrumb
 
 - 类型: `boolean`
 - 默认值: 主题选项中的值
+- 详情:
+  - [布局 → 页面](../../guide/layout/page.md#路径导航)
 
 是否开启路径导航。
 
@@ -55,40 +46,48 @@ tag:
 
 - 类型: `boolean`
 - 默认值: 主题选项中的值
+- 详情:
+  - [布局 → 页面](../../guide/layout/page.md#路径导航)
 
-是否开启路径导航图标。
+是否在路径导航中显示图标。
 
-## navbar
+## breadcrumbExclude
 
 - 类型: `boolean`
+- 默认值: `false`
+- 详情:
+  - [布局 → 页面](../../guide/layout/page.md#路径导航)
 
-导航栏配置，填入 `false` 会禁用导航栏
+当前页面是否被路径导航排除。
 
-## sidebar
+## navbar {#navbar-header}
 
-- 类型: `"heading" | false`
+- 类型: `boolean`
+- 详情:
+  - [布局 → 导航栏](../../guide/layout/navbar.md#禁用导航栏)
 
-侧边栏配置选项。支持 `"heading"` 或 `false`。
+填入 `false` 会禁用导航栏
 
-## headerDepth
+## sidebar {#sidebar-header}
 
-- 类型: `number`
-- 默认值: `2`
+- 类型: `boolean`
+- 详情:
+  - [布局 → 侧边栏](../../guide/layout/sidebar.md#禁用侧边栏)
 
-标题渲染深度。
+填入 `false` 会禁用侧边栏，设置为空数组 `[]` 会只渲染侧边栏的插槽内容。
 
 ## index
 
 - 类型: `boolean`
 - 默认值: `true`
 
-是否在侧边栏中索引当前页面。
+是否在侧边栏或目录中索引当前页面。
 
 ## order
 
 - 类型: `number`
 
-指定当前页面在侧边栏中的排序
+指定当前页面在侧边栏或目录中的排序
 
 - 当填写正数的时候，页面将排在靠前的位置，数字越小出现的位置越前。
 - 当填写负数的时候，页面将排在靠后的位置，数字越大出现的位置越前（比如 -1 在 -2 之后）。
@@ -175,12 +174,19 @@ tag:
 
 是否显示贡献者。
 
+## changelog
+
+- 类型: `boolean`
+- 默认值: 主题选项中的值
+
+是否显示变更日志。
+
 ## prev
 
-- 类型: `AutoLinkOptions | string | false`
+- 类型: `AutoLinkConfig | string | false`
 
   ```ts
-  interface AutoLinkOptions {
+  interface AutoLinkConfig {
     text: string;
     icon: string;
     link: string;
@@ -191,10 +197,10 @@ tag:
 
 ## next
 
-- 类型: `AutoLinkOptions | string | false`
+- 类型: `AutoLinkConfig | string | false`
 
   ```ts
-  interface AutoLinkOptions {
+  interface AutoLinkConfig {
     text: string;
     icon: string;
     link: string;
@@ -207,7 +213,7 @@ tag:
 
 - 类型: `boolean | string | HTMLString`
 
-设置页脚内容。
+页脚内容。
 
 - 设置为 `false` 以禁用页脚
 - 设置为 `""` 以移除默认的页脚内容，
@@ -220,21 +226,54 @@ tag:
 - 类型: `string | false`
 - 默认值: 主题选项中的值
 
-设置版权信息，更多详情请看 [页面 → 页脚支持](../../guide/layout/footer.md)
+版权信息。
+
+更多详情请看 [页面 → 页脚支持](../../guide/layout/footer.md)
 
 ## backToTop
 
 - 类型: `boolean`
 - 默认值: `true`
 
-设置是否显示返回顶部按钮
+是否显示返回顶部按钮
 
 ## toc {#toc-heading}
 
-- 类型: `boolean`
+- 类型: `GetHeadersOptions | boolean`
+
+  ```ts
+  export interface GetHeadersOptions {
+    /**
+     * 标题的选择器
+     *
+     * @default "#markdown-content >  h1, #markdown-content > h2, #markdown-content > h3, #markdown-content > h4, #markdown-content > h5, #markdown-content > h6, [vp-content] > h2"
+     */
+    selector?: string;
+    /**
+     * 忽略标题中的特定元素，应是一个 CSS 选择器数组
+     *
+     * @default [".vp-badge", ".vp-icon"]
+     */
+    ignore?: string[];
+    /**
+     * 标题的级别
+     *
+     * `1` 到 `6` 对应 `<h1>` 到 `<h6>`
+     *
+     * - `false`: 不显示标题列表
+     * - `number`: 仅显示该级别的标题
+     * - `[number, number]: 标题级别元组，第一个数字应小于第二个数字，例如 `[2, 4]`，表示显示所有 `<h2>` 到 `<h4>` 的标题。
+     * - `deep`: 和 `[2, 6]` 相同，表示显示所有 `<h2>` 到 `<h6>` 的标题。
+     *
+     * @default "deep"
+     */
+    levels?: HeaderLevels;
+  }
+  ```
+
 - 默认值: 主题选项中的值
 
-设置在桌面模式下是否在右侧显示标题列表。
+是否显示标题列表。
 
 ## containerClass
 

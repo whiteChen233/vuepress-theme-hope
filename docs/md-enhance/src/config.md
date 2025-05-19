@@ -1,324 +1,19 @@
 ---
 title: Config
 icon: gears
+order: 2
 ---
 
 ## Plugin Options
 
 You can pass these options to the plugin:
 
-### gfm
-
-- Type: `boolean`
-- Default: `false`
-
-Whether to support full GFM syntax.
-
-::: note
-
-For full GFM syntax, see [GFM](https://github.github.com/gfm/).
-
-We are not 100% supporting it to be honestly, we only supply its syntax including linkify, breaks, footnote, task list, code highlight, image mark, mermaid, mathjax and so on.
-
-Some of the behavior might be different, for example to support Vue syntax, we are not disallowing `<script>` tags. But in most situation, the behavior should be same.
-
-:::
-
-### container
+### chartjs
 
 - Type: `boolean`
 - Default: `false`
 - Details:
-  - [Custom Container](./guide/container.md)
-
-Whether to enable custom container including
-
-- info
-- note
-- tip
-- warning
-- danger
-- details
-
-::: warning
-
-The last 4 items conflict with default theme and will override its style.
-
-:::
-
-### checkLinks
-
-- Type: `LinksCheckOptions`
-
-  ```ts
-  type LinksCheckStatus = "always" | "dev" | "build" | "never";
-
-  interface LinksCheckOptions {
-    /**
-     * Whether check dead links in markdown
-     *
-     * @default "dev"
-     */
-    status?: LinksCheckStatus;
-
-    /**
-     * Dead links to ignore
-     */
-    ignore?: (string | RegExp)[] | ((link: string, isDev: boolean) => boolean);
-  }
-  ```
-
-- Default: `{ status: "dev" }`
-
-Whether to enable links check.
-
-### vPre
-
-- Type: `boolean`
-- Default: `false`
-- Details:
-  - [v-pre wrapper](./guide/others.md#v-pre)
-
-Whether to enable v-pre wrapper.
-
-### breaks
-
-- Type: `boolean`
-- Default: `false`
-- Enabled in GFM: Yes
-
-Whether convert `\n` in paragraphs into `<br>`s
-
-### linkify
-
-- Type: `boolean`
-- Default: `false`
-- Enabled in GFM: Yes
-
-Whether convert URL-like text into links
-
-### tabs
-
-- Type: `boolean`
-- Default: `false`
-- Details:
-  - [Tabs](./guide/tabs.md)
-
-Whether to enable tabs.
-
-### codetabs
-
-- Type: `boolean`
-- Default: `false`
-- Details:
-  - [Code Tabs](./guide/code-tabs.md)
-
-Whether to enable codetabs.
-
-### align
-
-- Type: `boolean`
-- Default: `false`
-- Details:
-  - [Align](./guide/align.md)
-
-Whether to enable custom align.
-
-### attrs
-
-- Type: `AttrsOptions | boolean`
-
-  ```ts
-  interface AttrsOptions {
-    /**
-     * left delimiter
-     *
-     * @default '{'
-     */
-    left?: string;
-
-    /**
-     * right delimiter
-     *
-     * @default '}'
-     */
-    right?: string;
-
-    /**
-     * allowed attributes
-     *
-     * @description An empty list means allowing all attribute
-     *
-     * @default []
-     */
-    allowed?: (string | RegExp)[];
-  }
-  ```
-
-- Default: `false`
-- Details:
-  - [Attrs](./guide/attrs.md)
-
-Whether to enable attribute customize support.
-
-### sup
-
-- Type: `boolean`
-- Default: `false`
-
-Whether to enable the upper format support.
-
-### sub
-
-- Type: `boolean`
-- Default: `false`
-
-Whether to enable the lower corner format support.
-
-### footnote
-
-- Type: `boolean`
-- Default: `false`
-- Enabled in GFM: Yes
-
-Whether to enable footnote format support.
-
-### mark
-
-- Type: `boolean`
-- Default: `false`
-
-Whether to enable mark support.
-
-### figure
-
-- Type: `boolean`
-- Default: `false`
-
-Whether enable figure support.
-
-### imgLazyload
-
-- Type: `boolean`
-- Default: `false`
-
-Whether to lazy load every image in page in native way.
-
-### imgMark
-
-- Type: `ImageMarkOptions | boolean`
-- Default: `false`
-- Enabled in GFM: Yes
-
-Whether enable image mark support.
-
-```ts
-interface ImageMarkOptions {
-  /** lightmode only IDs */
-  light?: string[];
-  /** darkmode only IDs */
-  dark?: string[];
-}
-```
-
-### imgSize
-
-- Type: `boolean`
-- Default: `false`
-
-Whether enable image size support.
-
-### obsidianImgSize
-
-- Type: `boolean`
-- Default: `false`
-
-Whether enable obsidian image size support.
-
-### tasklist
-
-- Type: `TaskListOptions | boolean`
-- Default: `false`
-- Enabled in GFM: Yes
-
-Whether to enable tasklist format support. You can pass an object to config task list.
-
-```ts
-interface TaskListOptions {
-  /**
-   * Whether disable checkbox
-   *
-   * @default true
-   */
-  disabled?: boolean;
-
-  /**
-   * Whether use `<label>` to wrap text
-   *
-   * @default true
-   */
-  label?: boolean;
-}
-```
-
-### katex
-
-- Type: `KatexOptions & { copy?: boolean; mhchem?: boolean } | boolean`
-- Default: `false`
-
-Whether to enable $\TeX$ syntax support through KaTeX. You can pass an object to config KaTeX.
-
-In particular, you can enable the copy and mhchem extensions with `katex.copy: true` and `katex.mhchem: true`.
-
-Please see [Katex Docs](https://katex.org/docs/options.html) for available options.
-
-### mathjax
-
-- Type: `MathJaxOptions | boolean`
-- Default: `false`
-- Enabled in GFM: Yes
-
-Whether to enable $\TeX$ syntax support through Math Jax. You can pass an object to config Math Jax.
-
-Please see [source code](https://github.com/vuepress-theme-hope/vuepress-theme-hope/tree/main/packages/md-enhance/src/shared/mathjax.ts) for available options.
-
-### include
-
-- Type: `IncludeOptions | boolean`
-
-  ```ts
-  interface IncludeOptions {
-    /**
-     * handle include filePath
-     *
-     * @default (path) => path
-     */
-    resolvePath?: (path: string, cwd: string) => string;
-
-    /**
-     * Whether deep include files in included Markdown files
-     *
-     * @default false
-     */
-    deep?: boolean;
-  }
-  ```
-
-- Default: `false`
-
-Whether to enable Markdown import support. You can pass in a function for path resolution.
-
-### card
-
-- Type: `boolean`
-- Default: `false`
-
-Whether to enable card support
-
-### chart
-
-- Type: `boolean`
-- Default: `false`
+  - [Chart.js](./guide/chart/chartjs.md)
 
 Whether to enable chart support
 
@@ -326,6 +21,8 @@ Whether to enable chart support
 
 - Type: `boolean`
 - Default: `false`
+- Details:
+  - [ECharts](./guide/chart/echarts.md)
 
 Whether to enable ECharts support
 
@@ -333,70 +30,44 @@ Whether to enable ECharts support
 
 - Type: `boolean`
 - Default: `false`
+- Details:
+  - [Flowchart](./guide/chart/flowchart.md)
 
 Whether to enable flowchart support
 
+### markmap
+
+- Type: `boolean`
+- Default: `false`
+- Details:
+  - [Markmap](./guide/chart/markmap.md)
+
+Whether to enable [Markmap](https://markmap.js.org/) support.
+
 ### mermaid
 
-- Type: `MermaidConfig | boolean`
+- Type: `boolean`
 - Default: `false`
 - Enabled in GFM: Yes
+- Details:
+  - [Mermaid](./guide/chart/mermaid.md)
 
-Whether to enable [Mermaid](https://mermaid.js.org/) support, you can pass in a config object to customize the behavior of Mermaid.
+Whether to enable [Mermaid](https://mermaid.js.org/) support.
 
-### stylize
+### plantuml
 
-- Type: `StylizeOptions | false`
-
-  ```ts
-  interface StylizeResult {
-    /**
-     * Tag name
-     */
-    tag: string;
-
-    /**
-     * Attributes settings
-     */
-    attrs: Record<string, string>;
-
-    /**
-     * Tag content
-     */
-    content: string;
-  }
-
-  interface StylizeItem {
-    /**
-     * Inline token matcher
-     */
-    matcher: string | RegExp;
-
-    /**
-     * Content Replacer
-     */
-    replacer: (options: {
-      tag: string;
-      content: string;
-      attrs: Record<string, string>;
-      env?: MarkdownEnv;
-    }) => StylizeResult | void;
-  }
-
-  type StylizeOptions = StylizeItem[];
-  ```
-
+- Type: `MarkdownItPlantumlOptions[] | boolean`
 - Default: `false`
+- Details:
+  - [Plantuml](./guide/chart/plantuml.md)
 
-Stylize inline tokens to create snippet you want.
+Whether to enable [plantuml](https://plantuml.com/) support.
 
 ### playground
 
 - Type: `PlaygroundGlobalOptions`
 
   ```ts
-  import type { CompilerOptions } from "typescript";
-
   interface PlaygroundCodeConfig {
     /**
      * Code block extension
@@ -405,28 +76,22 @@ Stylize inline tokens to create snippet you want.
      */
     ext: string;
 
-    /**
-     * Code block content
-     */
+    /** Code block content */
     content: string;
   }
 
   interface PlaygroundData {
-    /**
-     * Title of Playground
-     */
+    /** Title of Playground */
     title?: string;
 
     /**
      * Import map file name
      *
-     * @default 'import-map.json'
+     * @default "import-map.json"
      */
     importMap?: string;
 
-    /**
-     * Playground files info
-     */
+    /** Playground files info */
     files: Record<
       /** File name */
       string,
@@ -441,22 +106,18 @@ Stylize inline tokens to create snippet you want.
      */
     settings: Record<string, unknown>;
 
-    /**
-     * hash key based on playground content
-     */
+    /** hash key based on playground content */
     key: string;
   }
 
   interface PlaygroundOptions {
-    /**
-     * Playground container name
-     */
+    /** Playground container name */
     name: string;
 
     /**
      * Playground component name
      *
-     * @default 'Playground'
+     * @default "Playground"
      */
     component?: string;
 
@@ -471,17 +132,6 @@ Stylize inline tokens to create snippet you want.
      * external playground service url
      *
      * @default "https://www.typescriptlang.org/play"
-     */
-    service?: string;
-  }
-
-  interface UnoPresetPlaygroundOptions {
-    /**
-     * external playground service url
-     *
-     * 交互演示外部地址
-     *
-     * @default "https://unocss.dev/play"
      */
     service?: string;
   }
@@ -509,25 +159,50 @@ Stylize inline tokens to create snippet you want.
     ssr?: boolean;
   }
 
+  interface UnoPresetPlaygroundOptions {
+    /**
+     * external playground service url
+     *
+     * @default "https://unocss.dev/play"
+     */
+    service?: string;
+  }
+
+  type BuiltInPlaygroundPreset = "ts" | "vue" | "unocss";
+
   interface PlaygroundGlobalOptions {
     /** Playground presets */
-    presets: ("ts" | "vue" | PlaygroundOptions)[];
+    presets: (BuiltInPlaygroundPreset | PlaygroundOptions)[];
     /** Playground config */
     config?: {
       ts?: TSPresetPlaygroundOptions;
       vue?: VuePresetPlaygroundOptions;
+      unocss?: UnoPresetPlaygroundOptions;
     };
   }
   ```
 
 - Required: No
+- Details:
+  - [Playground](./guide/code/playground.md)
 
 Playground options.
+
+### kotlinPlayground
+
+- Type: `boolean`
+- Default: `false`
+- Details:
+  - [Kotlin Playground](./guide/code/kotlin-playground.md)
+
+Whether to enable kotlin playground support.
 
 ### vuePlayground
 
 - Type: `boolean`
 - Default: `false`
+- Details:
+  - [Vue Playground](./guide/code/vue-playground.md)
 
 Whether to enable vue playground support.
 
@@ -535,6 +210,8 @@ Whether to enable vue playground support.
 
 - Type: `CodeDemoGlobalOptions | boolean`
 - Default: `false`
+- Details:
+  - [Code Demo](./guide/code/demo/README.md)
 
 Whether to enable code demo support.
 
@@ -543,46 +220,46 @@ Whether to enable code demo support.
 - Type: `string[]`
 - Required: No
 
-CodePen, JsFiddle requires an external JS library for dating.
+External JS libraries for CodePen, JsFiddle only.
 
 #### demo.cssLib
 
 - Type: `string[]`
 - Required: No
 
-CodePen, JsFiddle need an external CSS library for dating.
+External JS libraries for CodePen, JsFiddle only.
 
 ::: warning
 
-The above two options are only used by third-party code demo service, you need to import these libraries in `head`.
+The above two options are only used by third-party code demo service, you need to import these libraries in `head` to get it work.
 
 :::
 
 #### demo.jsfiddle
 
 - Type: `boolean`
-- Default value: `true`
+- Default: `true`
 
 Whether to display the JSFiddle button
 
 #### demo.codepen
 
 - Type: `boolean`
-- Default value: `true`
+- Default: `true`
 
 Whether to display the CodePen button
 
 #### demo.codepenLayout
 
 - Type: `"top" | "left" | "correct"`
-- Default value: `"left"`
+- Default: `"left"`
 
 CodePen editor layout
 
 #### demo.codepenEditors
 
 - Type: `string`
-- Default value: `"101"`
+- Default: `"101"`
 
 CodePen editor status
 
@@ -606,205 +283,134 @@ Default value: `"https://unpkg.com/react/umd/react.production.min.js"`
 
 Default value: `"https://unpkg.com/react-dom/umd/react-dom.production.min.js"`
 
-### presentation
+### sandpack
 
-- Type: `PresentationOptions | boolean`
-
-  ```ts
-  type RevealPlugin = "highlight" | "math" | "search" | "notes" | "zoom";
-  ```
-
+- Type: `boolean`
 - Default: `false`
 
-Whether to enable presentation syntax support.
-
-You can set it with an array, which represents enabled plugins.
-
-Acceptable values are:
-
-- `"highlight"`
-- `"math"`
-- `"search"`
-- `"notes"`
-- `"zoom"`
-
-<!-- - `"anything"`
-- `"audio"`
-- `"chalkboard"` -->
-
-### delay
-
-- Type: `number`
-- Default: `800`
-
-The delay of operating dom, in ms.
-
-::: tip
-
-If the theme you are using has a switching animation, it is recommended to configure this option to `Switch animation duration + 200`.
-
-:::
-
-### locales
-
-- Type: `MarkdownEnhanceLocaleConfig`
-
-  ```ts
-  interface MarkdownEnhanceLocaleData {
-    /**
-     * Default Title text for info block
-     */
-    info: string;
-
-    /**
-     * Default Title text for note block
-     */
-    note: string;
-
-    /**
-     * Default Title text for tip block
-     */
-    tip: string;
-
-    /**
-     * Default Title text for warning block
-     */
-    warning: string;
-
-    /**
-     * Default Title text for danger block
-     */
-    danger: string;
-
-    /**
-     * Default Title text for details block
-     */
-    details: string;
-  }
-
-  interface MarkdownEnhanceLocaleConfig {
-    [localePath: string]: MarkdownEnhanceLocaleData;
-  }
-  ```
-
-- Required: No
-
-Locales config for Markdown Enhance Plugin.
-
-::: details Built-in Supported Languages
-
-- **Simplified Chinese** (zh-CN)
-- **Traditional Chinese** (zh-TW)
-- **English (United States)** (en-US)
-- **German** (de-DE)
-- **German (Australia)** (de-AT)
-- **Russian** (ru-RU)
-- **Ukrainian** (uk-UA)
-- **Vietnamese** (vi-VN)
-- **Portuguese (Brazil)** (pt-BR)
-- **Polish** (pl-PL)
-- **French** (fr-FR)
-- **Spanish** (es-ES)
-- **Slovak** (sk-SK)
-- **Japanese** (ja-JP)
-- **Turkish** (tr-TR)
-- **Korean** (ko-KR)
-- **Finnish** (fi-FI)
-- **Indonesian** (id-ID)
-- **Dutch** (nl-NL)
-
-:::
+Whether to enable sandpack playground support.
 
 ## Client Config
+
+### defineEChartsConfig
+
+```ts
+interface EChartsConfig {
+  /**
+   * ECharts global options
+   */
+  option?: EChartsOption;
+
+  /**
+   * ECharts setup function
+   */
+  setup?: () => Promise<void>;
+}
+
+const defineEChartsConfig: (config: EChartsConfig) => void;
+```
+
+Define global options and setup for ECharts.
 
 ### defineMermaidConfig
 
 ```ts
-export const defineMermaidConfig: (options: MermaidConfig) => void;
+export type MermaidOptions = Omit<
+  MermaidConfig,
+  "startOnLoad" | "themeVariables"
+> & {
+  themeVariables?:
+    | MermaidThemeVariables
+    | ((isDarkMode: boolean) => MermaidThemeVariables);
+};
+
+const defineMermaidConfig: (options: MermaidOptions) => void;
 ```
 
-Define config which you want to pass to mermaid.
+Define config which you want to pass to mermaid. Additionally, you can use `themeVariables` to define colors of mermaid.
 
-### defineRevealConfig
+### defineKotlinPlaygroundConfig
 
 ```ts
-export const defineRevealConfig: (options: RevealOptions) => void;
+interface KotlinPlaygroundOptions {
+  server?: string;
+  version?: string;
+
+  onChange?: (code: string) => void;
+  onRun?: () => void;
+  onError?: () => void;
+  getJsCode?: (code: string) => void;
+  onTestPassed?: () => void;
+  onTestFailed?: () => void;
+  onOpenConsole?: () => void;
+  onCloseConsole?: () => void;
+  callback?: (targetNode: HTMLElement, mountNode: HTMLElement) => void;
+  getInstance?: (instance: KotlinPlaygroundInstance) => void;
+}
+
+const defineKotlinPlaygroundConfig: (options: KotlinPlaygroundOptions) => void;
 ```
 
-Define config which you want to pass to reveal.js.
+Define config which you want to pass to `kotlin-playground`.
+
+### defineSandpackConfig
+
+```ts
+ interface SandpackConfig {
+  /**
+   * specify the template
+   */
+  template?: SandpackPredefinedTemplate;
+
+  /**
+   * Options to configure the sandpack
+   */
+  options?: SandpackOptions;
+
+  /**
+   * Options to configure the customSetup
+   */
+  customSetup?: SandpackSetup;
+}
+
+const defineSandpackConfig = (config: SandpackConfig)=> void
+```
+
+Define config which you want to pass to `sandpack-vue3`.
 
 ### defineVuePlaygroundConfig
 
 ```ts
-interface VuePlaygroundOptions {
+export interface VuePlaygroundOptions
+  extends Omit<ReplProps, "store" | "editor"> {
   /**
-   * specify the version of vue
+   * Specify the version of vue
    */
   vueVersion?: string;
 
   /**
-   * specify default URL to import Vue runtime from in the sandbox
+   * Specify default URL to import Vue dev runtime from in the sandbox
    *
    * @default "https://unpkg.com/@vue/runtime-dom@${version}/dist/runtime-dom.esm-browser.js"
    */
-  defaultVueRuntimeURL?: string;
+  vueRuntimeDevUrl?: string | (() => string);
+
+  /**
+   * Specify default URL to import Vue prod runtime from in the sandbox
+   *
+   * @default "https://unpkg.com/@vue/runtime-dom@${version}/dist/runtime-dom.esm-browser.prod.js"
+   */
+  vueRuntimeProdUrl?: string | (() => string);
 
   /**
    * Specify default URL to import Vue Server Renderer from in the sandbox
    *
    * @default "https://unpkg.com/@vue/server-renderer@${version}/dist/server-renderer.esm-browser.js"
    */
-  defaultVueServerRendererURL?: string;
-
-  /**
-   * Whether to enable repl's editor resizable
-   *
-   * @default true
-   */
-  autoResize?: boolean;
-
-  /**
-   * Whether to show JS, CSS, SSR panel
-   *
-   * @default false
-   */
-  showCompileOutput?: boolean;
-
-  /**
-   * Whether to show import map
-   *
-   * @default true
-   */
-  showImportMap?: boolean;
-
-  /**
-   * Whether to clear console
-   *
-   * @default false
-   */
-  clearConsole?: boolean;
-
-  /**
-   * Layout
-   *
-   * @default 'horizontal'
-   */
-  layout?: "horizontal" | "vertical";
-
-  /**
-   * Options to configure the `vue/compiler-sfc`
-   */
-  sfcOptions?: SFCOptions;
-
-  /**
-   * Whether to enable SSR
-   *
-   * @default true
-   */
-  ssr?: boolean;
+  vueServerRendererUrl?: string | (() => string);
 }
 
-export const defineVuePlaygroundConfig: (options: VuePlaygroundOptions) => void;
+const defineVuePlaygroundConfig: (options: VuePlaygroundOptions) => void;
 ```
 
 Define config which you want to pass to `@vue/repl`.

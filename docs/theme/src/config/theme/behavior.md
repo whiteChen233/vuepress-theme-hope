@@ -13,16 +13,11 @@ tag:
 The behavior option can also accept a boolean value:
 
 - `false`: options set to`false` with `false` value
-- `true`: `{ check: true, compact:true, custom :false, debug: false }`
+- `true`: `{ check: true, compact: true, custom: false, debug: false }`
 
 <!-- more -->
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
+```ts twoslash title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -41,31 +36,6 @@ export default defineUserConfig({
   ),
 });
 ```
-
-@tab JS
-
-```js
-// .vuepress/config.js
-import { defineUserConfig } from "vuepress";
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default defineUserConfig({
-  // siteConfig here
-  // ...
-
-  theme: hopeTheme(
-    {
-      // themeConfig here
-      // ...
-    },
-    {
-      // theme behavior options here (optional)
-    },
-  ),
-});
-```
-
-:::
 
 ## check
 
@@ -123,3 +93,10 @@ This is just a hack by setting `app.env.isDebug` to `true`.
 You can also add `--debug` flag while running `vuepress dev` or `vuepress build` to enable debug mode. (Recommended)
 
 :::
+
+## checkVuePress
+
+- Type: `boolean`
+- Default: `true`
+
+Whether check VuePress version is compatible.

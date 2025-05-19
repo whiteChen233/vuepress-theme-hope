@@ -1,17 +1,24 @@
-import type { ChartConfiguration } from "chart.js";
+import { LoadingIcon, decodeData, useDarkMode } from "@vuepress/helper/client";
+import { watchImmediate } from "@vueuse/core";
+import type { Chart, ChartConfiguration } from "chart.js";
 import type { PropType, VNode } from "vue";
-import { defineComponent, h, onMounted, ref, shallowRef } from "vue";
-import { LoadingIcon, atou } from "vuepress-shared/client";
+import {
+  computed,
+  defineComponent,
+  h,
+  onMounted,
+  onUnmounted,
+  ref,
+  shallowRef,
+} from "vue";
 
-import "../styles/chart.scss";
-
-declare const MARKDOWN_ENHANCE_DELAY: number;
+import "../styles/chartjs.scss";
 
 const parseChartConfig = (
   config: string,
   type: "js" | "json",
 ): ChartConfiguration => {
-  if (type === "json") return <ChartConfiguration>JSON.parse(config);
+  if (type === "json") return JSON.parse(config) as ChartConfiguration;
 
   // eslint-disable-next-line @typescript-eslint/no-implied-eval
   const runner = new Function(
@@ -23,9 +30,9 @@ __chart_js_config__=config;
 }
 return __chart_js_config__;\
 `,
-  );
+  ) as () => ChartConfiguration;
 
-  return <ChartConfiguration>runner();
+  return runner();
 };
 
 export default defineComponent({
@@ -57,10 +64,7 @@ export default defineComponent({
      *
      * 图表标题
      */
-    title: {
-      type: String,
-      default: "",
-    },
+    title: String,
 
     /**
      * Chart config type
@@ -74,26 +78,46 @@ export default defineComponent({
   },
 
   setup(props) {
+    const isDarkMode = useDarkMode();
     const chartElement = shallowRef<HTMLElement>();
     const chartCanvasElement = shallowRef<HTMLCanvasElement>();
 
     const loading = ref(true);
 
-    onMounted(async () => {
-      const [{ default: Chart }] = await Promise.all([
+    const config = computed(() => decodeData(props.config));
+
+    let chartjs: Chart | null;
+
+    const renderChart = async (): Promise<void> => {
+      if (__VUEPRESS_SSR__) return;
+
+      const [{ default: ChartJs }] = await Promise.all([
         import(/* webpackChunkName: "chart" */ "chart.js/auto"),
-        // delay
-        new Promise((resolve) => setTimeout(resolve, MARKDOWN_ENHANCE_DELAY)),
       ]);
 
-      Chart.defaults.maintainAspectRatio = false;
+      ChartJs.defaults.borderColor = isDarkMode.value ? "#ccc" : "#36A2EB";
+      ChartJs.defaults.color = isDarkMode.value ? "#fff" : "#000";
+      ChartJs.defaults.maintainAspectRatio = false;
 
-      const data = parseChartConfig(atou(props.config), props.type);
+      const data = parseChartConfig(config.value, props.type);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const ctx = chartCanvasElement.value!.getContext("2d")!;
 
-      new Chart(ctx, data);
+      chartjs?.destroy();
+      chartjs = new ChartJs(ctx, data);
 
       loading.value = false;
+    };
+
+    onMounted(() => {
+      watchImmediate(isDarkMode, () => renderChart(), {
+        flush: "post",
+      });
+    });
+
+    onUnmounted(() => {
+      chartjs?.destroy();
+      chartjs = null;
     });
 
     return (): (VNode | null)[] => [

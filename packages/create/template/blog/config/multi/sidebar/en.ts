@@ -17,6 +17,10 @@ export const enSidebar = sidebar({
       children: "structure",
     },
     "intro",
-    "slides",
+    {
+      text: "Slides",
+      icon: "person-chalkboard",
+      link: "https://ecosystem.vuejs.press/plugins/markdown/revealjs/demo.html",
+    },
   ],
 });

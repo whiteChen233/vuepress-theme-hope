@@ -1,8 +1,8 @@
-import type { PageData } from "@vuepress/client";
-import { usePageData } from "@vuepress/client";
+import { isFunction, isPlainObject, isString } from "@vuepress/helper/client";
 import type { PropType, VNode } from "vue";
 import { computed, defineComponent, h } from "vue";
-import { isFunction, isPlainObject, isString } from "vuepress-shared/client";
+import type { PageData } from "vuepress/client";
+import { usePage } from "vuepress/client";
 
 import ShareService from "./ShareService.js";
 import type { ShareServiceOptions } from "../../shared/share.js";
@@ -74,7 +74,7 @@ export default defineComponent({
       }: PageData<
         Record<never, never>,
         { tag?: string | string[]; tags?: string | string[] }
-      >) => frontmatter["tag"] || frontmatter["tags"],
+      >) => frontmatter.tag ?? frontmatter.tags,
     },
 
     /**
@@ -89,14 +89,14 @@ export default defineComponent({
   },
 
   setup(props) {
-    const page = usePageData();
+    const page = usePage();
 
-    const service = computed(() => {
-      const services = isString(props.services)
+    const services = computed(() => {
+      const serviceOptions = isString(props.services)
         ? props.services.split(",")
         : props.services;
 
-      return services
+      return serviceOptions
         .map((item) =>
           isPlainObject(item)
             ? item.name && item.link
@@ -104,7 +104,7 @@ export default defineComponent({
               : null
             : shareServices.find(({ name }) => name === item),
         )
-        .filter((item): item is ShareServiceOptions => item != null);
+        .filter((item): item is ShareServiceOptions => Boolean(item));
     });
 
     const shareData = computed(() => {
@@ -129,14 +129,14 @@ export default defineComponent({
       return result;
     });
 
-    return (): VNode => {
-      return h(
+    return (): VNode =>
+      h(
         "div",
         {
           class: "vp-share-buttons",
           style: props.inline ? { display: "inline-block" } : {},
         },
-        service.value.map((item) =>
+        services.value.map((item) =>
           h(ShareService, {
             config: item,
             ...shareData.value,
@@ -144,6 +144,5 @@ export default defineComponent({
           }),
         ),
       );
-    };
   },
 });

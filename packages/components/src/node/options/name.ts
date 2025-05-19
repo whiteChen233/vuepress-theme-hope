@@ -1,16 +1,15 @@
+/** @deprecated */
+export type DeprecatedComponent = "AudioPlayer" | "VideoPlayer" | "YouTube";
+
 export type AvailableComponent =
   | "ArtPlayer"
-  | "AudioPlayer"
   | "Badge"
   | "BiliBili"
   | "CodePen"
-  | "FontIcon"
   | "PDF"
-  | "Replit"
   | "Share"
   | "StackBlitz"
   | "SiteInfo"
-  | "VidStack"
-  | "VideoPlayer"
-  | "XiGua"
-  | "YouTube";
+  | "VPBanner"
+  | "VPCard"
+  | "VidStack";

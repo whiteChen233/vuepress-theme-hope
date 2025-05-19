@@ -1,4 +1,3 @@
-/* eslint-disable vue/no-unused-properties */
 /**
  * @see https://developer.stackblitz.com/platform/api/javascript-sdk
  */
@@ -10,9 +9,6 @@ import { computed, defineComponent, h, onMounted } from "vue";
 import { useSize } from "../composables/index.js";
 
 import "../styles/stack-blitz.scss";
-
-// FIXME: Types issue
-const stackblitzSDK = sdk as unknown as typeof sdk.default;
 
 export default defineComponent({
   name: "StackBlitz",
@@ -57,10 +53,7 @@ export default defineComponent({
      *
      * 组件高度
      */
-    height: {
-      type: [String, Number],
-      default: undefined,
-    },
+    height: [String, Number],
 
     /**
      * Component width / height ratio
@@ -77,23 +70,17 @@ export default defineComponent({
      *
      * 默认打开的文件
      */
-    file: {
-      type: [String, Array] as PropType<string | string[]>,
-      default: "",
-    },
+    file: [String, Array] as PropType<string | string[]>,
 
     /**
      * The initial URL path the preview should open
      *
      * 预览的初始 URL 路径
      */
-    initialPath: {
-      type: String,
-      default: "",
-    },
+    initialPath: String,
 
     /**
-     * embed editor
+     * Embed editor
      *
      * 嵌入编辑器
      */
@@ -175,7 +162,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const { el, width, height } = useSize<HTMLIFrameElement>(props);
+    const { el, width, height, resize } = useSize<HTMLIFrameElement>(props);
 
     const options = computed(() => ({
       openFile: props.file,
@@ -188,11 +175,14 @@ export default defineComponent({
       initialPath: props.initialPath,
     }));
 
-    onMounted(() => {
-      if (props.embed)
-        void stackblitzSDK[
+    onMounted(async () => {
+      if (props.embed) {
+        await sdk[
           props.type === "github" ? "embedGithubProject" : "embedProjectId"
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         ](el.value!, props.id, options.value);
+        resize();
+      }
     });
 
     return (): VNode =>
@@ -214,7 +204,7 @@ export default defineComponent({
                 type: "button",
                 class: "stackblitz-button",
                 onClick: () => {
-                  stackblitzSDK[
+                  sdk[
                     props.type === "github"
                       ? "openGithubProject"
                       : "openProjectId"

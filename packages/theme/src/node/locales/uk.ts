@@ -17,10 +17,9 @@ export const ukLocale: ThemeLocaleData = {
     tag: "Теги",
     readingTime: "Час читання",
     words: "Слова",
-    toc: "On This Page",
-    prev: "Prev",
-    next: "Next",
-    lastUpdated: "Останнє оновлення",
+    toc: "На сторінці",
+    prev: "Попередня",
+    next: "Наступна",
     contributors: "Автори",
     editLink: "Редагувати цю сторінку",
     print: "Друк",
@@ -36,6 +35,7 @@ export const ukLocale: ThemeLocaleData = {
     all: "Bce",
     intro: "Особистий вступ",
     star: "Зірка",
+    empty: "$text порожній",
   },
 
   paginationLocales: {
@@ -49,17 +49,17 @@ export const ukLocale: ThemeLocaleData = {
   outlookLocales: {
     themeColor: "Колір теми",
     darkmode: "Тематичний режим",
-    fullscreen: "Full Screen",
+    fullscreen: "Повноекранний",
   },
 
   encryptLocales: {
-    iconLabel: "Page Encrypted",
-    placeholder: "Enter password",
-    remember: "Remember password",
+    iconLabel: "Сторінка зашифрована",
+    placeholder: "Введіть пароль",
+    remember: "Запам'яти пароль",
     errorHint: "Будь ласка, введіть правильний пароль!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Перейти до основного вмісту",
     notFoundTitle: "Сторінка не знайдена",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const ukLocale: ThemeLocaleData = {
     ],
     back: "Повернутися назад",
     home: "Повернутися на головну",
-    openInNewWindow: "Open in new window",
   },
 };

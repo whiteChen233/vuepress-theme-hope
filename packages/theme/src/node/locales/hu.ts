@@ -20,7 +20,6 @@ export const huLocale: ThemeLocaleData = {
     toc: "Tartalom",
     prev: "Előző",
     next: "Következő",
-    lastUpdated: "Utoljára frissítve",
     contributors: "Közreműködők",
     editLink: "Oldal szerkesztése",
     print: "Nyomtatás",
@@ -36,6 +35,7 @@ export const huLocale: ThemeLocaleData = {
     all: "Összes",
     intro: "Személyes bemutatkozás",
     star: "Csillag",
+    empty: "Nincs $text",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const huLocale: ThemeLocaleData = {
     errorHint: "Kérjük, add meg a helyes jelszót!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Ugrás a fő tartalomhoz",
     notFoundTitle: "Az oldal nem található",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const huLocale: ThemeLocaleData = {
     ],
     back: "Vissza",
     home: "Kezdőlap",
-    openInNewWindow: "Megnyitás új ablakban",
   },
 };

@@ -1,9 +1,14 @@
 ---
 title: Vite 常见问题
 icon: circle-question
+order: -2
 category:
   - FAQ
 ---
+
+## 运行错误
+
+Vite 默认情况下仅支持“现代浏览器”，详见 [Vite 支持](https://vite.dev/guide/build.html#browser-compatibility)。
 
 ## Vite 冷启动速度慢
 
@@ -23,11 +28,11 @@ category:
 
 为了让组件样式和组件绑定，我们将样式按照组件层级拆分并于在组件导入，这很大程度上减慢了速度。
 
-- `@vuepress/theme-default` 将所有样式放在 `styles` 文件夹中并完整导入，因此 `sass` 只需要编译一次，vite 只需要发送 1 个额外的 web 请求。这就是为什么它很快。
+- `@vuepress/theme-default` 将所有样式放在 `styles` 文件夹中并完整导入，因此 `sass` 只需要编译一次，Vite 只需要发送 1 个额外的 web 请求。这就是为什么它很快。
 
   但这会让样式与组件解除绑定，无论如何它们都会被注入。因此，当你覆盖组件或布局时，你必须覆盖旧样式来构建你想要的样式。
 
-- `vuepress-theme-hope` 为组件绑定样式，但这意味着 `sass` 必须为每个组件编译样式，并且 vite 需要为每个组件发送一个额外的样式请求。由于 `vuepress-theme-hope` 与 `@vuepress/theme-default` 相比有 2 到 6 倍的组件 (取决于你是否启用博客功能) ，因此需要 `2.4s - 4s` 的额外的时间请求这些样式。
+- `vuepress-theme-hope` 为组件绑定样式，但这意味着 `sass` 必须为每个组件编译样式，并且 Vite 需要为每个组件发送一个额外的样式请求。由于 `vuepress-theme-hope` 与 `@vuepress/theme-default` 相比有 2 到 6 倍的组件 (取决于你是否启用博客功能) ，因此需要 `2.4s - 4s` 的额外的时间请求这些样式。
 
   但是，你可以通过这种方式轻松地覆盖组件及其样式。
 
@@ -49,31 +54,7 @@ category:
 
 在 VuePress2 中，你在 `index.scss` 中通过 `@import` 导入网络 CSS 是无效的。你可能需要在 VuePress 配置的 `head` 选项中手动导入它们。
 
-<!-- ```ts {5-13}
-import { defineUserConfig } from "vuepress-theme-hope";
-
-export default defineUserConfig({
-  head: [
-    [
-      "link",
-      {
-        rel: "preload",
-        as: "style",
-        onload: 'this.onload=null;this.rel="stylesheet"',
-        href: "//at.alicdn.com/t/c/font_2410206_5vb9zlyghj.css",
-      },
-    ],
-  ],
-
-  // ...
-});
-``` -->
-
-::: code-tabs#language
-
-@tab TS
-
-```ts {5-11}
+```ts twoslash {5-11}
 import { defineUserConfig } from "vuepress";
 
 export default defineUserConfig({
@@ -90,26 +71,6 @@ export default defineUserConfig({
   // ...
 });
 ```
-
-@tab JS
-
-```js {3-9}
-export default {
-  head: [
-    [
-      "link",
-      {
-        rel: "stylesheet",
-        href: "YOUR_CSS_URL",
-      },
-    ],
-  ],
-
-  // ...
-};
-```
-
-:::
 
 ::: info 原因
 

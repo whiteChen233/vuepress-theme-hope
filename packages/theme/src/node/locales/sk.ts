@@ -20,7 +20,6 @@ export const skLocale: ThemeLocaleData = {
     toc: "Na tejto stránke",
     prev: "Predchádzajúci",
     next: "Ďalší",
-    lastUpdated: "Posledná aktualizácia",
     contributors: "Prispievatelia",
     editLink: "Uprav túto stránku",
     print: "Tlač",
@@ -36,6 +35,7 @@ export const skLocale: ThemeLocaleData = {
     all: "Všetko",
     intro: "Osobné intro",
     star: "Hviezda",
+    empty: "$text je prázdny",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const skLocale: ThemeLocaleData = {
     errorHint: "Prosím, zadaj správne heslo!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Preskočiť na hlavný obsah",
     notFoundTitle: "Stránka nenájdená",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const skLocale: ThemeLocaleData = {
     ],
     back: "Choď späť",
     home: "Poď na domovskú stránku",
-    openInNewWindow: "Otvoriť v novom okne",
   },
 };

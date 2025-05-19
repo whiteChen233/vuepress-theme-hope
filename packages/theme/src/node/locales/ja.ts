@@ -20,7 +20,6 @@ export const jaLocale: ThemeLocaleData = {
     toc: "このページの内容",
     prev: "前のページへ",
     next: "次のページ",
-    lastUpdated: "最終更新日",
     contributors: "投稿者",
     editLink: "このページを編集",
     print: "印刷",
@@ -36,6 +35,7 @@ export const jaLocale: ThemeLocaleData = {
     all: "すべて",
     intro: "自己紹介",
     star: "コレクション",
+    empty: "$text は空です",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const jaLocale: ThemeLocaleData = {
     errorHint: "正しいパスワードを入力してください!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "メインコンテンツへスキップ",
     notFoundTitle: "ページが見つかりません",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const jaLocale: ThemeLocaleData = {
     ],
     back: "前のページへ戻る",
     home: "メインページに戻る",
-    openInNewWindow: "新しいウィンドウで開く",
   },
 };

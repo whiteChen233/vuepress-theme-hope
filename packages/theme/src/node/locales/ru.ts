@@ -20,7 +20,6 @@ export const ruLocale: ThemeLocaleData = {
     toc: "На этой странице",
     prev: "Предыдущая",
     next: "Следующая",
-    lastUpdated: "Последнее обновление",
     contributors: "Контрибьюторы",
     editLink: "Редактировать эту страницу",
     print: "Печать",
@@ -36,6 +35,7 @@ export const ruLocale: ThemeLocaleData = {
     all: "Все",
     intro: "Личное вступление",
     star: "Звезда",
+    empty: "$text пусто",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const ruLocale: ThemeLocaleData = {
     errorHint: "Пожалуйста, введите правильный пароль!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Перейти к основному содержанию",
     notFoundTitle: "Страница не найдена",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const ruLocale: ThemeLocaleData = {
     ],
     back: "Вернуться назад",
     home: "Вернуться на главную",
-    openInNewWindow: "Открыть в новом окне",
   },
 };

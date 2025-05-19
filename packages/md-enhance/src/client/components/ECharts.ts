@@ -1,3 +1,4 @@
+import { LoadingIcon, decodeData } from "@vuepress/helper/client";
 import { useDebounceFn, useEventListener } from "@vueuse/core";
 import type { EChartsOption, EChartsType } from "echarts";
 import type { PropType, VNode } from "vue";
@@ -9,13 +10,11 @@ import {
   ref,
   shallowRef,
 } from "vue";
-import { LoadingIcon, atou } from "vuepress-shared/client";
 
+import { useEChartsConfig } from "../helpers/index.js";
 import "../styles/echarts.scss";
 
-declare const MARKDOWN_ENHANCE_DELAY: number;
-
-interface EchartsConfig {
+interface EChartsConfig {
   width?: number;
   height?: number;
   option: EChartsOption;
@@ -28,9 +27,9 @@ const parseEChartsConfig = (
   config: string,
   type: "js" | "json",
   myChart: EChartsType,
-): Promise<EchartsConfig> => {
+): Promise<EChartsConfig> => {
   if (type === "js") {
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const runner = AsyncFunction(
       "myChart",
       `\
@@ -44,10 +43,10 @@ return __echarts_config__;
     );
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    return <Promise<EchartsConfig>>runner(myChart);
+    return runner(myChart) as Promise<EChartsConfig>;
   }
 
-  return Promise.resolve({ option: <EChartsOption>JSON.parse(config) });
+  return Promise.resolve({ option: JSON.parse(config) as EChartsOption });
 };
 
 export default defineComponent({
@@ -55,68 +54,81 @@ export default defineComponent({
 
   props: {
     /**
-     * echarts config
+     * ECharts config
      *
      * 图表配置
      */
-    config: { type: String, required: true },
+    config: {
+      type: String,
+      required: true,
+    },
 
     /**
      * Chart id
      *
      * 图表 id
      */
-    id: { type: String, required: true },
+    id: {
+      type: String,
+      required: true,
+    },
 
     /**
      * Chart title
      *
      * 图表标题
      */
-    title: { type: String, default: "" },
+    title: String,
 
     /**
      * Chart config type
      *
      * 图表配置类型
      */
-    type: { type: String as PropType<"js" | "json">, default: "json" },
+    type: {
+      type: String as PropType<"js" | "json">,
+      default: "json",
+    },
   },
 
   setup(props) {
+    const echartsConfig = useEChartsConfig();
+
     const loading = ref(true);
     const echartsContainer = shallowRef<HTMLElement>();
 
-    let chart: EChartsType;
+    let instance: EChartsType | null = null;
 
     useEventListener(
       "resize",
-      useDebounceFn(() => chart?.resize(), 100),
+      useDebounceFn(() => {
+        instance?.resize();
+      }, 100),
     );
 
-    onMounted(() => {
-      void Promise.all([
-        import(/* webpackChunkName: "echarts" */ "echarts"),
-        // delay
-        new Promise((resolve) => setTimeout(resolve, MARKDOWN_ENHANCE_DELAY)),
-      ]).then(async ([echarts]) => {
-        chart = echarts.init(echartsContainer.value);
+    onMounted(async () => {
+      if (__VUEPRESS_SSR__) return;
 
-        const { option, ...size } = await parseEChartsConfig(
-          atou(props.config),
-          props.type,
-          chart,
-        );
+      const echarts = await import(/* webpackChunkName: "echarts" */ "echarts");
 
-        chart.resize(size);
-        chart.setOption(option);
+      await echartsConfig.setup?.();
 
-        loading.value = false;
-      });
+      instance = echarts.init(echartsContainer.value);
+
+      const { option, ...size } = await parseEChartsConfig(
+        decodeData(props.config),
+        props.type,
+        instance,
+      );
+
+      instance.resize(size);
+      instance.setOption({ ...echartsConfig.option, ...option });
+
+      loading.value = false;
     });
 
     onUnmounted(() => {
-      chart?.dispose();
+      instance?.dispose();
     });
 
     return (): (VNode | null)[] => [

@@ -20,7 +20,6 @@ export const esLocale: ThemeLocaleData = {
     toc: "En esta página",
     prev: "Anterior",
     next: "Siguiente",
-    lastUpdated: "Última actualización",
     contributors: "Contribuidores",
     editLink: "Editar esta página",
     print: "Imprimir",
@@ -36,6 +35,7 @@ export const esLocale: ThemeLocaleData = {
     all: "Todos",
     intro: "Introducción personal",
     star: "Estrella",
+    empty: "$text está vacío",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const esLocale: ThemeLocaleData = {
     errorHint: "Por favor ingrese la contraseña correcta!",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Saltar al contenido principal",
     notFoundTitle: "Página no encontrada",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const esLocale: ThemeLocaleData = {
     ],
     back: "Regresar",
     home: "Llévame al inicio",
-    openInNewWindow: "Abrir en nueva ventana",
   },
 };

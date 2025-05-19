@@ -1,120 +1,149 @@
-import { useStyleTag } from "@vueuse/core";
-import { defineCustomElements } from "vidstack/elements";
+import type { ExactLocaleConfig } from "@vuepress/helper/client";
+import { isArray, isString, useLocaleConfig } from "@vuepress/helper/client";
+import type {
+  DASHNamespaceLoader,
+  DefaultLayoutProps,
+  HLSConstructorLoader,
+  PlayerSrc,
+  TextTrackInit,
+} from "vidstack";
+import type { MediaPlayerElement } from "vidstack/elements";
+import type { VidstackPlayerConfig } from "vidstack/global/player";
+import { VidstackPlayer, VidstackPlayerLayout } from "vidstack/global/player";
 import type { PropType, VNode } from "vue";
-import { defineComponent, h, onMounted } from "vue";
-import { isPlainObject } from "vuepress-shared/client";
+import {
+  defineComponent,
+  h,
+  onBeforeUnmount,
+  onMounted,
+  shallowRef,
+} from "vue";
 
-// import "vidstack/styles/defaults.css";
-// import "vidstack/styles/community-skin/audio.css";
-// import "vidstack/styles/community-skin/video.css";
+import type { VidstackLocaleData } from "../../shared/index.js";
+import { getLink } from "../utils/getLink.js";
+
+import "vidstack/player/styles/default/theme.css";
+import "vidstack/player/styles/default/layouts/audio.css";
+import "vidstack/player/styles/default/layouts/video.css";
 import "../styles/vidstack.scss";
 
-export interface VidStackSource {
-  src: string;
-  type: string;
-}
-
-export interface VidStackTrack {
-  /**
-   * Track source URL.
-   */
-  src: string;
-
-  /**
-   * The language of the text track data. It must be a valid BCP 47 language tag.
-   */
-  srclang: string;
-
-  /**
-   * If true, this track will be enabled by default.
-   *
-   * @default false
-   */
-  default?: boolean;
-
-  /**
-   * A string which uniquely identifies the track within the media.
-   */
-  id?: string;
-
-  /**
-   * A human-readable label for the track, or an empty string if unknown.
-   *
-   * @default ''
-   */
-  label?: string;
-
-  /**
-   * A string specifying the category into which the track falls. For example, the main audio
-   * track would have a kind of "main".
-   *
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/AudioTrack/kind}
-   */
-  kind: string;
-}
+declare const DASHJS_INSTALLED: boolean;
+declare const HLS_JS_INSTALLED: boolean;
+declare const VIDSTACK_LOCALES: ExactLocaleConfig<VidstackLocaleData>;
 
 export default defineComponent({
   name: "VidStack",
 
   props: {
     /**
-     * VidStack sources
+     * sources
      */
-    sources: {
-      type: Array as PropType<(VidStackSource | string)[]>,
-      default: () => [],
+    src: {
+      type: [String, Array, Object] as PropType<PlayerSrc>,
+      required: true,
     },
 
     /**
-     * VidStack tracks
+     * tracks
      */
-    tracks: { type: Array as PropType<VidStackTrack[]>, default: () => [] },
+    tracks: { type: Array as PropType<TextTrackInit[]>, default: () => [] },
+
+    /**
+     * poster
+     */
+    poster: String,
+
+    /**
+     * thumbnails
+     */
+    thumbnails: String,
+
+    /**
+     * title
+     */
+    title: String,
+
+    /**
+     * VidStack player options
+     */
+    player: {
+      type: Object as PropType<
+        Omit<
+          VidstackPlayerConfig,
+          "target" | "src" | "sources" | "tracks" | "title" | "poster"
+        >
+      >,
+    },
+
+    /**
+     * VidStack layout options
+     */
+    layout: {
+      type: Object as PropType<Partial<DefaultLayoutProps>>,
+    },
+
+    /**
+     * Dark mode
+     */
+    darkmode: Boolean,
   },
 
-  setup(props, { attrs }) {
-    // FIXME: Workaround for https://github.com/vuepress/vuepress-next/issues/1349
-    useStyleTag(
-      [
-        "https://cdn.jsdelivr.net/npm/vidstack@0.6/styles/defaults.css",
-        "https://cdn.jsdelivr.net/npm/vidstack@0.6/styles/community-skin/audio.css",
-        "https://cdn.jsdelivr.net/npm/vidstack@0.6/styles/community-skin/video.css",
-      ]
-        .map((url) => `@import url("${url}");`)
-        .join("\n"),
-      { id: "vidstack-style" },
-    );
+  setup(props) {
+    const vidstack = shallowRef<HTMLElement>();
+    const locale = useLocaleConfig(VIDSTACK_LOCALES);
 
-    onMounted(() => defineCustomElements());
+    let player: MediaPlayerElement | null = null;
 
-    return (): VNode =>
-      h(
-        "media-player",
-        {
-          crossorigin: "",
-          ...attrs,
-        },
-        [
-          h("media-outlet", [
-            props.sources.map((source) =>
-              isPlainObject(source)
-                ? h("source", { src: source.src, type: source.type })
-                : h("source", source),
-            ),
-            h("media-gesture", { event: "pointerup", action: "toggle:paused" }),
-            h("media-gesture", {
-              event: "dblclick",
-              action: "toggle:fullscreen",
-            }),
-            attrs["poster"]
-              ? h("media-poster", { alt: attrs["alt"] || attrs["title"] })
-              : null,
-            props.tracks.map(
-              ({ src, label, srclang, kind, default: isDefault }) =>
-                h("track", { src, label, srclang, kind, default: isDefault }),
-            ),
-          ]),
-          h("media-community-skin"),
-        ],
-      );
+    onMounted(async () => {
+      if (__VUEPRESS_SSR__) return;
+
+      const options: VidstackPlayerConfig = {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        target: vidstack.value!,
+        crossOrigin: true,
+        poster: props.poster,
+        title: props.title,
+        ...props.player,
+        layout: new VidstackPlayerLayout({
+          colorScheme: props.darkmode ? "dark" : "light",
+          thumbnails: props.thumbnails,
+          translations: locale.value,
+          ...props.layout,
+        }),
+      };
+
+      options.src = isString(props.src)
+        ? getLink(props.src)
+        : isArray(props.src)
+          ? props.src.map((src) => (isString(src) ? getLink(src) : src))
+          : props.src;
+
+      if (props.tracks.length) options.tracks = props.tracks;
+
+      player = await VidstackPlayer.create(options);
+
+      player.addEventListener("provider-change", () => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if (player!.provider?.type === "hls" && HLS_JS_INSTALLED)
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          player!.provider.library = (() =>
+            import(
+              /* webpackChunkName: "hls" */ "hls.js/dist/hls.min.js"
+            )) as HLSConstructorLoader;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        else if (player!.provider?.type === "dash" && DASHJS_INSTALLED)
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          player!.provider.library = (() =>
+            import(
+              /* webpackChunkName: "dashjs" */ "dashjs"
+            )) as DASHNamespaceLoader;
+      });
+    });
+
+    onBeforeUnmount(() => {
+      player?.destroy();
+    });
+
+    return (): VNode => h("div", { ref: vidstack });
   },
 });

@@ -1,4 +1,3 @@
-import { ClientOnly, usePageLang } from "@vuepress/client";
 import { onClickOutside, useStorage } from "@vueuse/core";
 import type { VNode } from "vue";
 import {
@@ -10,7 +9,9 @@ import {
   ref,
   shallowRef,
 } from "vue";
+import { ClientOnly, useLang } from "vuepress/client";
 
+import "@vuepress/helper/transition/fade-in.css";
 import "./bing-hero-background.scss";
 
 interface BingWallpaperInfo {
@@ -40,61 +41,62 @@ const bingStorage = useStorage<{
 export default defineComponent({
   name: "BingHeroBackground",
 
-  // TODO: Add download button, image description and copyright information
-  // props: {
-  //   download: Boolean,
-  // },
+  /*
+   * TODO: Add download button
+   * props: {
+   *   download: Boolean,
+   * },
+   */
 
   setup() {
-    const lang = usePageLang();
+    const lang = useLang();
     const bingInfo = shallowRef<HTMLElement>();
     const showInfo = ref(false);
 
     const currentWallpaper = computed(() => {
-      const info = bingStorage.value.data[bingStorage.value.index];
-      const langCode = lang.value.toLowerCase().split("-").shift();
+      const { index, data } = bingStorage.value;
 
-      if (info) {
-        const { url, wallpaper, downloadable, locales } = info;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const langCode = lang.value.toLowerCase().split("-").shift()!;
+
+      if (data[index]) {
+        const { url, wallpaper, downloadable, locales } = data[index];
 
         return {
           url,
           wallpaper,
           downloadable,
-          ...(locales[langCode!] ?? locales["en"]),
+          ...(locales[langCode] ?? locales.en),
         };
       }
 
       return null;
     });
 
-    const getImage = (): Promise<BingWallpaperInfo[]> => {
-      return fetch("https://bing-wallpaper.vuejs.press/api/wallpaper").then(
-        (response) => <Promise<BingWallpaperInfo[]>>response.json(),
+    const getBingWallpapers = (): Promise<BingWallpaperInfo[]> =>
+      fetch("https://bing-wallpaper.vuejs.press/api/wallpaper").then(
+        (response) => response.json() as Promise<BingWallpaperInfo[]>,
       );
-    };
 
     const prev = (): void => {
-      bingStorage.value.index--;
+      bingStorage.value.index -= 1;
     };
 
     const next = (): void => {
-      bingStorage.value.index++;
+      bingStorage.value.index += 1;
     };
 
     onClickOutside(bingInfo, () => {
       showInfo.value = false;
     });
 
-    onMounted(() => {
-      void getImage().then((res) => {
-        bingStorage.value.data = res;
-      });
+    onMounted(async () => {
+      bingStorage.value.data = await getBingWallpapers();
     });
 
     return (): VNode => {
       const { title, headline, url, backstage, quickFact, copyright } =
-        currentWallpaper.value || {};
+        currentWallpaper.value ?? {};
 
       return h(ClientOnly, () =>
         url
@@ -114,7 +116,7 @@ export default defineComponent({
                   },
                 },
                 [
-                  h(Transition, { name: "fade" }, () =>
+                  h(Transition, { name: "fade-in" }, () =>
                     showInfo.value
                       ? h("div", { class: "bing-info", ref: bingInfo }, [
                           h(
@@ -138,16 +140,24 @@ export default defineComponent({
                   ]),
 
                   h("button", {
-                    class: "bing-switch-left",
+                    class: "bing-switch-prev",
+                    title: "prev image",
+                    type: "button",
                     disabled: bingStorage.value.index === 0,
-                    onClick: () => prev(),
+                    onClick: () => {
+                      prev();
+                    },
                   }),
                   h("button", {
-                    class: "bing-switch-right",
+                    class: "bing-switch-next",
+                    title: "next image",
+                    type: "button",
                     disabled:
                       bingStorage.value.index ===
                       bingStorage.value.data.length - 1,
-                    onClick: () => next(),
+                    onClick: () => {
+                      next();
+                    },
                   }),
                 ],
               ),

@@ -13,16 +13,11 @@ tag:
 行为选项也可接受一个布尔值:
 
 - `false`: 意味着所有选项都设置为 `false`
-- `true`: 意味着 `{ check: true, compact:true, custom :false, debug: false }`
+- `true`: 意味着 `{ check: true, compact: true, custom: false, debug: false }`
 
 <!-- more -->
 
-::: code-tabs#language
-
-@tab TS
-
-```ts
-// .vuepress/config.ts
+```ts twoslash title=".vuepress/config.ts"
 import { defineUserConfig } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 
@@ -41,30 +36,6 @@ export default defineUserConfig({
   ),
 });
 ```
-
-@tab JS
-
-```js
-// .vuepress/config.js
-import { hopeTheme } from "vuepress-theme-hope";
-
-export default {
-  // 站点选项
-  // ...
-
-  theme: hopeTheme(
-    {
-      // 主题选项
-      // ...
-    },
-    {
-      // 主题行为选项 (可选)
-    },
-  ),
-};
-```
-
-:::
 
 ## check
 
@@ -122,3 +93,10 @@ export default {
 你还可以在运行 `vuepress dev` 或 `vuepress build` 时添加 `--debug` 标志以启用调试模式。(推荐)
 
 :::
+
+## checkVuePress
+
+- 类型: `boolean`
+- 默认值: `true`
+
+是否检查 VuePress 版本是否兼容。

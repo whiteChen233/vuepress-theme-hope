@@ -1,5 +1,5 @@
-import type { Plugin } from "@vuepress/core";
 import { activeHeaderLinksPlugin } from "@vuepress/plugin-active-header-links";
+import type { Plugin } from "vuepress/core";
 
 /**
  * @private
@@ -8,11 +8,9 @@ import { activeHeaderLinksPlugin } from "@vuepress/plugin-active-header-links";
  */
 export const getActiveHeaderLinksPlugin = (
   activeHeaderLinks?: boolean,
-): Plugin | null => {
-  if (activeHeaderLinks === false) return null;
-
-  return activeHeaderLinksPlugin({
-    headerLinkSelector: ".vp-sidebar-link, .toc-link",
-    headerAnchorSelector: ".header-anchor",
-  });
-};
+): Plugin | null =>
+  activeHeaderLinks === false
+    ? null
+    : activeHeaderLinksPlugin({
+        headerLinkSelector: ".vp-sidebar-link, .vp-toc-link",
+      });

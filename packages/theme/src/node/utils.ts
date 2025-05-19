@@ -1,24 +1,22 @@
-import { createRequire } from "node:module";
+import { Logger, removeEndingSlash } from "@vuepress/helper";
+import { getDirname, path } from "vuepress/utils";
 
-import { getDirname, path } from "@vuepress/utils";
-import { Logger, ensureEndingSlash } from "vuepress-shared/node";
+import pkg from "../../package.json" with { type: "json" };
 
 const __dirname = getDirname(import.meta.url);
 
 export const logger = new Logger("vuepress-theme-hope");
 
-export const BUNDLE_FOLDER = ensureEndingSlash(
+export const BUNDLE_FOLDER = removeEndingSlash(
   path.resolve(__dirname, "../bundle"),
 );
 
-export const CLIENT_FOLDER = ensureEndingSlash(
+export const CLIENT_FOLDER = removeEndingSlash(
   path.resolve(__dirname, "../client"),
 );
 
-export const TEMPLATE_FOLDER = ensureEndingSlash(
+export const TEMPLATE_FOLDER = removeEndingSlash(
   path.resolve(__dirname, "../../templates"),
 );
 
-export const VERSION = (<Record<string, unknown> & { version: string }>(
-  createRequire(import.meta.url)("vuepress-theme-hope/package.json")
-)).version;
+export const VERSION = pkg.version;

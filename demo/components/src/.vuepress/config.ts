@@ -1,9 +1,11 @@
-import { defineUserConfig } from "@vuepress/cli";
+import { viteBundler } from "@vuepress/bundler-vite";
+import { webpackBundler } from "@vuepress/bundler-webpack";
+import { addViteSsrNoExternal } from "@vuepress/helper";
 import { defaultTheme } from "@vuepress/theme-default";
+import { defineUserConfig } from "vuepress";
 import { componentsPlugin } from "vuepress-plugin-components";
-import { addViteSsrNoExternal } from "vuepress-shared";
 
-const base = <"/" | `/${string}/`>process.env["BASE"] || "/";
+const base = (process.env.BASE as "/" | `/${string}/` | undefined) ?? "/";
 
 export default defineUserConfig({
   base,
@@ -11,8 +13,10 @@ export default defineUserConfig({
   title: "Components Lib",
   description: "Components library for VuePress2",
 
+  bundler: process.env.BUNDLER === "webpack" ? webpackBundler() : viteBundler(),
+
   theme: defaultTheme({
-    logo: "/logo.svg",
+    logo: "https://theme-hope-assets.vuejs.press/logo.svg",
 
     repo: "vuepress-theme-hope/vuepress-theme-hope/tree/main/demo/components/",
 
@@ -20,26 +24,18 @@ export default defineUserConfig({
 
     sidebar: [
       "/demo/",
-      "/demo/artplayer",
-      "/demo/audioplayer",
+      "/demo/art-player",
       "/demo/badge",
-      "/demo/bilibili",
-      "/demo/codepen",
-      "/demo/fonticon",
+      "/demo/bili-bili",
+      "/demo/code-pen",
       "/demo/pdf",
-      "/demo/replit",
       "/demo/share",
-      "/demo/siteinfo",
-      "/demo/stackblitz",
-      "/demo/videoplayer",
-      "/demo/vidstack",
-      "/demo/xigua",
-      "/demo/youtube",
+      "/demo/site-info",
+      "/demo/stack-blitz",
+      "/demo/vp-banner",
+      "/demo/vp-card",
+      "/demo/vid-stack",
     ],
-
-    themePlugins: {
-      backToTop: false,
-    },
   }),
 
   extendsBundlerOptions: (bundlerOptions, app) => {
@@ -50,51 +46,17 @@ export default defineUserConfig({
     componentsPlugin({
       components: [
         "ArtPlayer",
-        "AudioPlayer",
         "Badge",
         "BiliBili",
         "CodePen",
-        "FontIcon",
         "PDF",
-        "Replit",
         "Share",
         "SiteInfo",
         "StackBlitz",
-        // "VidStack",
-        "VideoPlayer",
-        "XiGua",
-        "YouTube",
+        "VPBanner",
+        "VPCard",
+        "VidStack",
       ],
-
-      componentOptions: {
-        fontIcon: {
-          assets: "fontawesome",
-        },
-        pdf: {
-          pdfjs: "/assets/lib/pdfjs/",
-        },
-      },
-
-      rootComponents: {
-        addThis: "ra-5f829c59e6c6bc9a",
-        backToTop: true,
-        notice: [
-          {
-            match: /^\/$/,
-            title: "Notice Title",
-            content: "Notice Content",
-            actions: [
-              {
-                text: "Primary Action",
-                link: "https://theme-hope.vuejs.press/",
-                type: "primary",
-              },
-              { text: "Default Action" },
-            ],
-            fullscreen: true,
-          },
-        ],
-      },
     }),
   ],
 });

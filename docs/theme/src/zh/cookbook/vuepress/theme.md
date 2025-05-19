@@ -3,7 +3,7 @@ title: 主题配置
 icon: palette
 order: 6
 category:
-  - 教程知识
+  - 教程
   - VuePress
 tag:
   - 主题
@@ -21,7 +21,7 @@ VuePress 有一个开箱即用的默认主题，正使用在你当前正在浏�
 为了配置默认主题，你需要在你的配置文件中通过 [theme](https://vuejs.press/zh/reference/config.html#theme) 配置项来使用它:
 
 ```js
-import { defaultTheme } from "vuepress";
+import { defaultTheme } from "@vuepress/theme-default";
 
 export default {
   theme: defaultTheme({

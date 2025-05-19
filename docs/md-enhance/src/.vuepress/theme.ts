@@ -1,7 +1,8 @@
 import { theme } from "docs-shared";
+import { getDirname, path } from "vuepress/utils";
+
 import { enNavbar, zhNavbar } from "./navbar.js";
 import { enSidebar, zhSidebar } from "./sidebar.js";
-import { getDirname, path } from "docs-shared";
 
 const __dirname = getDirname(import.meta.url);
 
@@ -18,58 +19,40 @@ export default theme("md-enhance", {
     },
   },
 
-  plugins: {
-    mdEnhance: {
-      align: true,
-      attrs: true,
-      card: true,
-      chart: true,
-      codetabs: true,
-      container: true,
-      demo: true,
-      echarts: true,
-      figure: true,
-      flowchart: true,
-      gfm: true,
-      imgLazyload: true,
-      imgMark: true,
-      imgSize: true,
-      include: {
-        resolvePath: (file, cwd) => {
-          if (file.startsWith("@echarts"))
-            return file.replace(
-              "@echarts",
-              path.resolve(__dirname, "../echarts"),
-            );
+  markdown: {
+    codeTabs: true,
+    figure: true,
+    imgLazyload: true,
+    imgMark: true,
+    include: {
+      resolvePath: (file) => {
+        if (file.startsWith("@echarts"))
+          return file.replace(
+            "@echarts",
+            path.resolve(__dirname, "../echarts"),
+          );
 
-          return file;
-        },
+        return file;
       },
-      mathjax: true,
-      mark: true,
-      mermaid: true,
-      playground: {
-        presets: ["ts", "vue", "unocss"],
-      },
-      presentation: ["highlight", "math", "search", "notes", "zoom"],
-      stylize: [
-        {
-          matcher: "Recommended",
-          replacer: ({ tag }) => {
-            if (tag === "em")
-              return {
-                tag: "Badge",
-                attrs: { type: "tip" },
-                content: "Recommended",
-              };
-          },
-        },
-      ],
-      sub: true,
-      sup: true,
-      tabs: true,
-      vPre: true,
-      vuePlayground: true,
+    },
+    chartjs: true,
+    demo: true,
+    echarts: true,
+    flowchart: true,
+    kotlinPlayground: true,
+    markmap: true,
+    mermaid: true,
+    plantuml: true,
+    playground: {
+      presets: ["ts", "vue", "unocss"],
+    },
+    sandpack: true,
+    vuePlayground: true,
+  },
+
+  plugins: {
+    components: {
+      components: ["Badge", "VPCard"],
     },
   },
 });

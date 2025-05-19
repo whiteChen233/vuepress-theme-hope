@@ -20,7 +20,6 @@ export const viLocale: ThemeLocaleData = {
     toc: "On This Page",
     prev: "Prev",
     next: "Next",
-    lastUpdated: "Cập nhật gần nhất lúc",
     contributors: "Người đóng góp",
     editLink: "Chỉnh sửa trang này",
     print: "In",
@@ -36,6 +35,7 @@ export const viLocale: ThemeLocaleData = {
     all: "Tất cả",
     intro: "Giới thiệu cá nhân",
     star: "Ngôi sao",
+    empty: "$text trống",
   },
 
   paginationLocales: {
@@ -59,7 +59,7 @@ export const viLocale: ThemeLocaleData = {
     errorHint: "Vui lòng nhập đúng mật khẩu",
   },
 
-  routeLocales: {
+  routerLocales: {
     skipToContent: "Bỏ qua nội dung chính",
     notFoundTitle: "Trang không tìm thấy",
     notFoundMsg: [
@@ -70,6 +70,5 @@ export const viLocale: ThemeLocaleData = {
     ],
     back: "Quay lại",
     home: "Trang chủ",
-    openInNewWindow: "Open in new window",
   },
 };

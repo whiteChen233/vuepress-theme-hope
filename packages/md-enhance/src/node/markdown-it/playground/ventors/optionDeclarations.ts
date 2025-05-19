@@ -1,11 +1,10 @@
 /**
- * This file needs to be updated with typescript major and minor updates
+ * Note: This file needs to be updated with typescript major and minor updates
  *
  * https://www.typescriptlang.org/play
  *
  * Generated from the following code:
  *
-
 JSON.stringify(
   ts.optionDeclarations.map(({ name, type }) => ({
     name,
@@ -35,13 +34,14 @@ export const optionDeclarations = [
   { name: "emitDeclarationOnly", type: "boolean" },
   { name: "sourceMap", type: "boolean" },
   { name: "inlineSourceMap", type: "boolean" },
+  { name: "noCheck", type: "boolean" },
+  { name: "noEmit", type: "boolean" },
   { name: "assumeChangesOnlyAffectDirectDependencies", type: "boolean" },
   { name: "locale", type: "string" },
   { name: "all", type: "boolean" },
   { name: "version", type: "boolean" },
   { name: "init", type: "boolean" },
   { name: "project", type: "string" },
-  { name: "build", type: "boolean" },
   { name: "showConfig", type: "boolean" },
   { name: "listFilesOnly", type: "boolean" },
   {
@@ -58,6 +58,8 @@ export const optionDeclarations = [
       es2020: 7,
       es2021: 8,
       es2022: 9,
+      es2023: 10,
+      es2024: 11,
       esnext: 99,
     },
   },
@@ -75,7 +77,9 @@ export const optionDeclarations = [
       es2022: 7,
       esnext: 99,
       node16: 100,
+      node18: 101,
       nodenext: 199,
+      preserve: 200,
     },
   },
   { name: "lib", type: "list" },
@@ -97,7 +101,6 @@ export const optionDeclarations = [
   { name: "composite", type: "boolean" },
   { name: "tsBuildInfoFile", type: "string" },
   { name: "removeComments", type: "boolean" },
-  { name: "noEmit", type: "boolean" },
   { name: "importHelpers", type: "boolean" },
   {
     name: "importsNotUsedAsValues",
@@ -106,12 +109,16 @@ export const optionDeclarations = [
   { name: "downlevelIteration", type: "boolean" },
   { name: "isolatedModules", type: "boolean" },
   { name: "verbatimModuleSyntax", type: "boolean" },
+  { name: "isolatedDeclarations", type: "boolean" },
+  { name: "erasableSyntaxOnly", type: "boolean" },
+  { name: "libReplacement", type: "boolean" },
   { name: "strict", type: "boolean" },
   { name: "noImplicitAny", type: "boolean" },
   { name: "strictNullChecks", type: "boolean" },
   { name: "strictFunctionTypes", type: "boolean" },
   { name: "strictBindCallApply", type: "boolean" },
   { name: "strictPropertyInitialization", type: "boolean" },
+  { name: "strictBuiltinIteratorReturn", type: "boolean" },
   { name: "noImplicitThis", type: "boolean" },
   { name: "useUnknownInCatchVariables", type: "boolean" },
   { name: "alwaysStrict", type: "boolean" },
@@ -145,9 +152,11 @@ export const optionDeclarations = [
   { name: "allowUmdGlobalAccess", type: "boolean" },
   { name: "moduleSuffixes", type: "list" },
   { name: "allowImportingTsExtensions", type: "boolean" },
+  { name: "rewriteRelativeImportExtensions", type: "boolean" },
   { name: "resolvePackageJsonExports", type: "boolean" },
   { name: "resolvePackageJsonImports", type: "boolean" },
   { name: "customConditions", type: "list" },
+  { name: "noUncheckedSideEffectImports", type: "boolean" },
   { name: "sourceRoot", type: "string" },
   { name: "mapRoot", type: "string" },
   { name: "inlineSources", type: "boolean" },

@@ -1,8 +1,85 @@
-import type { ThemePageFrontmatter } from "./base.js";
-import type { PageInfo } from "../info.js";
-import type { AutoLinkOptions } from "../utils.js";
+import type { GetHeadersOptions } from "@vuepress/helper/shared";
 
-export interface ThemeNormalPageFrontmatter extends ThemePageFrontmatter {
+import type { ThemeBasePageFrontmatter } from "./base.js";
+import type { PageInfoType } from "../info.js";
+import type { AutoLinkOptions } from "../nav.js";
+
+export interface StructureSidebarDirOptions {
+  /**
+   * Dir title
+   *
+   * @default title of README.md
+   *
+   * 目录标题
+   *
+   * @default README.md 标题
+   */
+  text?: string;
+
+  /**
+   * Dir icon
+   *
+   * @default icon of README.md
+   *
+   * 目录图标
+   *
+   * @default README.md 图标
+   */
+  icon?: string;
+
+  /**
+   * Whether dir is expanded by default
+   *
+   * 当前目录是否默认展开
+   *
+   * @default false
+   */
+  expanded?: boolean;
+
+  /**
+   * Whether Dir is collapsible
+   *
+   * 目录是否可折叠
+   *
+   * @default true
+   */
+
+  collapsible?: boolean;
+
+  /**
+   * Whether Dir is clickable
+   *
+   * @description Will set group link to link of README.md
+   *
+   * 目录是否可点击
+   *
+   * @description 将会将目录分组的链接设置为 README.md 对应的链接
+   *
+   * @default false
+   */
+
+  link?: boolean;
+
+  /**
+   * Whether index current dir
+   *
+   * 是否索引此目录
+   *
+   * @default true
+   */
+  index?: boolean;
+
+  /**
+   * Dir order in sidebar
+   *
+   * 目录在侧边栏中的顺序
+   *
+   * @default 0
+   */
+  order?: number;
+}
+
+export interface ThemeNormalPageFrontmatter extends ThemeBasePageFrontmatter {
   /**
    * Whether is homepage
    *
@@ -37,71 +114,7 @@ export interface ThemeNormalPageFrontmatter extends ThemePageFrontmatter {
    *
    * @description 仅在 README.md 中可用
    */
-  dir?: {
-    /**
-     * Dir title
-     *
-     * @default title of README.md
-     *
-     * 目录标题
-     *
-     * @default README.md 标题
-     */
-    text?: string;
-
-    /**
-     * Dir icon
-     *
-     * @default icon of README.md
-     *
-     * 目录图标
-     *
-     * @default README.md 图标
-     */
-    icon?: string;
-
-    /**
-     * Whether Dir is collapsible
-     *
-     * 目录是否可折叠
-     *
-     * @default true
-     */
-
-    collapsible?: boolean;
-
-    /**
-     * Whether Dir is clickable
-     *
-     * @description Will set group link to link of README.md
-     *
-     * 目录是否可点击
-     *
-     * @description 将会将目录分组的链接设置为 README.md 对应的链接
-     *
-     * @default false
-     */
-
-    link?: boolean;
-
-    /**
-     * Whether index current dir
-     *
-     * 是否索引此目录
-     *
-     * @default true
-     */
-    index?: boolean;
-
-    /**
-     * Dir order in sidebar
-     *
-     * 目录在侧边栏中的顺序
-     *
-     * @default 0
-     */
-    order?: number;
-  };
+  dir?: StructureSidebarDirOptions;
 
   /**
    * A short title used in navbar, sidebar and breadcrumb
@@ -111,26 +124,25 @@ export interface ThemeNormalPageFrontmatter extends ThemePageFrontmatter {
   shortTitle?: string;
 
   /**
-   * Page Heading depth
-   *
-   * 页面标题深度
-   */
-  headerDepth?: number;
-
-  /**
    * Whether display lastUpdated time
    *
    * 是否显示最后更新事件
    */
-
   lastUpdated?: boolean;
+
+  /**
+   * Whether display changelog
+   *
+   * 是否显示变更历史
+   */
+  changelog?: boolean;
 
   /**
    * Whether display contributors
    *
    * 是否显示贡献者
    */
-  contributors?: boolean;
+  contributors?: boolean | string[];
 
   /**
    * Whether show Edit link
@@ -158,7 +170,7 @@ export interface ThemeNormalPageFrontmatter extends ThemePageFrontmatter {
    *
    * 是否在桌面模式下展示标题列表
    */
-  toc?: boolean;
+  toc?: GetHeadersOptions | boolean;
 
   /**
    * PageInfo items
@@ -167,7 +179,7 @@ export interface ThemeNormalPageFrontmatter extends ThemePageFrontmatter {
    *
    * @default ["Author", "Visitor", "Time", "Category", "Tag", "ReadTime"]
    */
-  pageInfo?: PageInfo[] | false;
+  pageInfo?: PageInfoType[] | false;
 
   /**
    * Whether enable breadcrumb
@@ -182,6 +194,13 @@ export interface ThemeNormalPageFrontmatter extends ThemePageFrontmatter {
    * 是否启用路径导航图标
    */
   breadcrumbIcon?: boolean;
+
+  /**
+   * Whether exclude current page in breadcrumb
+   *
+   * 是否在路径导航中排除
+   */
+  breadcrumbExclude?: boolean;
 
   /**
    *
@@ -216,7 +235,7 @@ export interface ThemeNormalPageFrontmatter extends ThemePageFrontmatter {
    *
    * If a number fill in, greater number will appear in front
    *
-   * 是否收藏，如果填入数字，更大值会出现在前面
+   * 是否标为星标，如果填入数字，更大值会出现在前面
    */
   star?: boolean | number;
 

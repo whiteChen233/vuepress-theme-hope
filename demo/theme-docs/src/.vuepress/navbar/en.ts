@@ -1,8 +1,10 @@
 import { navbar } from "vuepress-theme-hope";
+
 import { version } from "../version.js";
 
 export const enNavbar = navbar([
   "/",
+  "/portfolio",
   "/demo/",
   {
     text: "Guide",

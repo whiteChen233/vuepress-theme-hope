@@ -1,7 +1,10 @@
-import { defineUserConfig } from "@vuepress/cli";
+import { viteBundler } from "@vuepress/bundler-vite";
+import { webpackBundler } from "@vuepress/bundler-webpack";
+import { defineUserConfig } from "vuepress";
+
 import theme from "./theme.js";
 
-const base = <"/" | `/${string}/`>process.env["BASE"] || "/";
+const base = (process.env.BASE as "/" | `/${string}/` | undefined) ?? "/";
 
 export default defineUserConfig({
   base,
@@ -20,6 +23,8 @@ export default defineUserConfig({
       description: "vuepress-theme-hope 的文档演示",
     },
   },
+
+  bundler: process.env.BUNDLER === "webpack" ? webpackBundler() : viteBundler(),
 
   theme,
 
