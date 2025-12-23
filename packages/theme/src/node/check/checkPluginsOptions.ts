@@ -2,21 +2,23 @@ import { keys } from "@vuepress/helper";
 import { colors } from "vuepress/utils";
 
 import { PLUGIN_CHECKLIST } from "./utils.js";
-import type { PluginsOptions } from "../../shared/index.js";
+import type { ThemePluginsOptions } from "../typings/index.js";
 import { logger } from "../utils.js";
 
-const KNOWN_THEME_PLUGIN_KEYS = PLUGIN_CHECKLIST.flatMap(([, key]) => key)
-  .filter((key) => key.startsWith("plugins."))
-  .map((key) => key.split(".")[1]);
+const KNOWN_THEME_PLUGIN_KEYS = new Set(
+  PLUGIN_CHECKLIST.flatMap(([, key]) => key)
+    .filter((key) => key.startsWith("plugins."))
+    .map((key) => key.split(".")[1]),
+);
 
 /**
  * @private
  *
  * Check theme plugin options for noob users
  */
-export const checkPluginsOptions = (plugins: PluginsOptions): void => {
+export const checkPluginsOptions = (plugins: ThemePluginsOptions): void => {
   keys(plugins).forEach((key) => {
-    if (!KNOWN_THEME_PLUGIN_KEYS.includes(key))
+    if (!KNOWN_THEME_PLUGIN_KEYS.has(key))
       logger.warn(
         `You are setting "${colors.magenta(
           `plugins.${key}`,

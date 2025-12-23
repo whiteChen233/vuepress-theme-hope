@@ -13,30 +13,17 @@
  */
 
 import {
-  checkIsMobile,
-  checkIsSafari,
-  checkIsiPad,
   ensureEndingSlash,
   entries,
   isDef,
   isLinkHttp,
+  isMobile,
+  isSafari,
+  isiPad,
 } from "@vuepress/helper/client";
 import { withBase } from "vuepress/client";
 
 declare const PDFJS_URL: string | null;
-
-export interface ViewPDFOptions {
-  /**
-   * Title of pdf
-   */
-  title?: string;
-  hint: string;
-  options: Record<string, string | number | boolean> | undefined;
-  /**
-   * Force using PDFJS
-   */
-  force?: boolean;
-}
 
 const logError = (msg: string): void => {
   // eslint-disable-next-line no-console
@@ -44,7 +31,7 @@ const logError = (msg: string): void => {
 };
 
 const emptyNodeContents = (node: HTMLElement): void => {
-  while (node.firstChild) node.removeChild(node.firstChild);
+  while (node.firstChild) node.firstChild.remove();
 };
 
 const getTargetElement = (
@@ -72,20 +59,44 @@ const buildURLFragmentString = (
    * The string will be empty if no PDF Params found
    * Remove last ampersand
    */
-  if (url) url = `#${url.slice(0, url.length - 1)}`;
+  if (url) url = `#${url.slice(0, -1)}`;
 
   return url;
 };
 
+export interface AddPDFViewerOptions {
+  /**
+   * URL of pdf
+   */
+  url: string;
+
+  /**
+   * Type of embed element
+   */
+  embedType: "iframe" | "embed" | "pdfjs";
+
+  /**
+   * Title of pdf
+   */
+  title?: string;
+
+  /**
+   * Options than will be appended to pdf url as fragment identifier
+   */
+  options?: Record<string, string | number | boolean>;
+}
+
 const addPDFViewer = (
-  embedType: "iframe" | "embed" | "pdfjs",
-  targetNode: HTMLElement,
-  url: string,
-  options: Record<string, string | number | boolean>,
-  title: string,
+  target: HTMLElement,
+  {
+    embedType,
+    url,
+    options = {},
+    title = /\/([^/]+).pdf/.exec(url)?.[1] ?? "PDF Viewer",
+  }: AddPDFViewerOptions,
 ): HTMLElement => {
   // Ensure target element is empty first
-  emptyNodeContents(targetNode);
+  emptyNodeContents(target);
 
   const source = `${
     embedType === "pdfjs"
@@ -108,38 +119,50 @@ const addPDFViewer = (
 
   if (el instanceof HTMLIFrameElement) el.allow = "fullscreen";
 
-  targetNode.classList.add("pdf-viewer-container");
-  targetNode.appendChild(el);
+  target.classList.add("pdf-viewer-container");
+  target.append(el);
 
-  return targetNode.getElementsByTagName(elementType)[0];
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return target.querySelector(elementType)!;
 };
 
+export interface ViewPDFOptions extends Omit<AddPDFViewerOptions, "embedType"> {
+  /**
+   * Force using PDFJS
+   */
+  pdfjs?: boolean;
+
+  /**
+   * Hint message when PDF cannot be displayed
+   */
+  hint?: string;
+}
+
+const DEFAULT_PDF_JS_HINT = "pdfjs url is not defined";
+
 export const viewPDF = (
-  url: string,
   targetSelector: string | HTMLElement | null,
-  { title, hint, options = {}, force }: ViewPDFOptions,
+  {
+    url,
+    title,
+    hint = DEFAULT_PDF_JS_HINT,
+    options = {},
+    pdfjs,
+  }: ViewPDFOptions,
 ): HTMLElement | null => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (typeof window === "undefined" || !window?.navigator?.userAgent)
-    return null;
+  if (!isDef(window) || !window.navigator?.userAgent) return null;
 
   const { navigator } = window;
   const { userAgent } = navigator;
 
   // Time to jump through hoops -- browser vendors do not make it easy to detect PDF support.
 
-  /*
-   * There is a coincidental correlation between implementation of window.promises and native PDF support in desktop browsers
-   * We use this to assume if the browser supports promises it supports embedded PDFs
-   * Is this fragile? Sort of. But browser vendors removed mimetype detection, so we're left to improvise
-   */
-  const isModernBrowser = isDef(window.Promise);
-
   // Quick test for mobile devices.
-  const isMobileDevice = checkIsiPad(userAgent) || checkIsMobile(userAgent);
+  const isMobileDevice = isiPad() || isMobile();
 
   // Safari desktop requires special handling
-  const isSafariDesktop = !isMobileDevice && checkIsSafari(userAgent);
+  const isSafariDesktop = !isMobileDevice && isSafari();
 
   // Firefox started shipping PDF.js in Firefox 19. If this is Firefox 19 or greater, assume PDF.js is available
   const isFirefoxWithPDFJS =
@@ -150,13 +173,7 @@ export const viewPDF = (
       : false;
 
   // Determines whether PDF support is available
-  const supportsPDFs =
-    // As of Sept 2020 no mobile browsers properly support PDF embeds
-    !isMobileDevice &&
-    // We're moving into the age of MIME-less browsers. They mostly all support PDF rendering without plugins.
-    (isModernBrowser ||
-      // Modern versions of Firefox come bundled with PDFJS
-      isFirefoxWithPDFJS);
+  const supportsPDFs = navigator.pdfViewerEnabled || isFirefoxWithPDFJS;
 
   const targetNode = getTargetElement(targetSelector);
 
@@ -166,28 +183,32 @@ export const viewPDF = (
     return null;
   }
 
-  const pdfLink = isLinkHttp(url)
+  const fullLink = isLinkHttp(url)
     ? url
     : __VUEPRESS_DEV__
       ? null
       : `${window.origin}${url}`;
-  const pdfTitle = title ?? /\/([^/]+).pdf/.exec(url)?.[1] ?? "PDF Viewer";
 
-  if (force) {
-    if (!pdfLink) {
-      logError("PDF link is not accessible.");
+  if (pdfjs) {
+    if (!fullLink) {
+      logError("PDF link is not accessible via internet.");
 
       return null;
     }
 
     if (!PDFJS_URL) {
-      targetNode.innerHTML = hint.replace(/\[url\]/g, pdfLink);
-      logError("PDFJS URL is not defined");
+      targetNode.innerHTML = hint.replaceAll(String.raw`\[url\]`, fullLink);
+      logError(DEFAULT_PDF_JS_HINT);
 
       return null;
     }
 
-    return addPDFViewer("pdfjs", targetNode, url, options, pdfTitle);
+    return addPDFViewer(targetNode, {
+      embedType: "pdfjs",
+      url: fullLink,
+      options,
+      title,
+    });
   }
 
   if (supportsPDFs || !isMobileDevice) {
@@ -198,13 +219,23 @@ export const viewPDF = (
      */
     const embedType = isSafariDesktop ? "iframe" : "embed";
 
-    return addPDFViewer(embedType, targetNode, url, options, pdfTitle);
+    return addPDFViewer(targetNode, {
+      embedType,
+      url,
+      options,
+      title,
+    });
   }
 
-  if (PDFJS_URL && pdfLink)
-    return addPDFViewer("pdfjs", targetNode, url, options, pdfTitle);
+  if (PDFJS_URL && fullLink)
+    return addPDFViewer(targetNode, {
+      embedType: "pdfjs",
+      url: fullLink,
+      options,
+      title,
+    });
 
-  targetNode.innerHTML = hint.replace(/\[url\]/g, url);
+  targetNode.innerHTML = hint.replaceAll(String.raw`\[url\]`, url);
 
   logError("This browser does not support embedded PDFs");
 

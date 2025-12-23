@@ -1,7 +1,6 @@
 import { isString } from "@vuepress/helper/client";
-import type { MaybeRef } from "@vueuse/core";
 import { useEventListener } from "@vueuse/core";
-import type { Ref, ShallowRef } from "vue";
+import type { MaybeRef, Ref, ShallowRef } from "vue";
 import { computed, isRef, onMounted, ref, shallowRef, unref, watch } from "vue";
 
 const getValue = (value: string | number): string =>
@@ -13,18 +12,18 @@ export interface SizeOptions {
   ratio: string | number | undefined;
 }
 
-export interface SizeInfo<E extends HTMLElement> {
-  el: ShallowRef<E | undefined>;
+export interface SizeInfo<Element extends HTMLElement> {
+  el: ShallowRef<Element | undefined>;
   width: Ref<string>;
   height: Ref<string>;
   resize: () => void;
 }
 
-export const useSize = <E extends HTMLElement>(
+export const useSize = <Element extends HTMLElement>(
   options: SizeOptions,
   extraHeight: MaybeRef<number> = 0,
-): SizeInfo<E> => {
-  const el = shallowRef<E>();
+): SizeInfo<Element> => {
+  const el = shallowRef<Element>();
   const width = computed(() => getValue(unref(options.width) ?? "100%"));
   const height = ref("auto");
 
@@ -45,7 +44,7 @@ export const useSize = <E extends HTMLElement>(
 
     return height
       ? getValue(height)
-      : `${Number(width) / ratio + unref(extraHeight)}px`;
+      : `${width / ratio + unref(extraHeight)}px`;
   };
 
   const updateHeight = (): void => {

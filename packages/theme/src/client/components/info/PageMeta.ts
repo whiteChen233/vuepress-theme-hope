@@ -38,7 +38,11 @@ export default defineComponent({
           (!metaInfo.changelog.value || !hasGlobalComponent("GitChangelog")) &&
           lastUpdated.value
             ? h("div", { class: "update-time" }, [
-                h("span", { class: "vp-meta-label" }, lastUpdated.value.locale),
+                h(
+                  "span",
+                  { class: "vp-meta-label" },
+                  `${lastUpdated.value.locale}: `,
+                ),
                 h(
                   "time",
                   {
@@ -52,7 +56,7 @@ export default defineComponent({
             : null,
           metaInfo.contributors.value &&
           metaInfo.contributors.value !== "content" &&
-          contributors.value.length
+          contributors.value.length > 0
             ? h("div", { class: "contributors" }, [
                 h(
                   "span",
@@ -66,7 +70,7 @@ export default defineComponent({
                       { class: "vp-meta-info", title: `email: ${email}` },
                       name,
                     ),
-                    index !== contributors.length - 1 ? "," : "",
+                    index === contributors.length - 1 ? "" : ",",
                   ],
                 ),
               ])

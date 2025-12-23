@@ -3,10 +3,12 @@ import { backToTopPlugin } from "@vuepress/plugin-back-to-top";
 import { copyCodePlugin } from "@vuepress/plugin-copy-code";
 import { iconPlugin } from "@vuepress/plugin-icon";
 import { linksCheckPlugin } from "@vuepress/plugin-links-check";
+import { markdownChartPlugin } from "@vuepress/plugin-markdown-chart";
 import { markdownExtPlugin } from "@vuepress/plugin-markdown-ext";
 import { markdownHintPlugin } from "@vuepress/plugin-markdown-hint";
 import { markdownIncludePlugin } from "@vuepress/plugin-markdown-include";
 import { markdownMathPlugin } from "@vuepress/plugin-markdown-math";
+import { markdownPreviewPlugin } from "@vuepress/plugin-markdown-preview";
 import { markdownTabPlugin } from "@vuepress/plugin-markdown-tab";
 import { nprogressPlugin } from "@vuepress/plugin-nprogress";
 import { photoSwipePlugin } from "@vuepress/plugin-photo-swipe";
@@ -32,8 +34,9 @@ import { getSearchPlugin } from "./search.js";
 import { getSEOPlugin } from "./seo.js";
 import { getSitemapPlugin } from "./sitemap.js";
 import { getWatermarkPlugin } from "./watermark.js";
-import type { ThemeData, ThemeOptions } from "../../shared/index.js";
+import type { ThemeData } from "../../shared/index.js";
 import { checkPluginsOptions } from "../check/index.js";
+import type { ThemeOptions } from "../typings/index.js";
 
 /**
  * @private
@@ -51,7 +54,7 @@ export const getPlugins = (
     ThemeOptions,
     "hostname" | "hotReload" | "favicon" | "plugins" | "markdown"
   >,
-  legacy = false,
+  compact = false,
 ): PluginConfig => {
   checkPluginsOptions(pluginsOptions);
 
@@ -62,7 +65,7 @@ export const getPlugins = (
     linksCheck,
     math,
   } = markdownOptions;
-  const { backToTop, copyCode, photoSwipe } = pluginsOptions;
+  const { backToTop, copyCode, icon, photoSwipe } = pluginsOptions;
 
   return [
     /*
@@ -72,6 +75,8 @@ export const getPlugins = (
     linksCheck === false
       ? null
       : linksCheckPlugin(isPlainObject(linksCheck) ? linksCheck : {}),
+    // @vuepress/plugin-markdown-chart
+    markdownChartPlugin(markdownOptions),
     // @vuepress/plugin-markdown-ext
     markdownExtPlugin(markdownOptions),
     // @vuepress/plugin-markdown-hint
@@ -86,9 +91,11 @@ export const getPlugins = (
       : math
         ? markdownMathPlugin()
         : null,
+    // @vuepress/plugin-preview
+    markdownOptions.preview ? markdownPreviewPlugin() : null,
     // @vuepress/plugin-markdown-tab
     markdownTabPlugin(markdownOptions),
-    getMdEnhancePlugin(markdownOptions, legacy),
+    getMdEnhancePlugin(markdownOptions, compact),
     getMarkdownImagePlugin(markdownOptions),
     getMarkdownStylizePlugin(markdownOptions),
     getRevealJsPlugin(markdownOptions.revealjs),
@@ -107,17 +114,19 @@ export const getPlugins = (
       ? null
       : copyCodePlugin(isPlainObject(copyCode) ? copyCode : {}),
     // @vuepress/plugin-icon
-    iconPlugin({
-      ...pluginsOptions.icon,
-      // force to use VPIcon component
-      component: "VPIcon",
-    }),
+    icon === false
+      ? false
+      : iconPlugin({
+          ...(isPlainObject(icon) ? icon : {}),
+          // force to use VPIcon component
+          component: "VPIcon",
+        }),
     // @vuepress/plugin-photo-swipe
     photoSwipe === false
       ? null
       : photoSwipePlugin(isPlainObject(photoSwipe) ? photoSwipe : {}),
 
-    getComponentsPlugin(pluginsOptions.components, legacy),
+    getComponentsPlugin(pluginsOptions.components, compact),
     getActiveHeaderLinksPlugin(pluginsOptions.activeHeaderLinks),
     getCatalogPlugin(pluginsOptions.catalog),
     pluginsOptions.nprogress === false ? null : nprogressPlugin(),
@@ -131,7 +140,7 @@ export const getPlugins = (
       pluginsOptions.feed,
       options.hostname,
       options.favicon,
-      legacy,
+      compact,
     ),
     getNoticePlugin(pluginsOptions.notice),
     getPwaPlugin(pluginsOptions.pwa, options.favicon),

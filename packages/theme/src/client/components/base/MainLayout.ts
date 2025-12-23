@@ -1,5 +1,9 @@
 import type { Slot } from "@vuepress/helper/client";
-import { RenderDefault, hasGlobalComponent } from "@vuepress/helper/client";
+import {
+  RenderDefault,
+  hasGlobalComponent,
+  isSlotContentEmpty,
+} from "@vuepress/helper/client";
 import {
   useEventListener,
   useScrollLock,
@@ -29,7 +33,6 @@ import { useData } from "@theme-hope/composables/useData";
 import { usePure } from "@theme-hope/composables/usePure";
 import { useWindowSize } from "@theme-hope/composables/useWindowSize";
 import type { SidebarItemsSlotData } from "@theme-hope/typings/slots";
-import { isSlotResultEmpty } from "@theme-hope/utils/isSlotResultEmpty";
 
 import type {
   ThemeNormalPageFrontmatter,
@@ -112,8 +115,8 @@ export default defineComponent({
 
       return Boolean(
         themeLocale.value.logo ??
-          themeLocale.value.repo ??
-          themeLocale.value.navbar,
+        themeLocale.value.repo ??
+        themeLocale.value.navbar,
       );
     });
 
@@ -133,13 +136,13 @@ export default defineComponent({
     );
 
     const touchStart = { x: 0, y: 0 };
-    const onTouchStart = (e: TouchEvent): void => {
-      touchStart.x = e.changedTouches[0].clientX;
-      touchStart.y = e.changedTouches[0].clientY;
+    const onTouchStart = (event: TouchEvent): void => {
+      touchStart.x = event.changedTouches[0].clientX;
+      touchStart.y = event.changedTouches[0].clientY;
     };
-    const onTouchEnd = (e: TouchEvent): void => {
-      const dx = e.changedTouches[0].clientX - touchStart.x;
-      const dy = e.changedTouches[0].clientY - touchStart.y;
+    const onTouchEnd = (event: TouchEvent): void => {
+      const dx = event.changedTouches[0].clientX - touchStart.x;
+      const dy = event.changedTouches[0].clientY - touchStart.y;
 
       if (
         // Horizontal swipe
@@ -198,10 +201,10 @@ export default defineComponent({
       const sidebarItemsContent = slots.sidebarItems?.(sidebarItems.value);
       const sidebarBottomContent = slots.sidebarBottom?.();
 
-      const areSlotsEmpty =
-        isSlotResultEmpty(sidebarTopContent) &&
-        isSlotResultEmpty(sidebarItemsContent) &&
-        isSlotResultEmpty(sidebarBottomContent);
+      const isSidebarEmpty =
+        isSlotContentEmpty(sidebarTopContent) &&
+        isSlotContentEmpty(sidebarItemsContent) &&
+        isSlotContentEmpty(sidebarBottomContent);
 
       const noSidebar =
         // sidebar is disabled via props
@@ -211,7 +214,7 @@ export default defineComponent({
         // (is home page / no sidebar items) && no contents in sidebar slots
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         ((frontmatter.value.home || sidebarItems.value.length === 0) &&
-          areSlotsEmpty);
+          isSidebarEmpty);
 
       return h(
         hasGlobalComponent("GlobalEncrypt")
@@ -290,7 +293,7 @@ export default defineComponent({
                     ),
               ),
               // Sidebar
-              h(Sidebar, null, slots),
+              noSidebar ? null : h(Sidebar, null, slots),
               slots.default(),
               h(PageFooter),
             ],

@@ -2,18 +2,16 @@ import MarkdownIt from "markdown-it";
 import { describe, expect, it } from "vitest";
 
 import {
-  mdDemo,
   normalDemo,
   reactDemo,
   vueDemo,
 } from "../../src/node/markdown-it/codeDemo.js";
 
 describe("demo", () => {
-  const markdownIt = MarkdownIt({ linkify: true })
+  const markdownIt = new MarkdownIt({ linkify: true })
     .use(normalDemo)
     .use(vueDemo)
-    .use(reactDemo)
-    .use(mdDemo);
+    .use(reactDemo);
 
   it("Should resolve demo info", () => {
     expect(
@@ -111,14 +109,6 @@ h1 {
   }
 }
 \`\`\`
-
-:::
-
-::: md-demo A Markdown demo
-
-# Title
-
-VuePress is powerful.
 
 :::
 `,

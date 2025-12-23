@@ -9,7 +9,6 @@ import type {
 } from "vidstack";
 import type { MediaPlayerElement } from "vidstack/elements";
 import type { VidstackPlayerConfig } from "vidstack/global/player";
-import { VidstackPlayer, VidstackPlayerLayout } from "vidstack/global/player";
 import type { PropType, VNode } from "vue";
 import {
   defineComponent,
@@ -46,7 +45,10 @@ export default defineComponent({
     /**
      * tracks
      */
-    tracks: { type: Array as PropType<TextTrackInit[]>, default: () => [] },
+    tracks: {
+      type: Array as PropType<TextTrackInit[]>,
+      default: () => [],
+    },
 
     /**
      * poster
@@ -97,6 +99,9 @@ export default defineComponent({
     onMounted(async () => {
       if (__VUEPRESS_SSR__) return;
 
+      const { VidstackPlayer, VidstackPlayerLayout } =
+        await import("vidstack/global/player");
+
       const options: VidstackPlayerConfig = {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         target: vidstack.value!,
@@ -118,7 +123,7 @@ export default defineComponent({
           ? props.src.map((src) => (isString(src) ? getLink(src) : src))
           : props.src;
 
-      if (props.tracks.length) options.tracks = props.tracks;
+      if (props.tracks.length > 0) options.tracks = props.tracks;
 
       player = await VidstackPlayer.create(options);
 

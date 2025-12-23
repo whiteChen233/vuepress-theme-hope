@@ -36,7 +36,7 @@ const getPlaygroundRule =
     const markup = state.src.slice(start, pos);
     const params = state.src.slice(pos, max);
 
-    const containerName = params.trimStart().split(" ", 2)[0];
+    const [containerName] = params.trimStart().split(" ", 2);
 
     const title = params.trimStart().slice(name.length).trim();
 
@@ -142,11 +142,13 @@ const atMarkerRule =
      */
     if (state.src.charAt(start) !== "@") return false;
 
-    let index;
+    let index = 0;
 
     // Check out the rest of the marker string
-    for (index = 0; index < atMarker.length; index++)
+    while (index < atMarker.length) {
       if (atMarker[index] !== state.src[start + index]) return false;
+      index++;
+    }
 
     const markup = state.src.slice(start, start + index);
     const info = state.src.slice(start + index, max);
@@ -242,16 +244,14 @@ const defaultPropsGetter = (
 
 export const playground: PluginWithOptions<PlaygroundOptions> = (
   md,
-  {
+  options,
+) => {
+  const {
     name = "playground",
     component = "Playground",
     propsGetter = defaultPropsGetter,
-  } = {
-    name: "playground",
-    component: "Playground",
-    propsGetter: defaultPropsGetter,
-  },
-) => {
+  } = options ?? {};
+
   md.block.ruler.before("fence", name, getPlaygroundRule(name), {
     alt: ["paragraph", "reference", "blockquote", "list"],
   });
@@ -260,7 +260,7 @@ export const playground: PluginWithOptions<PlaygroundOptions> = (
     // Note: Here we use an internal variable to make sure tab rule is not registered
     // @ts-expect-error: __rules__ is a private property
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    if (!md.block.ruler.__rules__.find(({ name }) => name === `at-${marker}`))
+    if (!md.block.ruler.__rules__.some(({ name }) => name === `at-${marker}`))
       md.block.ruler.before("fence", `at-${marker}`, atMarkerRule(marker), {
         alt: ["paragraph", "reference", "blockquote", "list"],
       });
@@ -291,7 +291,8 @@ export const playground: PluginWithOptions<PlaygroundOptions> = (
           if (!info) continue;
           currentKey = info;
         } else if (type === "import_open") {
-          playgroundData.importMap = currentKey = info || "import-map.json";
+          currentKey = info || "import-map.json";
+          playgroundData.importMap = currentKey;
         } else if (type === "setting_open") {
           foundSettings = true;
         } else if (

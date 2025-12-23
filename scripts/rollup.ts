@@ -87,11 +87,7 @@ export const rollupBundle = (
             ...replaceOptions,
           })
         : null,
-      entries
-        ? alias({
-            entries,
-          })
-        : null,
+      entries ? alias({ entries }) : null,
       preserveShebang ? shebang() : null,
       ...(resolve ? [nodeResolve({ preferBuiltins: true }), commonjs()] : []),
       esbuild({
@@ -103,7 +99,7 @@ export const rollupBundle = (
           ".json": "json",
         },
       }),
-      copyOptions.length
+      copyOptions.length > 0
         ? copy({
             targets: copyOptions.map((item) =>
               typeof item === "string"

@@ -6,11 +6,10 @@ import {
 } from "@vuepress/helper";
 import type { FeedPluginOptions } from "@vuepress/plugin-feed";
 import type { Plugin } from "vuepress/core";
-import { colors } from "vuepress/utils";
 
+import { logMissingPkg } from "./utils.js";
 import type { ThemeData } from "../../shared/index.js";
 import { getAuthor } from "../../shared/index.js";
-import { logger } from "../utils.js";
 
 let feedPlugin:
   | ((options: FeedPluginOptions, legacy?: boolean) => Plugin)
@@ -27,18 +26,19 @@ try {
  *
  * Resolve options for @vuepress/plugin-feed
  */
+// oxlint-disable-next-line max-params
 export const getFeedPlugin = (
   themeData: ThemeData,
   options?: Omit<FeedPluginOptions, "hostname"> | boolean,
   hostname?: string,
   favicon?: string,
-  legacy = false,
+  compact = false,
 ): Plugin | null => {
   // Disable feed if feed is disabled or no options for feed plugin
   if (!options) return null;
 
   if (!feedPlugin) {
-    logger.error(`${colors.cyan("@vuepress/plugin-feed")} is not installed!`);
+    logMissingPkg("@vuepress/plugin-feed");
 
     return null;
   }
@@ -53,13 +53,13 @@ export const getFeedPlugin = (
     filter: ({ frontmatter, filePathRelative }) =>
       Boolean(
         frontmatter.feed ??
-          frontmatter.article ??
-          (filePathRelative && !frontmatter.home),
+        frontmatter.article ??
+        (filePathRelative && !frontmatter.home),
       ),
     channel: {
       icon: favicon,
       image: themeData.locales["/"].logo,
-      ...(globalAuthor.length ? { author: globalAuthor[0] } : {}),
+      ...(globalAuthor.length > 0 ? { author: globalAuthor[0] } : {}),
     },
     locales: fromEntries(
       entries(themeData.locales).map(
@@ -72,7 +72,7 @@ export const getFeedPlugin = (
               channel: {
                 icon: favicon,
                 image: logo,
-                ...(localeAuthor.length ? { author: localeAuthor[0] } : {}),
+                ...(localeAuthor.length > 0 ? { author: localeAuthor[0] } : {}),
                 ...(typeof copyright === "string" ? { copyright } : {}),
               },
             },
@@ -87,6 +87,6 @@ export const getFeedPlugin = (
       defaultOptions,
       isPlainObject(options) ? options : { rss: true },
     ),
-    legacy,
+    compact,
   );
 };

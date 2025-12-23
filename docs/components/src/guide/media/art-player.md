@@ -40,13 +40,13 @@ npm i -D artplayer
 
 <!-- #region demo -->
 
-::: md-demo A video player
+::: preview A video player
 
 <ArtPlayer src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4" />
 
 :::
 
-::: md-demo A video player with poster
+::: preview A video player with poster
 
 <ArtPlayer
   src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4"
@@ -55,7 +55,7 @@ npm i -D artplayer
 
 :::
 
-::: md-demo A video player with custom settings:
+::: preview A video player with custom settings:
 
 <ArtPlayer
   src="https://vp-demo.u2sb.com/video/caminandes_03_llamigos_720p.mp4"
@@ -258,19 +258,19 @@ npm i -D dashjs hls.js mpegts.js
 
 :::
 
-::: md-demo HLS
+::: preview HLS
 
 <ArtPlayer src="https://mse-demo.u2sb.com/dash/master.m3u8" />
 
 :::
 
-::: md-demo FLV
+::: preview FLV
 
  <ArtPlayer src="https://mse-demo.u2sb.com/caminandes_03_llamigos_720p.flv" />
 
 :::
 
-::: md-demo DASH
+::: preview DASH
 
 <ArtPlayer src="https://mse-demo.u2sb.com/dash/caminandes_03_llamigos_720p.mpd" />
 
@@ -365,13 +365,7 @@ Here is a demo adding DanMuKu plugin:
         )
         .then((res) =>
           res
-            .filter(
-              (r) =>
-                r["code"] !== undefined &&
-                r["code"] === 0 &&
-                r["data"] !== undefined &&
-                r["data"].length > 0,
-            )
+            .filter((r) => r["code"] === 0 && r["data"]?.length > 0)
             .reduce((acc, cur) => acc.concat(cur["data"]), []),
         ),
   };
@@ -441,13 +435,7 @@ const danmukuOptions = {
       )
       .then((res) =>
         res
-          .filter(
-            (r) =>
-              r["code"] !== undefined &&
-              r["code"] === 0 &&
-              r["data"] !== undefined &&
-              r["data"].length > 0
-          )
+          .filter((r) => r["code"] === 0 && r["data"]?.length > 0)
           .reduce((acc, cur) => acc.concat(cur["data"]), [])
       ),
 };

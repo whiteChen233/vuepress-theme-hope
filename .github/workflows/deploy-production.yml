@@ -6,18 +6,22 @@ on:
       ACCESS_TOKEN:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   deploy-netlify-docs:
     name: Deploy V2 docs to Netlify
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Restore Build Result
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build-result
 
@@ -25,9 +29,9 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - name: Install deps
@@ -80,12 +84,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Restore Build Result
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build-result
 
@@ -93,9 +97,9 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - name: Install deps
@@ -133,10 +137,10 @@ jobs:
           - docs
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Restore Build Result
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build-result
 
@@ -144,9 +148,9 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - name: Install deps
@@ -199,10 +203,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Restore Build Result
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build-result
 
@@ -210,9 +214,9 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - name: Install deps

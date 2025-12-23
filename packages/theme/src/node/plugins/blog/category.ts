@@ -9,10 +9,10 @@ import {
 } from "./utils.js";
 import type {
   ArticleInfoData,
-  BlogOptions,
   ThemeData,
   ThemeNormalPageFrontmatter,
 } from "../../../shared/index.js";
+import type { BlogOptions } from "../../typings/index.js";
 
 /** @private */
 export const getBlogCategoryCategory = (
@@ -26,7 +26,7 @@ export const getBlogCategoryCategory = (
   ({
     key: "category",
     getter: ({ routeMeta }) => {
-      const category = routeMeta.category;
+      const { category } = routeMeta;
 
       return isArray(category) ? category : [];
     },
@@ -61,7 +61,7 @@ export const getBlogTagCategory = (
   ({
     key: "tag",
     getter: ({ routeMeta }) => {
-      const tag = routeMeta.tag;
+      const { tag } = routeMeta;
 
       return isArray(tag) ? tag : [];
     },

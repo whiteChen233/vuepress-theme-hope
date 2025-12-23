@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<!-- #region recent-change -->
+
+## [2.0.0-rc.99](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.98...v2.0.0-rc.99) (2025-11-29)
+
+### ✨ Features
+
+- support new plugins ([7d39006](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/7d39006fe4c900458a7deba9b4baff7f71a9bf9f))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.97](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.96...v2.0.0-rc.97) (2025-10-31)
+
+**Note:** Version bump only for package vuepress-plugin-components
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.96](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.95...v2.0.0-rc.96) (2025-10-23)
+
+### ✨ Features
+
+- **components:** improve pdf viewer support ([712a351](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/712a35184da54f0b0b20e552881f1979809ef844))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.95](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.94...v2.0.0-rc.95) (2025-10-15)
+
+### 🐛 Bug Fixes
+
+- **components:** dont pass undefined to ArtPlayer constructor for poster ([#5009](https://github.com/vuepress-theme-hope/vuepress-theme-hope/issues/5009)) ([66596d9](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/66596d96be2fe81d910ba17647c8e606cf8be51d))
+- **components:** fix artplayer types ([8d31433](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/8d3143357ac57693a1cccfa7f40f3b4543fd56a9))
+- **components:** lazy load vidstack, close 4938 ([0b35193](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/0b35193a621e0ce844d4dcd23d18db66041f4cde))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.94](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.93...v2.0.0-rc.94) (2025-07-09)
+
+**Note:** Version bump only for package vuepress-plugin-components
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.90](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.89...v2.0.0-rc.90) (2025-06-04)
+
+**Note:** Version bump only for package vuepress-plugin-components
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.89](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.88...v2.0.0-rc.89) (2025-05-28)
+
+**Note:** Version bump only for package vuepress-plugin-components
+
 ## [2.0.0-rc.88](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.87...v2.0.0-rc.88) (2025-05-13)
 
 **Note:** Version bump only for package vuepress-plugin-components

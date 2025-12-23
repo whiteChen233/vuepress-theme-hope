@@ -106,7 +106,7 @@ export default theme(
           if (file.startsWith("@echarts/"))
             return file.replace(
               "@echarts",
-              path.resolve(__dirname, "../../../md-enhance/src/echarts"),
+              path.resolve(__dirname, "../echarts"),
             );
 
           if (file.startsWith("@md-enhance/"))
@@ -121,6 +121,7 @@ export default theme(
       },
       math: true,
       mark: true,
+      preview: true,
       revealjs: {
         plugins: ["highlight", "math", "search", "notes", "zoom"],
         themes: [
@@ -200,6 +201,12 @@ export default theme(
       },
       sandpack: true,
       vuePlayground: true,
+
+      DANGEROUS_ALLOW_SCRIPT_EXECUTION: true,
+      DANGEROUS_SCRIPT_EXECUTION_ALLOWLIST: [
+        "guide/markdown/chart/echarts.md",
+        "zh/guide/markdown/chart/echarts.md",
+      ],
     },
 
     plugins: {
@@ -252,6 +259,5 @@ export default theme(
       },
     },
   },
-  "",
-  "theme-v2",
+  { base: "", indexName: "theme-v2" },
 );

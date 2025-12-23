@@ -34,13 +34,11 @@ tag:
 
 ### 内置插件
 
-下列插件被内部调用，不可禁用:
+下列插件在核心功能中被内部使用，且无法被禁用:
 
 - [@vuepress/plugin-sass-palette][sass-palette]: 面向插件和主题的 Sass 配置插件
 
 - [@vuepress/plugin-theme-data][theme-data]: 主题配置的 Composition API 插件
-
-- <ProjectLink name="components" path="/zh/">vuepress-plugin-components</ProjectLink>: 提供一些开箱即用的组件
 
 ### 自动启用的插件
 
@@ -80,6 +78,8 @@ tag:
 
 - <ProjectLink name="md-enhance" path="/zh/">vuepress-plugin-md-enhance</ProjectLink>: 提供更多 Markdown 语法
 
+- <ProjectLink name="components" path="/zh/">vuepress-plugin-components</ProjectLink>: 提供一些开箱即用的组件
+
 ### 需要手动启用的插件
 
 主题捆绑以下插件，你可以通过配置启用它们
@@ -91,6 +91,8 @@ tag:
 - [@vuepress/plugin-comment][comment]: 提供评论与浏览量功能
 
 - [@vuepress/plugin-markdown-math][markdown-math]: 公式支持
+
+- [@vuepress/plugin-markdown-preview][markdown-preview]: Markdown 预览支持
 
 - [@vuepress/plugin-notice][notice]: 提供公告
 
@@ -132,6 +134,7 @@ tag:
 [markdown-hint]: https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-hint.html
 [markdown-image]: https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-image.html
 [markdown-math]: https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-math.html
+[markdown-preview]: https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-preview.html
 [links-check]: https://ecosystem.vuejs.press/zh/plugins/markdown/links-check.html
 [meilisearch]: https://ecosystem.vuejs.press/zh/plugins/search/meilisearch.html
 [notice]: https://ecosystem.vuejs.press/zh/plugins/features/notice.html

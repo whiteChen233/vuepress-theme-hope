@@ -14,7 +14,7 @@ tag:
 
 ## 配置
 
-在你的项目中安装相关的 $\TeX$ 包 [katex](https://katex.org) 或 [mathjax-full](https://docs.mathjax.org/en/latest/):
+在你的项目中安装相关的 $\TeX$ 包 [katex](https://katex.org) 或 [@mathjax/src](https://docs.mathjax.org/en/latest/):
 
 ::: code-tabs#shell
 
@@ -23,7 +23,7 @@ tag:
 ```bash
 pnpm add -D katex
 # or
-pnpm add -D mathjax-full
+pnpm add -D @mathjax/src
 ```
 
 @tab yarn
@@ -31,7 +31,7 @@ pnpm add -D mathjax-full
 ```bash
 yarn add -D katex
 # or
-yarn add -D mathjax-full
+yarn add -D @mathjax/src
 ```
 
 @tab npm
@@ -39,7 +39,7 @@ yarn add -D mathjax-full
 ```bash
 npm i -D katex
 # or
-npm i -D mathjax-full
+npm i -D @mathjax/src
 ```
 
 :::
@@ -72,7 +72,7 @@ export default hopeTheme({
   $$
   ```
 
-::: md-demo 转义
+::: preview 转义
 
 可以通过在 `$` 字符之前使用 `\` 或在 `$` 字符前后添加空格来完成转义：
 
@@ -82,13 +82,13 @@ $a=1$ 是一个 TeX 方程，而 $ a=1 $ 和 \$a=1$ 不是。
 
 ## 案例
 
-::: md-demo 行内语法
+::: preview 行内语法
 
 Euler's identity $e^{i\pi}+1=0$ is a beautiful formula in $\mathbb{R}^2$.
 
 :::
 
-::: md-demo 显示语法
+::: preview 显示语法
 
 $$
 \frac {\partial^r} {\partial \omega^r} \left(\frac {y^{\omega}} {\omega}\right)

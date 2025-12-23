@@ -58,11 +58,9 @@ const sandpackRule: RuleBlock = (state, startLine, endLine, silent) => {
   let title = "";
 
   if (firstSpace > 0) {
-    containerName = content.substring(0, firstSpace);
+    containerName = content.slice(0, firstSpace);
     // Remove attrs
-    title = content
-      .substring(firstSpace + 1)
-      .replace(/(?<!\\)\[([^}]*)\]/g, "");
+    title = content.slice(firstSpace + 1).replaceAll(/(?<!\\)\[([^}]*)\]/g, "");
   } else {
     containerName = content;
   }
@@ -170,11 +168,13 @@ const atMarkerRule =
      */
     if (state.src.charAt(start) !== "@") return false;
 
-    let index;
+    let index = 0;
 
     // Check out the rest of the marker string
-    for (index = 0; index < atMarker.length; index++)
+    while (index < atMarker.length) {
       if (atMarker[index] !== state.src[start + index]) return false;
+      index++;
+    }
 
     const markup = state.src.slice(start, start + index);
     const info = state.src.slice(start + index, max);
@@ -213,7 +213,7 @@ const atMarkerRule =
       ) {
         let openMakerMatched = true;
 
-        for (index = 0; index < atMarker.length; index++)
+        for (let index = 0; index < atMarker.length; index++)
           if (atMarker[index] !== state.src[start + index]) {
             openMakerMatched = false;
             break;
@@ -268,7 +268,7 @@ export const sandpack: PluginSimple = (md) => {
     // Note: Here we use an internal variable to make sure tab rule is not registered
     // @ts-expect-error: __rules__ is a private property
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    if (!md.block.ruler.__rules__.find(({ name }) => name === `at-${marker}`))
+    if (!md.block.ruler.__rules__.some(({ name }) => name === `at-${marker}`))
       md.block.ruler.before("fence", `at-${marker}`, atMarkerRule(marker), {
         alt: ["paragraph", "reference", "blockquote", "list"],
       });
@@ -305,7 +305,7 @@ export const sandpack: PluginSimple = (md) => {
         if (type === "file_open") {
           // File rule must contain a valid file name
           if (!info) continue;
-          currentKey = info.trim().split(" ")[0];
+          [currentKey] = info.trim().split(" ");
 
           const fileAttrs = getAttrs(info);
 
@@ -369,7 +369,7 @@ export const sandpack: PluginSimple = (md) => {
     const props = propsGetter(sandpackData);
 
     return `<SandPack ${
-      keys(attrs).length
+      keys(attrs).length > 0
         ? `${entries(attrs)
             .map(([attr, value]) =>
               value ? `${attr}="${escapeHtml(value)}"` : attr,

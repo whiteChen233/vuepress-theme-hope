@@ -34,13 +34,11 @@ For example:
 
 ### Internal Plugins
 
-The following plugins are used internally and can not be disabled:
+The following plugins are used internally with core functionality and can not be disabled:
 
 - [@vuepress/plugin-sass-palette][sass-palette]: Sass plugin for plugins and themes
 
 - [@vuepress/plugin-theme-data][theme-data]: Composition API plugin for theme data
-
-- <ProjectLink name="components">vuepress-plugin-components</ProjectLink>: Provides common components out of the box.
 
 ### Automatically Enabled Plugins
 
@@ -78,6 +76,8 @@ The following plugins are enabled by default, and you can disable them:
 
 - [@vuepress/plugin-sitemap][sitemap]: Sitemap plugin
 
+- <ProjectLink name="components">vuepress-plugin-components</ProjectLink>: Provides common components out of the box.
+
 - <ProjectLink name="md-enhance">vuepress-plugin-md-enhance</ProjectLink>: Provides more Markdown syntax
 
 ### Plugins that need to be enabled manually
@@ -91,6 +91,8 @@ The following plugins are bundled by theme, you can enable them via configuratio
 - [@vuepress/plugin-comment][comment]: Provides comment and pageview function
 
 - [@vuepress/plugin-markdown-math][markdown-math]: Formula support
+
+- [@vuepress/plugin-markdown-preview][markdown-preview]: Markdown preview support
 
 - [@vuepress/plugin-notice][notice]: Provides notice
 
@@ -131,6 +133,7 @@ These plugins are supported by theme, but you need to install them manually whil
 [markdown-hint]: https://ecosystem.vuejs.press/plugins/markdown/markdown-hint.html
 [markdown-image]: https://ecosystem.vuejs.press/plugins/markdown/markdown-image.html
 [markdown-math]: https://ecosystem.vuejs.press/plugins/markdown/markdown-math.html
+[markdown-preview]: https://ecosystem.vuejs.press/plugins/markdown/markdown-preview.html
 [meilisearch]: https://ecosystem.vuejs.press/plugins/search/meilisearch.html
 [notice]: https://ecosystem.vuejs.press/plugins/features/notice.html
 [nprogress]: https://ecosystem.vuejs.press/plugins/features/nprogress.html

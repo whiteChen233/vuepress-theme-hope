@@ -41,13 +41,6 @@ docs:
     repo: https://github.com/walinejs/waline
     preview: /assets/image/waline.jpg
 
-  - name: MaaAssistantArknights
-    desc: 一款明日方舟游戏小助手
-    logo: https://cdn.jsdelivr.net/gh/MaaAssistantArknights/design@main/logo/maa-logo_512x512.png
-    url: https://maa.plus/docs/
-    repo: https://github.com/MaaAssistantArknights/maa-website
-    preview: /assets/image/mma.jpg
-
   - name: mdit-plugins
     desc: MarkdownIt 的插件集合
     logo: https://mdit-plugins.github.io/logo.svg
@@ -81,7 +74,7 @@ docs:
     logo: https://xtsat.github.io/SteamTools-Guide/logo/Steam++Logo_1024.png
     url: https://xtsat.github.io/SteamTools-Guide/zh/
     repo: https://github.com/XTsat/SteamTools-Guide
-    preview: /assets/image/korepi.jpg
+    preview: /assets/image/watt.jpg
 
   - name: JavaGuide
     desc: 「Java学习+面试指南」一份涵盖大部分 Java 程序员所需要掌握的核心知识。准备 Java 面试，首选 JavaGuide！
@@ -332,6 +325,13 @@ docs:
     repo: https://github.com/TASA-Ed/MakerFrameDocs
     preview: /assets/image/docs-makerf.png
 
+  - name: FortiGate中文一本通
+    desc: 面向 FortiGate 的系统化中文手册
+    logo: https://handbook.fortinet.com.cn/images/fortinet-logo.svg
+    url: https://handbook.fortinet.com.cn/
+    repo: https://github.com/Cyndice/fortigate_docs_fortios7_vue
+    preview: /images/preview.png
+
 portfolios:
   - name: 尚程
     url: https://cheng-shang.me/zh/
@@ -546,6 +546,13 @@ blogs:
     url: https://www.pysio.online/
     repo: https://github.com/pysio2007/Vue-blog
     preview: http://s3.pysio.online/pysioimages/blog_preview.png
+
+  - name: bxx-114514
+    desc: bxx-114514 的留档博客
+    logo: https://raw.githubusercontent.com/bxx-114514/image-hosting/refs/heads/main/images/users/%E3%82%B7%E3%83%88%E3%83%A9%E3%83%AA_125727901.jpg
+    url: https://bxx-114514.github.io/
+    repo: https://github.com/bxx-114514/bxx-114514.github.io
+    preview: https://raw.githubusercontent.com/bxx-114514/image-hosting/refs/heads/main/images/users/bxx-114514.png
 ---
 
 ## 使用 VuePress Theme Hope 的文档

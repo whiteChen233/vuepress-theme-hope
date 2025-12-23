@@ -2,7 +2,7 @@ import { keys } from "@vuepress/helper";
 import type { MarkdownOptions as VuePressMarkdownOptions } from "vuepress/markdown";
 import { colors } from "vuepress/utils";
 
-import type { MarkdownOptions as ThemeMarkdownOptions } from "../../shared/index.js";
+import type { ThemeMarkdownOptions } from "../typings/index.js";
 import { logger } from "../utils.js";
 
 export const KNOWN_CORE_MARKDOWN_OPTIONS = [
@@ -48,6 +48,9 @@ export const KNOWN_THEME_MARKDOWN_OPTIONS = [
 
   // plugin-markdown-include
   "include",
+
+  // plugin-markdown-preview
+  "preview",
 
   // plugin-markdown-stylize
   "align",

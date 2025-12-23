@@ -3,7 +3,6 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
-    "baseUrl": "./",
     "paths": {
       "@theme-hope/*": ["./packages/theme/src/client/*.js"]
     },
@@ -15,6 +14,7 @@
     "**/*.vue",
     "**/.vuepress/**/*.ts",
     "**/.vuepress/**/*.vue",
+    ".ncurc.cjs",
     ".markdownlint-cli2.mjs"
   ]
 }

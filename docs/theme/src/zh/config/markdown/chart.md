@@ -40,6 +40,15 @@ tag:
 
 是否启用流程图支持
 
+## markdown.markmap
+
+- 类型: `boolean`
+- 默认值: `false`
+- 详情:
+  - [Markdown → Markmap](../../guide/markdown/chart/markmap.md)
+
+是否启用 [Markmap](https://markmap.js.org/) 支持。
+
 ## markdown.mermaid
 
 - 类型: `boolean`
@@ -47,7 +56,7 @@ tag:
 - 详情:
   - [Markdown → Mermaid](../../guide/markdown/chart/mermaid.md)
 
-是否启用 [Mermaid](https://mermaid.js.org/) 支持，你可以传入一个对象作为 Mermaid 的配置选项。
+是否启用 [Mermaid](https://mermaid.js.org/) 支持。
 
 ## markdown.plantuml
 
@@ -57,3 +66,14 @@ tag:
   - [Markdown → PlantUML](../../guide/markdown/chart/plantuml.md)
 
 是否启用 [plantuml](https://plantuml.com/zh/) 支持。
+
+## markdown.DANGEROUS_ALLOW_SCRIPT_EXECUTION
+
+- 类型：`boolean`
+- 详情：是否允许在图表中执行脚本。这可能会带来安全风险，请谨慎使用。
+
+## markdown.DANGEROUS_SCRIPT_EXECUTION_ALLOWLIST
+
+- 类型：`string[] | '*'`
+- 默认：`[]`
+- 详情：当启用脚本执行时，允许执行图表脚本的文件路径列表。使用 `'*'` 允许所有文件。

@@ -2,6 +2,110 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<!-- #region recent-change -->
+
+## [2.0.0-rc.100](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.99...v2.0.0-rc.100) (2025-12-17)
+
+**Note:** Version bump only for package vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.99](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.98...v2.0.0-rc.99) (2025-11-29)
+
+### ✨ Features
+
+- support new plugins ([7d39006](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/7d39006fe4c900458a7deba9b4baff7f71a9bf9f))
+- **theme:** make components and icon plugins optional ([b3c0302](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/b3c0302b1a609e3b8b4a73af25a090a4fd86858a))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.98](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.97...v2.0.0-rc.98) (2025-10-31)
+
+### 🐛 Bug Fixes
+
+- **theme:** correct types of sidebarSorter ([9a31c91](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/9a31c91f4dbfad4227b49d066106e65d5228d543))
+- **theme:** fix last update time text ([a762960](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/a762960a835751a853b998bb84bad284e044852d))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.97](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.96...v2.0.0-rc.97) (2025-10-31)
+
+**Note:** Version bump only for package vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.96](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.95...v2.0.0-rc.96) (2025-10-23)
+
+**Note:** Version bump only for package vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.95](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.94...v2.0.0-rc.95) (2025-10-15)
+
+### ✨ Features
+
+- **theme:** replace skype with microsoft teams ([f5d46b5](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/f5d46b53aafe934aa57e3a65aa834a55b55aedb1))
+
+### 🐛 Bug Fixes
+
+- **theme:** fix wrong locale config, close [#5018](https://github.com/vuepress-theme-hope/vuepress-theme-hope/issues/5018) [#5055](https://github.com/vuepress-theme-hope/vuepress-theme-hope/issues/5055) ([b976e0e](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/b976e0e4107a336a44e398036e704732bee0eaa2))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.94](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.93...v2.0.0-rc.94) (2025-07-09)
+
+### 🐛 Bug Fixes
+
+- **theme:** fix sidebar with blog pages, close [#4960](https://github.com/vuepress-theme-hope/vuepress-theme-hope/issues/4960) ([3e1fc3d](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/3e1fc3de0040f1109c4a7ba94776204582e9b539))
+- **theme:** fix wrong hint in article list, close [#4962](https://github.com/vuepress-theme-hope/vuepress-theme-hope/issues/4962) ([65f8d0e](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/65f8d0ec138afd18d31af60e15359d543d854624))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.93](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.92...v2.0.0-rc.93) (2025-06-18)
+
+### ✨ Features
+
+- support new chart plugin ([#4958](https://github.com/vuepress-theme-hope/vuepress-theme-hope/issues/4958)) ([660a5c1](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/660a5c1a6b2152df53a77a259a707b2306e07af0))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.92](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.91...v2.0.0-rc.92) (2025-06-05)
+
+### 🐛 Bug Fixes
+
+- **theme:** fix wrong optional chaining ([7903516](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/79035162fdcd30a634be200bfdf081c4625119e3))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.91](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.90...v2.0.0-rc.91) (2025-06-05)
+
+### ✨ Features
+
+- **theme:** support preview plugin ([b15c6e8](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/b15c6e85653abe73cfed5b3eb202868888ec80b6))
+
+### 🐛 Bug Fixes
+
+- **theme:** fix issues when locale is not defined ([693c2fc](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/693c2fcc8a3ace65cc294fc6cc333027f025c706))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.90](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.89...v2.0.0-rc.90) (2025-06-04)
+
+**Note:** Version bump only for package vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.89](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.88...v2.0.0-rc.89) (2025-05-28)
+
+### ✨ Features
+
+- **theme:** improve slot checking ([87c6d2a](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/87c6d2a9d842260b0ce2600aedc84d5f6bab2882))
+
+### 🐛 Bug Fixes
+
+- **theme:** fix nav screen not closing when path changes ([f52aeda](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/f52aedaaaeb413f4b90e2c6b42143f7cb151e8bb))
+- **theme:** update styles ([a54fbd4](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/a54fbd410f08635c05774e1741324358d054bbc6))
+
 ## [2.0.0-rc.88](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.87...v2.0.0-rc.88) (2025-05-13)
 
 ### ✨ Features

@@ -2,6 +2,84 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<!-- #region recent-change -->
+
+## [2.0.0-rc.100](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.99...v2.0.0-rc.100) (2025-12-17)
+
+**Note:** Version bump only for package create-vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.99](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.98...v2.0.0-rc.99) (2025-11-29)
+
+### ✨ Features
+
+- support new plugins ([7d39006](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/7d39006fe4c900458a7deba9b4baff7f71a9bf9f))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.98](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.97...v2.0.0-rc.98) (2025-10-31)
+
+**Note:** Version bump only for package create-vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.97](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.96...v2.0.0-rc.97) (2025-10-31)
+
+**Note:** Version bump only for package create-vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.96](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.95...v2.0.0-rc.96) (2025-10-23)
+
+**Note:** Version bump only for package create-vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.95](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.94...v2.0.0-rc.95) (2025-10-15)
+
+**Note:** Version bump only for package create-vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.94](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.93...v2.0.0-rc.94) (2025-07-09)
+
+**Note:** Version bump only for package create-vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.93](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.92...v2.0.0-rc.93) (2025-06-18)
+
+### ✨ Features
+
+- support new chart plugin ([#4958](https://github.com/vuepress-theme-hope/vuepress-theme-hope/issues/4958)) ([660a5c1](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/660a5c1a6b2152df53a77a259a707b2306e07af0))
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.92](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.91...v2.0.0-rc.92) (2025-06-05)
+
+**Note:** Version bump only for package create-vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.91](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.90...v2.0.0-rc.91) (2025-06-05)
+
+**Note:** Version bump only for package create-vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.90](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.89...v2.0.0-rc.90) (2025-06-04)
+
+**Note:** Version bump only for package create-vuepress-theme-hope
+
+<!-- #region recent-change -->
+
+## [2.0.0-rc.89](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.88...v2.0.0-rc.89) (2025-05-28)
+
+### 🐛 Bug Fixes
+
+- **deps:** update dependency commander to v14 ([#4911](https://github.com/vuepress-theme-hope/vuepress-theme-hope/issues/4911)) ([1bad92a](https://github.com/vuepress-theme-hope/vuepress-theme-hope/commit/1bad92a796faa424f74d9a87c6fe28f5da653c53))
+
 ## [2.0.0-rc.88](https://github.com/vuepress-theme-hope/vuepress-theme-hope/compare/v2.0.0-rc.87...v2.0.0-rc.88) (2025-05-13)
 
 ### ✨ Features

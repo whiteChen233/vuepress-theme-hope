@@ -24,7 +24,7 @@ import type {
   ArticleTitleSlotData,
 } from "@theme-hope/typings/slots";
 
-import type { ArticleInfoData, PageInfoData } from "../../../shared/index.js";
+import type { ArticleInfoData } from "../../../shared/index.js";
 
 import "../../styles/blog/article-list.scss";
 
@@ -38,9 +38,7 @@ export default defineComponent({
      * 文章项目
      */
     items: {
-      type: Array as PropType<
-        { path: string; info: PageInfoData & ArticleInfoData }[]
-      >,
+      type: Array as PropType<{ path: string; info: ArticleInfoData }[]>,
 
       required: true,
     },
@@ -119,7 +117,7 @@ export default defineComponent({
       h(
         "div",
         { id: "article-list", class: "vp-article-list", role: "feed" },
-        currentArticles.value.length
+        currentArticles.value.length > 0
           ? [
               ...currentArticles.value.map(({ info, path }, index) =>
                 h(DropTransition, { appear: true, delay: index * 0.04 }, () =>
@@ -133,7 +131,14 @@ export default defineComponent({
                 onUpdateCurrentPage: updatePage,
               }),
             ]
-          : h("h2", { class: "vp-empty-hint" }, blogLocale.value.empty),
+          : h(
+              "h2",
+              { class: "vp-empty-hint" },
+              blogLocale.value.empty.replace(
+                "$text",
+                blogLocale.value.article.toLocaleLowerCase(),
+              ),
+            ),
       );
   },
 });

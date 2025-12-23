@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-md-enhance",
-  "version": "2.0.0-rc.88",
+  "version": "2.0.0-rc.99",
   "description": "Markdown enhancement plugin for vuepress",
   "keywords": [
     "vuepress",
@@ -62,16 +62,14 @@
     "dev:ts": "tsc -b tsconfig.build.json --watch"
   },
   "dependencies": {
-    "@mdit/plugin-container": "^0.18.0",
-    "@mdit/plugin-demo": "^0.18.0",
-    "@mdit/plugin-plantuml": "^0.18.0",
-    "@mdit/plugin-uml": "^0.18.0",
+    "@mdit/plugin-container": "^0.22.2",
+    "@mdit/plugin-demo": "^0.22.3",
     "@types/markdown-it": "^14.1.2",
     "@vuepress/helper": "catalog:vuepress",
     "@vuepress/plugin-sass-palette": "catalog:vuepress",
     "@vueuse/core": "catalog:range",
     "balloon-css": "catalog:range",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.1.1",
     "vue": "catalog:range",
     "vuepress-shared": "workspace:*"
   },
@@ -79,18 +77,11 @@
     "@types/babel__core": "7.20.5",
     "@vuepress/bundler-vite": "catalog:vuepress",
     "markdown-it": "14.1.0",
-    "typescript": "5.8.3"
+    "typescript": "5.9.3"
   },
   "peerDependencies": {
     "@vue/repl": "^4.1.1",
-    "chart.js": "^4.0.0",
-    "echarts": "^5.0.0",
-    "flowchart.ts": "^3.0.0",
     "kotlin-playground": "^1.23.0",
-    "markmap-lib": "^0.18.5",
-    "markmap-toolbar": "^0.18.5",
-    "markmap-view": "^0.18.5",
-    "mermaid": "^11.6.0",
     "sandpack-vue3": "^3.0.0",
     "sass": "catalog:range",
     "sass-embedded": "catalog:range",
@@ -101,28 +92,7 @@
     "@vue/repl": {
       "optional": true
     },
-    "chart.js": {
-      "optional": true
-    },
-    "echarts": {
-      "optional": true
-    },
-    "flowchart.ts": {
-      "optional": true
-    },
     "kotlin-playground": {
-      "optional": true
-    },
-    "markmap-lib": {
-      "optional": true
-    },
-    "markmap-toolbar": {
-      "optional": true
-    },
-    "markmap-view": {
-      "optional": true
-    },
-    "mermaid": {
       "optional": true
     },
     "sandpack-vue3": {
@@ -139,7 +109,7 @@
     }
   },
   "engines": {
-    "node": ">= 20.6.0",
+    "node": ">= 20.19.0",
     "npm": ">=8",
     "pnpm": ">=7",
     "yarn": ">=2"
